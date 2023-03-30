@@ -1,0 +1,78 @@
+.redBerryTitle {
+    position: absolute;
+    width: 112px;
+    height: 18px;
+    left: calc(50% - 112px/2);
+    top: 79px;
+
+    background: url(LOGO-02.png);
+}
+
+.group1 {
+    left: calc(50% - 700px/2 - 0.5px);
+    position: absolute;
+    width: 781px;
+    height: 482px;
+    top: 182px;
+}
+
+.addRecord {
+    top: 787px;
+    bottom: 200px;
+}
+
+.recordsList {
+    top: 873px;
+    bottom: 200px;
+}
+
+p {
+    width: 223px;
+    height: 24px;
+
+    font-family: 'Helvetica Neue';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: #FFFFFF;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.addRecord, .recordsList {
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 60px;
+    gap: 20px;
+    color: #ffffff;
+    position: absolute;
+    width: 387px;
+    height: 60px;
+    left: calc(50% - 387px/2 - 0.5px);
+
+    font-family: 'Helvetica Neue';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+    display:table-cell;
+    vertical-align:middle;
+
+    background: #62A1EB;
+    border-radius: 8px;
+    padding: 0;
+    border: none;
+}
+
+
+
+

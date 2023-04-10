@@ -101,7 +101,6 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 		float derivative = (error - pid->prevError) * pid->Kd;
 
 		// Vpiltravt Maqsimaluri Sixshiris Mixedvit
-
 		derivative = derivative * pid->Kn / (derivative + pid->Kn);
 
 
@@ -154,30 +153,11 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 
 	// Vinaxavt Correction-s Struqturashi
 	pid->out = Correction;
+
+	//  TEMPORARY_FOR_DEBUGGING
+
+	displayBigTextLine(1, "%f", proportional);
+	displayBigTextLine(3, "%f", integrator);
+	displayBigTextLine(5, "%f", derivative);
+	displayBigTextLine(7, "%f", Correction);
 }
-
-///*
-//	PID-t Xazze Siaruli
-
-//	@param [PID] pid				PID-s Pointeri Romelsac VIyenebt Modzraobistvis
-//	@param [bool] rev				Shavi Xazis Marjvnidan(True) Dgas Sensor Tu Marcxniv(False)
-//	@param [float] goal 		Sasurveli Shedegi
-//*/
-//void line_follow(PID* pid, bool rev, float goal)
-//{
-//	// Vigebt Axlandel Sensoris Chvenebas
-//	float measurement = getColorReflected(color1);
-
-//	// Vanaxlebt PID-s output-s
-//	PID_Update(pid, goal, measurement);
-
-//	// Correction-is nishani.
-//		float k = 1;
-
-//		if(rev) // Tu vmodzraobt Xazis Marcxniv, Nishani Xdeba Uaryopiti.
-//			k = -1;
-
-//	// Vaniwebt Sichqareebs Motorebs
-//	setMotorSpeed(wheelR, pid->moveSpeed + pid->out * k);
-//	setMotorSpeed(wheelL, pid->moveSpeed - pid->out * k);
-//}

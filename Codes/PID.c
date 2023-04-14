@@ -11,6 +11,7 @@ struct PID // PID-s Struqtura. Sheinaxavs PID-s Mnishvnelobebs.
 
 	float integrator; // Integratori.
 	float prevError; // Wina Errori.
+	float derivative; // Wina Warmoebuli
 	float prevMeasurement; // Wina Sensoris Measurement
 
 	float outLimMax; // Correction-is Maqsimaluri Limiti.
@@ -98,18 +99,16 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 	*/
 
 		// Axlandel Errors Vaklebt Wina errors, Da Vamravlebt Kd-ze.
-		float derivative = (error - pid->prevError) * pid->Kd;
-
-		// Vpiltravt Maqsimaluri Sixshiris Mixedvit
-		derivative = derivative * pid->Kn / (derivative + pid->Kn);
-
+		pid->derivative = -(2 * pid->Kd * (measurement - pid->prevMeasurement)	// Azrze Ar Var Ra Pormulaa Ubralod Dakopirebulia Sando Wyarodan dd
+                        + (2 * pid->Kn - pid->T) * pid->derivative)
+                        / (2 * pid->Kn + pid->T);
 
 	/*
 	** Vitvlit Correction-s
 	*/
 
 		// Correction Aris Proporciulis, Integratoris Da Derivative-s Jami.
-		float Correction = proportional + integrator + derivative;
+		float Correction = proportional + integrator + pid->derivative;
 
 
 	/* Vigebt Saboloo Pasuxs */
@@ -158,6 +157,6 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 
 	displayBigTextLine(1, "%f", proportional);
 	displayBigTextLine(3, "%f", integrator);
-	displayBigTextLine(5, "%f", derivative);
+	displayBigTextLine(5, "%f", pid->derivative);
 	displayBigTextLine(7, "%f", Correction);
 }

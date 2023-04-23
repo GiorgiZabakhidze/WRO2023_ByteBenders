@@ -18,6 +18,7 @@ struct PID // PID-s Struqtura. Sheinaxavs PID-s Mnishvnelobebs.
 	float outLimMin; // Correction-is Minimaluri Limiti.
 
 	float moveSpeed; // Modzraobis Sichqare Cal Borbalze Idealur Shemtxvevashi
+	float setpoint; // Default Setpointi
 
 	float out; // Correction
 }
@@ -37,7 +38,7 @@ struct PID // PID-s Struqtura. Sheinaxavs PID-s Mnishvnelobebs.
 	@param [float] moveSpeed_val 		Borblebis Default Sichqare(Tu Borblebis Controller PID-ia)
 
 */
-void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, float outLimMax_val, float outLimMin_val, float T_val, float moveSpeed_val = 25)
+void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, float outLimMax_val, float outLimMin_val, float moveSpeed_val, float setpoint_val)
 {
 	// Miscems Shesabamis Koepicientebs Funqciashi Gadacemul Mnishvnelobebs
 
@@ -48,9 +49,10 @@ void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, 
 
 		pid->outLimMax = outLimMax_val;
 		pid->outLimMin = outLimMin_val;
-		pid->T = T_val;
 		pid->moveSpeed = moveSpeed_val;
+		pid->setpoint = setpoint_val;
 
+		pid->T = 0.02;
 		pid->integrator = 0;
 		pid->prevError = 0;
 		pid->prevMeasurement = 0;

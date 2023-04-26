@@ -11,12 +11,14 @@ struct PID // PID-s Struqtura. Sheinaxavs PID-s Mnishvnelobebs.
 
 	float integrator; // Integratori.
 	float prevError; // Wina Errori.
+	float derivative; // Wina Warmoebuli
 	float prevMeasurement; // Wina Sensoris Measurement
 
 	float outLimMax; // Correction-is Maqsimaluri Limiti.
 	float outLimMin; // Correction-is Minimaluri Limiti.
 
 	float moveSpeed; // Modzraobis Sichqare Cal Borbalze Idealur Shemtxvevashi
+	float setpoint; // Default Setpointi
 
 	float out; // Correction
 }
@@ -36,7 +38,7 @@ struct PID // PID-s Struqtura. Sheinaxavs PID-s Mnishvnelobebs.
 	@param [float] moveSpeed_val 		Borblebis Default Sichqare(Tu Borblebis Controller PID-ia)
 
 */
-void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, float outLimMax_val, float outLimMin_val, float T_val, float moveSpeed_val = 25)
+void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, float outLimMax_val, float outLimMin_val, float moveSpeed_val, float setpoint_val)
 {
 	// Miscems Shesabamis Koepicientebs Funqciashi Gadacemul Mnishvnelobebs
 
@@ -47,9 +49,10 @@ void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, 
 
 		pid->outLimMax = outLimMax_val;
 		pid->outLimMin = outLimMin_val;
-		pid->T = T_val;
 		pid->moveSpeed = moveSpeed_val;
+		pid->setpoint = setpoint_val;
 
+		pid->T = 0.02;
 		pid->integrator = 0;
 		pid->prevError = 0;
 		pid->prevMeasurement = 0;
@@ -98,18 +101,16 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 	*/
 
 		// Axlandel Errors Vaklebt Wina errors, Da Vamravlebt Kd-ze.
-		float derivative = (error - pid->prevError) * pid->Kd;
-
-		// Vpiltravt Maqsimaluri Sixshiris Mixedvit
-		derivative = derivative * pid->Kn / (derivative + pid->Kn);
-
+		pid->derivative = -(2 * pid->Kd * (measurement - pid->prevMeasurement)	// Azrze Ar Var Ra Pormulaa Ubralod Dakopirebulia Sando Wyarodan dd
+                        + (2 * pid->Kn - pid->T) * pid->derivative)
+                        / (2 * pid->Kn + pid->T);
 
 	/*
 	** Vitvlit Correction-s
 	*/
 
 		// Correction Aris Proporciulis, Integratoris Da Derivative-s Jami.
-		float Correction = proportional + integrator + derivative;
+		float Correction = proportional + integrator + pid->derivative;
 
 
 	/* Vigebt Saboloo Pasuxs */
@@ -120,17 +121,17 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 		bool clamp_integrator = false;
 
 		// Vclampavt Correction-s Mis Maqsimalur Da Minimalur Mnishvnelobebs Shoris
-			if(Correction > pid->outLimMax)
+			if(Correction > pid->outLimMax - pid->moveSpeed)
 			{
-				Correction = pid->outLimMax;
+				Correction = pid->outLimMax - pid->moveSpeed;
 
 				if(sign(error) == sign(Correction)) // Tu Nishnebi Emtxveva, Vclampavt Integratorsac.
 					clamp_integrator = true;
 			}
 
-			else if(Correction < pid->outLimMin)
+			else if(Correction < pid->outLimMin + pid->moveSpeed)
 			{
-				Correction = pid->outLimMin;
+				Correction = pid->outLimMin + pid->moveSpeed;
 
 				if(sign(error) == sign(Correction)) // Tu Nishnebi Emtxveva, Vclampavt Integratorsac.
 					clamp_integrator = true;
@@ -158,6 +159,6 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 
 	displayBigTextLine(1, "%f", proportional);
 	displayBigTextLine(3, "%f", integrator);
-	displayBigTextLine(5, "%f", derivative);
+	displayBigTextLine(5, "%f", pid->derivative);
 	displayBigTextLine(7, "%f", Correction);
 }

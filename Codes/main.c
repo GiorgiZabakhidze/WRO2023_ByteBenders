@@ -13,13 +13,26 @@
 
 // Debug-is Mosadzebni Kodi -> TEMPORARY_FOR_DEBUGGING
 
+float lineCorrectionTime = 1000;
+
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
 #include "PID_tasks.c"
 #include "PID_tasks_StartAndStop.c"
 #include "PID_functions.c"
+#include "Hand&Claw_Control.c"
+#include "PID_highLevelFunctions.c"
 #include "Functions.c"
+
+PID pid_lineFollower;
+
+#include "Initialization.c"
 
 task main()
 {
+	Initializate();
+
+	moveClaw(true);
+
+	wait(9999);
 }

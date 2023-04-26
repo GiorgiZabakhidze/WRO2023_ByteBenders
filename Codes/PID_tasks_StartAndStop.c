@@ -5,22 +5,18 @@
 	@param [bool] rev   				Marjvnidan Udgeba Gzas Tu Marcxnidan
 	@param [float] setpoint 		Color Senosor-is Sasurveli Mnishvneloba
 */
-void PID_LineFollower_Start(PID* pid, float setpoint, bool rev)
+void PID_LineFollower_Start(PID* pid, bool rev)
 {
 	// Vaniwebt Globalur Cvladebs Shesabamis Mnishvnelobebs
 	tasks[0] = pid;
 
-	// Vcvlit Globalur Setpoints Am Tipis PID-stvis
-	task_setpoint[0] = setpoint;
-
 	// Rev Gadmogvaqvs Bool-idan Int-shi
 	if(rev)
-		task_rev[0] = 1;
+		task_rev = 1;
 	else
-		task_rev[0] = -1;
+		task_rev = -1;
 
-	// Viwyebt Task-s
-	startTask(PID_LineFollower);
+	task_using[0] = true;
 }
 
 
@@ -32,7 +28,7 @@ void PID_LineFollower_Start(PID* pid, float setpoint, bool rev)
 void PID_LineFollower_Stop()
 {
 	// Ubralod Vacherebt Task-s
-	stopTask(PID_LineFollower);
+	task_using[1] = false;
 }
 
 
@@ -43,16 +39,13 @@ void PID_LineFollower_Stop()
 	@param [bool] rev   				Marjvnidan Udgeba Gzas Tu Marcxnidan
 	@param [float] setpoint 		Gyro-s Sasurveli Mnishvneloba
 */
-void PID_Gyro_Start(PID* pid, float setpoint)
+void PID_Gyro_Start(PID* pid)
 {
 	// Vaniwebt Globalur Cvladebs Shesabamis Mnishvnelobebs
 	tasks[1] = pid;
 
-	// Vcvlit Globalur Setpoints Am Tipis PID-stvis
-	task_setpoint[1] = setpoint;
-
 	// Viwyebt Task-s
-	startTask(PID_Gyro);
+	task_using[1] = true;
 }
 
 
@@ -64,5 +57,5 @@ void PID_Gyro_Start(PID* pid, float setpoint)
 void PID_Gyro_Stop()
 {
 	// Ubralod Vacherebt Task-s
-	stopTask(PID_Gyro);
+	task_using[1] = false;
 }

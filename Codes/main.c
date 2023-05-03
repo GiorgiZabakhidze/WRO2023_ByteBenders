@@ -30,9 +30,10 @@ PID pid_lineFollower;
 
 task main()
 {
-	Initializate();
-
 	moveClaw(true);
 
-	wait(9999);
+	while(1)
+	{
+		displayBigTextLine(1, "%f", getMotorEncoder(hand);
+	}
 }

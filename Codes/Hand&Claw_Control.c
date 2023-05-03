@@ -1,7 +1,7 @@
 // Vaketebt Chaciklul Tasks Rom Xelis Makontrolebel Motors Mudmivad Qondes Is Encoder Value Rac Gvinda
 
-int handSpeed = 30; // Xelis Modzraobis Sichqare
-int clawSpeed = 30; // Claw-s Modzraobis Sichqare
+int handSpeed = 5; // Xelis Modzraobis Sichqare
+int clawSpeed = 5; // Claw-s Modzraobis Sichqare
 
 int handTarget = 0; // Encoderis Mnishvneloba Rac Gvinda Xelis Makontrolebel Motors Qondes
 int clawTarget = 0; // Encoderis Mnishvneloba Rac Gvinda Claw-s Makontrolebel Motors Qondes
@@ -27,17 +27,17 @@ task setHand() // Taski Romelic Mudmivad Chaciklulia Da Aniwebs Motors Targets
 /*
 	Xeli-s Gamodzraveba Romlitac Zemot-Qvemot Iweva Claw
 
-	@param [bool] setPoint 					Xeli-s Mamodzravebeli Motor-is Sasurveli Encoder Mnishvneloba (True=Aweuli, False=Chamoweuli)
+	@param [bool] setPoint 					Xeli-s Mamodzravebeli Motor-is Sasurveli Encoder Mnishvneloba (True=Aweva, False=Daweva)
 */
 void moveHand(bool setPoint)
 {
 	if(setPoint) // Tu Setpoint Aris True, HandTarget-s Vaniwebt Aweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		handTarget = 0;
+		handTarget = getMotorEncoder(hand) - 280;
 	}
 	else // Tu Setpoint Aris false, HandTarget-s Vaniwebt Chamoweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		handTarget = 50;
+		handTarget = getMotorEncoder(hand) + 280;
 	}
 
 	// Varesetebt Task-s
@@ -67,17 +67,17 @@ task setClaw() // Taski Romelic Mudmivad Chaciklulia Da Aniwebs Motors Targets
 /*
 	Xeli-s Gamodzraveba Romlitac Zemot-Qvemot Iweva Claw
 
-	@param [bool] setPoint 					Xeli-s Mamodzravebeli Motor-is Sasurveli Encoder Mnishvneloba (True=Aweuli, False=Chamoweuli)
+	@param [bool] setPoint 					Xeli-s Mamodzravebeli Motor-is Sasurveli Encoder Mnishvneloba (True=Gaxsnili, False=Daketili)
 */
 void moveClaw(bool setPoint)
 {
 	if(setPoint) // Tu Setpoint Aris True, ClawTarget-s Vaniwebt Aweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		clawTarget = 0;
+		clawTarget = getMotorEncoder(claw) - 280;
 	}
 	else // Tu Setpoint Aris false, ClawTarget-s Vaniwebt Chamoweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		clawTarget = 50;
+		clawTarget = getMotorEncoder(claw) + 280;
 	}
 
 	// Varesetebt Task-s

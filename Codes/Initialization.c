@@ -1,12 +1,18 @@
 void Initializate()
 {
-	resetMotorEncoder(claw);
+	startTask(PID_LineFollower);
+	startTask(PID_gyro);
+	startTask(PID_Hand);
+	startTask(PID_Claw);
 
-	resetMotorEncoder(hand);
-
-	resetGyro(gyro);
 
 
-	PID_init(&pid_lineFollower, 0.23, 0.000034, 0.12, 0.0004, 60, -60, 30, 40);
+	//setMotorSpeed(hand, -5);
+	//sleep(500);
+	//setMotorTarget(hand, getMotorTarget(hand) - 10, -1);
+	//sleep(500);
+
+	//resetGyro(gyro);
+
 
 }

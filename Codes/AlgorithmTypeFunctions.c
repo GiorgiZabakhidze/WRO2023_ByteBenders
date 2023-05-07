@@ -63,6 +63,41 @@ float max(float a, float b)
 	return b;
 }
 
+/*
+	Igebs Or Integers Shoris Minimums.
+
+	@param [int] a		Pirveli Ricxvi.
+	@param [int] b    Meore Ricxvi.
+	@return [int] Or Integers Shoris Minimumi.
+*/
+int min(int a, int b)
+{
+	// Tu 'a' Naklebia An Tolia 'b'-ze, Vabrunebt 'a'-s.
+	if(a <= b)
+		return a;
+
+	// Sxva Variantshi Vabrunebt 'b'-s.
+	return b;
+}
+
+
+/*
+	Abrunebs Or Floats Shoris Minimums.
+
+	@param [float] a		Pirveli Ricxvi.
+	@param [float] b    Meore Ricxvi.
+	@return [float] Or Floats Shoris Minimumi.
+*/
+float min(float a, float b)
+{
+	// Tu 'a' Naklebia An Tolia 'b'-ze, Vabrunebt 'a'-s.
+	if(a <= b)
+		return a;
+
+	// Sxva Variantshi Vabrunebt 'b'-s.
+	return b;
+}
+
 
 /*
 	Abrunebs Dros Timer1-is Or Gazomvas Shoris

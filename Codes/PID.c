@@ -17,28 +17,44 @@ struct PID // PID-s Struqtura. Sheinaxavs PID-s Mnishvnelobebs.
 	float outLimMax; // Correction-is Maqsimaluri Limiti.
 	float outLimMin; // Correction-is Minimaluri Limiti.
 
-	float moveSpeed; // Modzraobis Sichqare Cal Borbalze Idealur Shemtxvevashi
+	float moveSpeed; // Modzraobis Sichqare Pirvel Kontrolirebul Motorze Idealur Shemtxvevashi (Tu Borbalia Marcxena)
 	float setpoint; // Default Setpointi
+	float lineCorrectionTime; // LineFollower-it Gzaze Gasworebis Dro Roca Gyro-ti Midixar Xazamde
+	bool side; // Tu Cal Borbals Vatrialebt, Gansazgvravs Romeli Borbals Vatrialebt (True=Marjvena, False=Marcxena)
 
 	float out; // Correction
 }
 
 
 /*
+	LTI Systemis Cvladebs DasawyisShi Nulovani Mnishvneloba Aqvt
+
+	Varesetebs Cvladebs
+*/
+void PID_resetVariables(PID* pid)
+{
+	pid->integrator = 0;
+	pid->prevError = 0;
+	pid->derivative = 0;
+	pid->prevMeasurement = 0;
+}
+
+
+/*
 	Ragac Konkretuli PID-s Construction.
 
-	@param [PID] pid            		PID-s structuris reference
-	@param [float] Kp_val						P koepicienti
-	@param [float] Ki_val						I koepicienti
-	@param [float] Kd_val						D koepicienti
-	@param [float] Kn_val						N koepicienti
-	@param [float] outLimMax_val    Maqsimaluri Correction
-	@param [float] outLimMin_val    Minimaluri Correction
-	@param [float] T_val    				Sensoris Ganaxlebis Dro
-	@param [float] moveSpeed_val 		Borblebis Default Sichqare(Tu Borblebis Controller PID-ia)
+	@param [PID] pid            			PID-s structuris reference
+	@param [float] Kp_val							P koepicienti
+	@param [float] Ki_val							I koepicienti
+	@param [float] Kd_val							D koepicienti
+	@param [float] Kn_val							N koepicienti
+	@param [float] outLimMax_val    	Maqsimaluri Correction
+	@param [float] outLimMin_val    	Minimaluri Correction
+	@param [float] setpoint_val				Sasurveli Mnishvneloba
+	@param [float] moveSpeed_val 		Motor-is Sawyisi Sichqare
 
 */
-void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, float outLimMax_val, float outLimMin_val, float moveSpeed_val, float setpoint_val)
+void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, float outLimMax_val, float outLimMin_val, float setpoint_val, float moveSpeed_val)
 {
 	// Miscems Shesabamis Koepicientebs Funqciashi Gadacemul Mnishvnelobebs
 
@@ -53,9 +69,8 @@ void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, 
 		pid->setpoint = setpoint_val;
 
 		pid->T = 0.02;
-		pid->integrator = 0;
-		pid->prevError = 0;
-		pid->prevMeasurement = 0;
+
+		PID_resetVariables(pid);
 }
 
 

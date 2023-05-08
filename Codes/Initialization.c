@@ -6,13 +6,11 @@ void Initializate()
 	startTask(PID_Claw);
 
 
+	resetMotorEncoder(hand);
+	resetMotorEncoder(claw);
 
-	//setMotorSpeed(hand, -5);
-	//sleep(500);
-	//setMotorTarget(hand, getMotorTarget(hand) - 10, -1);
-	//sleep(500);
+	resetGyro(gyro);
 
-	//resetGyro(gyro);
-
+	sleep(1000);
 
 }

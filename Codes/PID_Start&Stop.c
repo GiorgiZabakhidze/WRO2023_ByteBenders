@@ -31,7 +31,9 @@ void PID_LineFollower_Start(PID* pid, bool rev)
 void PID_LineFollower_Stop()
 {
 	// Ubralod Vacherebt Task-s
-	task_using[1] = false;
+	task_using[0] = false;
+
+	stopWheels();
 }
 
 
@@ -63,6 +65,8 @@ void PID_Gyro_Stop()
 {
 	// Ubralod Vacherebt Task-s
 	task_using[1] = false;
+
+	stopWheels();
 }
 
 
@@ -94,6 +98,10 @@ void PID_Gyro_oneSided_Stop()
 {
 	// Ubralod Vacherebt Task-s
 	task_using[2] = false;
+
+	wait(100);
+
+	stopWheels();
 }
 
 

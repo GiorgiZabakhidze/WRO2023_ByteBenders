@@ -35,7 +35,10 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 				setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * task_rev);
 			}
 			odd = !odd;
-			displayBigTextLine(5, "yes");
+			if(!task_using[0])
+			{
+				stopWheels();
+			}
 		}
 	}
 }
@@ -61,6 +64,10 @@ task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out);
 			}
 			odd = !odd;
+			if(!task_using[1])
+			{
+				stopWheels();
+			}
 		}
 	}
 }
@@ -81,6 +88,10 @@ task PID_gyro_oneSided()
 			{
 				setMotorSpeed(wheelL, tasks[2]->moveSpeed + tasks[2]->out);
 			}
+			if(!task_using[2])
+			{
+				stopWheels();
+			}
 		}
 	}
 }
@@ -93,7 +104,10 @@ task PID_Hand()
 		{
 			PID_Update(tasks[3], tasks[3]->setpoint, getMotorEncoder(hand));
 
-			setMotorSpeed(hand, tasks[3]->moveSpeed + tasks[3]->out);
+			setMotorSpeed(hand, tasks[3]->out);
+
+	//displayBigTextLine(1, "%f", getMotorEncoder(hand));
+	//displayBigTextLine(3, "%f", tasks[3]->out);
 		}
 	}
 }
@@ -107,5 +121,6 @@ task PID_Claw()
 
 			setMotorSpeed(claw, tasks[4]->moveSpeed + tasks[4]->out);
 		}
+	//displayBigTextLine(1, "%f", getMotorEncoder(claw));
 	}
 }

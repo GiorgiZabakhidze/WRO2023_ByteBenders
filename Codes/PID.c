@@ -173,7 +173,7 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 	//  TEMPORARY_FOR_DEBUGGING
 
 	displayBigTextLine(1, "%f", proportional);
-	displayBigTextLine(3, "%f", integrator);
-	displayBigTextLine(5, "%f", pid->derivative);
-	displayBigTextLine(7, "%f", Correction);
+	//displayBigTextLine(3, "%f", integrator);
+	//displayBigTextLine(5, "%f", pid->derivative);
+	//displayBigTextLine(7, "%f", Correction);
 }

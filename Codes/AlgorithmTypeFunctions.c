@@ -140,3 +140,9 @@ void wait(int time)
 		t = timer_count(t0, time1(T1)); // Anaxlebs Axlandel Dros
 	}
 }
+
+void stopWheels()
+{
+	setMotorSpeed(wheelL, 0);
+	setMotorSpeed(wheelR, 0);
+}

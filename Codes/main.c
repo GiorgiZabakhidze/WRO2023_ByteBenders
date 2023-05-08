@@ -1,6 +1,6 @@
 #pragma config(Sensor, S1,     usonic,         sensorEV3_Ultrasonic)
 #pragma config(Sensor, S2,     gyro,           sensorEV3_Gyro)
-#pragma config(Sensor, S3,     color2,         sensorEV3_Color, modeEV3Color_Ambient)
+#pragma config(Sensor, S3,     color2,         sensorEV3_Color)
 #pragma config(Sensor, S4,     color1,         sensorEV3_Color)
 #pragma config(Motor,  motorA,          claw,          tmotorEV3_Medium, PIDControl, encoder)
 #pragma config(Motor,  motorB,          wheelR,        tmotorEV3_Medium, PIDControl, encoder)
@@ -28,22 +28,29 @@
 
 
 PID LineFollower_normal;
-PID Gyro_rotate_;
-
+PID Gyro_rotate;
+PID Hand_normal;
+PID Claw_normal;
 task main()
 {
 	Initializate();
 
-	PID_init(&LineFollower_normal, 0.7, 0, 0.0, 0.00043, 80, -80, 45, 30);
-	PID_init(&Gyro_rotate_, 0.23, 0, 0.0, 0.00043, 80, -80, 45, 30);
+	PID_init(&LineFollower_normal, 0.5, 0.005, 0.008, 0.00043, 80, -80, 45, 30);
+	PID_init(&Gyro_rotate, 0.23, 0, 0.0, 0.00043, 80, -80, 45, 30);
+	PID_init(&Hand_normal, 1, 0.09, 0.023, 0.00043, 80, -80, 0, 0);
+	PID_init(&Claw_normal, 3, 0.0, 0.0, 0.00043, 80, -80, 0, 0);
 
-	PID_LineFollower_On_Until_Reflected(&LineFollower_normal, 20, 1);
-
-	//PID_FollowLine_Until_Reflected();
+	//Hand_normal.setpoint = 50;
+	//Claw_normal.setpoint = -600;
+	////PID_LineFollower_On_Until_Reflected(&LineFollower_normal, 20, 1);
+	//PID_Hand_Start(Hand_normal);
+	//PID_Claw_Start(Claw_normal);
+	float t = time1(T1), t11;
+	PID_LineFollower_On_ForTime(&LineFollower_normal, 2000);
+	t11 = time1(T1);
 	while(1)
 	{
-		//setMotorSpeed(wheelL, 20);
-		//setMotorSpeed(wheelR, 20);
-		displayBigTextLine(1, "%f", getColorReflected(color1));
+		displayBigTextLine(5, "%f", t11 - t);
 	}
+
 }

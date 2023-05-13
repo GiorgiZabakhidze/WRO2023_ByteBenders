@@ -20,7 +20,9 @@ struct PID // PID-s Struqtura. Sheinaxavs PID-s Mnishvnelobebs.
 	float moveSpeed; // Modzraobis Sichqare Pirvel Kontrolirebul Motorze Idealur Shemtxvevashi (Tu Borbalia Marcxena)
 	float setpoint; // Default Setpointi
 	float lineCorrectionTime; // LineFollower-it Gzaze Gasworebis Dro Roca Gyro-ti Midixar Xazamde
+	bool oneSided; // Tu Cal Borbals Vatrialebt, Gansazgvravs Romeli Borbals Vatrialebt (True=Marjvena, False=Marcxena)
 	bool side; // Tu Cal Borbals Vatrialebt, Gansazgvravs Romeli Borbals Vatrialebt (True=Marjvena, False=Marcxena)
+	bool acceptableRange; // Misagebi Gansxvaveba Sasurveli Shedegidan Sadac Programas Aqvs Upleba Shewyvitos Robotis Gasworeba
 
 	float out; // Correction
 }
@@ -169,11 +171,4 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 
 	// Vinaxavt Correction-s Struqturashi
 	pid->out = Correction;
-
-	//  TEMPORARY_FOR_DEBUGGING
-
-	displayBigTextLine(1, "%f", proportional);
-	//displayBigTextLine(3, "%f", integrator);
-	//displayBigTextLine(5, "%f", pid->derivative);
-	//displayBigTextLine(7, "%f", Correction);
 }

@@ -27,10 +27,10 @@ void moveClaw(PID* pid, bool setPoint)
 {
 	if(setPoint) // Tu Setpoint Aris True, ClawTarget-s Vaniwebt Aweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		pid->setpoint = getMotorEncoder(claw) - 100;
+		setMotorTarget(claw, getMotorEncoder(claw) + 1000, 60);
 	}
 	else // Tu Setpoint Aris false, ClawTarget-s Vaniwebt Chamoweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		pid->setpoint = getMotorEncoder(claw) + 100;
+		setMotorTarget(claw, getMotorEncoder(claw) - 1000, 60);
 	}
 }

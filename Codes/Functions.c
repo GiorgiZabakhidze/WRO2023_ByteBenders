@@ -17,3 +17,16 @@ int Color_GetColorAmbient()
 
 	return getColorName(color2); // Vabrunebt Tavidan Gazomil Shedegs
 }
+
+void moveByBit(int mode)
+{
+	if(mode > 0)
+	{
+		setMotorSpeed(wheelL, 20);
+		setMotorSpeed(wheelR, 20);
+		wait(mode * 150);
+		setMotorSpeed(wheelL, 0);
+		setMotorSpeed(wheelR, 0);
+	}
+
+}

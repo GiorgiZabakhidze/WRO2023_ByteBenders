@@ -11,46 +11,49 @@
 // color1 - LineFollower-is Sensor-i
 // color2 - ColorCheck-is Sensor-i
 
-// Debug-is Mosadzebni Kodi -> TEMPORARY_FOR_DEBUGGING
-
 //float lineCorrectionTime = 1000;
 
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
+#include "PID_Usage.c"
 #include "PID_tasks.c"
-#include "PID_Start&Stop.c"
+#include "PID_Start.c"
 #include "PID_LineFollower.c"
 #include "PID_Gyro.c"
 #include "PID_Hand&Claw.c"
-#include "PID_highLevelFunctions.c"
 #include "Functions.c"
+#include "PID_highLevelFunctions.c"
 #include "Initialization.c"
 
 
-PID LineFollower_normal;
+PID LineFollower_normal_r;
+PID LineFollower_normal_l;
 PID Gyro_rotate;
 PID Hand_normal;
 PID Claw_normal;
+PID Gyro_mover;
 task main()
 {
 	Initializate();
 
-	PID_init(&LineFollower_normal, 0.5, 0.005, 0.008, 0.00043, 80, -80, 45, 30);
-	PID_init(&Gyro_rotate, 0.23, 0, 0.0, 0.00043, 80, -80, 45, 30);
+	PID_init(&LineFollower_normal_r, 0.5, 0.02, 0.0009, 0.000666666, 80, -80, 37, 30);
+	PID_init(&LineFollower_normal_l, 0.5, 0.02, 0.0009, 0.000666666, 80, -80, 52, 30);
+	PID_init(&Gyro_rotate, 1.5, 0.001, 0, 0.000666666, 80, -80, 45, 15);
+	PID_init(&Gyro_mover, 0.1, 0.02, 0.0009, 0.000666666, 80, -80, 52, 5);
 	PID_init(&Hand_normal, 1, 0.09, 0.023, 0.00043, 80, -80, 0, 0);
 	PID_init(&Claw_normal, 3, 0.0, 0.0, 0.00043, 80, -80, 0, 0);
 
-	//Hand_normal.setpoint = 50;
-	//Claw_normal.setpoint = -600;
-	////PID_LineFollower_On_Until_Reflected(&LineFollower_normal, 20, 1);
-	//PID_Hand_Start(Hand_normal);
-	//PID_Claw_Start(Claw_normal);
-	float t = time1(T1), t11;
-	PID_LineFollower_On_ForTime(&LineFollower_normal, 2000);
-	t11 = time1(T1);
+	PID_Hand_Start(Hand_normal, on_always, 0);
+	LineFollower_normal_r.lineCorrectionTime = 1500;
+	LineFollower_normal_l.lineCorrectionTime = 1500;
+
+	Gyro_rotate.oneSided = false;
+	Gyro_rotate.side = true;
+	Gyro_mover.oneSided = false;
+
+	PID_FollowLine_AndTurn(LineFollower_normal_r, Gyro_rotate, 15, -90, 1, 2);
 	while(1)
 	{
-		displayBigTextLine(5, "%f", t11 - t);
 	}
 
 }

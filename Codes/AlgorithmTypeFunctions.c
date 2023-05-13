@@ -146,3 +146,20 @@ void stopWheels()
 	setMotorSpeed(wheelL, 0);
 	setMotorSpeed(wheelR, 0);
 }
+
+bool inRange(int a, int b, int r)
+{
+	// Tu B Aris (a; a + r) Range-shi
+	if((b < a + r) && (b > a))
+	{
+		return true;
+	}
+
+	// Tu B Aris (a - r; a) Range-shi
+	if((b > a - r) && (b < a))
+	{
+		return true;
+	}
+	// Sxva Shemtxvevashi
+	return false;
+}

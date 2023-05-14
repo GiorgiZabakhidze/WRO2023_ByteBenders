@@ -35,11 +35,12 @@ PID *previouslyUsedPID;
 
 void calculateFactor(int i, int &startTime, bool &factor)
 {
-	if(task_prevUsage[i].use == none && task_usage[i].use != none)
+	if(task_usage[i].use != none)
 		{
 			factor = true;
 
-			startTime = time1(T1);
+			if(task_prevUsage[i].use == none)
+				startTime = time1(T1);
 		}
 
 		task_prevUsage[i] = task_usage[i];
@@ -55,16 +56,16 @@ void calculateFactor(int i, int &startTime, bool &factor)
 					switch(task_usage[i].pid_type)
 					{
 						case LineFollower:
-							factor = inRange(getColorReflected(color1), tasks[i]->setpoint, tasks[i]->acceptableRange);
+							factor = !inRange(getColorReflected(color1), tasks[i]->setpoint, tasks[i]->acceptableRange);
 
 						case Gyro:
-							factor = inRange(getGyroDegrees(gyro), tasks[i]->setpoint, tasks[i]->acceptableRange);
+							factor = !inRange(getGyroDegrees(gyro), tasks[i]->setpoint, tasks[i]->acceptableRange);
 
 						case Gyro_OneSided:
-							factor = inRange(getGyroDegrees(gyro), tasks[i]->setpoint, tasks[i]->acceptableRange);
+							factor = !inRange(getGyroDegrees(gyro), tasks[i]->setpoint, tasks[i]->acceptableRange);
 
 						case Hand:
-							factor = inRange(getMotorEncoder(hand), tasks[i]->setpoint, tasks[i]->acceptableRange);
+							factor = !inRange(getMotorEncoder(hand), tasks[i]->setpoint, tasks[i]->acceptableRange);
 					}
 
 				case forTime:

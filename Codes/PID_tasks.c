@@ -90,7 +90,7 @@ task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 		}
 		else
 		{
-			task_usage[0].use = none;
+			task_usage[1].use = none;
 			stopWheels();
 		}
 	}

@@ -22,7 +22,7 @@ struct PID // PID-s Struqtura. Sheinaxavs PID-s Mnishvnelobebs.
 	float lineCorrectionTime; // LineFollower-it Gzaze Gasworebis Dro Roca Gyro-ti Midixar Xazamde
 	bool oneSided; // Tu Cal Borbals Vatrialebt, Gansazgvravs Romeli Borbals Vatrialebt (True=Marjvena, False=Marcxena)
 	bool side; // Tu Cal Borbals Vatrialebt, Gansazgvravs Romeli Borbals Vatrialebt (True=Marjvena, False=Marcxena)
-	bool acceptableRange; // Misagebi Gansxvaveba Sasurveli Shedegidan Sadac Programas Aqvs Upleba Shewyvitos Robotis Gasworeba
+	float acceptableRange; // Misagebi Gansxvaveba Sasurveli Shedegidan Sadac Programas Aqvs Upleba Shewyvitos Robotis Gasworeba
 
 	float out; // Correction
 }

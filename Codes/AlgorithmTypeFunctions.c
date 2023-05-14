@@ -149,17 +149,17 @@ void stopWheels()
 
 bool inRange(int a, int b, int r)
 {
-	// Tu B Aris (a; a + r) Range-shi
-	if((b < a + r) && (b > a))
-	{
-		return true;
-	}
-
-	// Tu B Aris (a - r; a) Range-shi
-	if((b > a - r) && (b < a))
+	// Tu B Aris [a - r; a + r] Range-shi
+	if((b >= a - r) && (b <= a + r))
 	{
 		return true;
 	}
 	// Sxva Shemtxvevashi
 	return false;
+}
+
+float MmToEncoder(float Mm)
+{
+	int MMforEncoder = 0.610865238197;
+	return Mm / MMforEncoder;
 }

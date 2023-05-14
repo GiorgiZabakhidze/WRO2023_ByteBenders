@@ -47,6 +47,8 @@ task main()
 	LineFollower_normal_r.lineCorrectionTime = 1500;
 	LineFollower_normal_l.lineCorrectionTime = 1500;
 
+	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelL) + MmToEncoder(200));
+
 	Gyro_rotate.oneSided = false;
 	Gyro_rotate.side = true;
 	Gyro_mover.oneSided = false;

@@ -111,7 +111,7 @@ void PID_Gyro_On_Until_Encoder(PID* pid, float _setpoint)
 {
 	if(pid->oneSided)
 	{
-		if(_setpoint >= getColorReflected(color1))
+		if(_setpoint >= getMotorEncoder(wheelL))
 		{
 			PID_Gyro_OneSided_Start(pid, untilEncoder_high, _setpoint);
 		}
@@ -122,7 +122,7 @@ void PID_Gyro_On_Until_Encoder(PID* pid, float _setpoint)
 	}
 	else
 	{
-		if(_setpoint >= getColorReflected(color1))
+		if(_setpoint >= getMotorEncoder(wheelL))
 		{
 			PID_Gyro_Start(pid, untilEncoder_high, _setpoint);
 		}

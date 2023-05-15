@@ -3,6 +3,7 @@ void Initializate()
 	for(int i = 0; i < 5; i++)
 	{
 		task_usage[i].use = none;
+		task_prevUsage[i].use = none;
 	}
 	startTask(PID_LineFollower);
 	startTask(PID_gyro);

@@ -147,7 +147,7 @@ void stopWheels()
 	setMotorSpeed(wheelR, 0);
 }
 
-bool inRange(int a, int b, int r)
+bool inRange(float a, float b, float r)
 {
 	// Tu B Aris [a - r; a + r] Range-shi
 	if((b >= a - r) && (b <= a + r))
@@ -160,6 +160,6 @@ bool inRange(int a, int b, int r)
 
 float MmToEncoder(float Mm)
 {
-	int MMforEncoder = 0.610865238197;
+	float MMforEncoder = 0.48869219055;
 	return Mm / MMforEncoder;
 }

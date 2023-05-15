@@ -8,11 +8,11 @@ struct usage
 {
 	useType use;
 	pidType pid_type;
-	float time;
-	float reflection;
-	float distance;
-	float encoder;
-	float degree;
+	int time;
+	int reflection;
+	int distance;
+	int encoder;
+	int degree;
 	int motorN;
 }
 /* Indeqsebis Shesabamisi PID:
@@ -30,7 +30,7 @@ usage task_usage[5]; // Ra Tipis Gamoyeneba Aqvt PID-s
 
 usage task_prevUsage[5]; // Wina Iteraciis Usage
 
-PID *previouslyUsedPID;
+PID* previouslyUsedPID;
 
 
 void calculateFactor(int i, int &startTime, bool &factor)
@@ -49,88 +49,114 @@ void calculateFactor(int i, int &startTime, bool &factor)
 		{
 			switch(task_usage[i].use)
 			{
-				case none:
-					factor = false;
+			case none:
+				factor = false;
+				break;
 
-				case on_untilDone:
-					switch(task_usage[i].pid_type)
-					{
-						case LineFollower:
-							factor = !inRange(getColorReflected(color1), tasks[i]->setpoint, tasks[i]->acceptableRange);
+			case on_untilDone:
+				switch(task_usage[i].pid_type)
+				{
+				case LineFollower:
+					factor = !inRange(getColorReflected(color1), tasks[i]->setpoint, tasks[i]->acceptableRange);
+					break;
+				case Gyro:
+					factor = !inRange(getGyroDegrees(gyro), tasks[i]->setpoint, tasks[i]->acceptableRange);
+					break;
+				case Gyro_OneSided:
+					factor = !inRange(getGyroDegrees(gyro), tasks[i]->setpoint, tasks[i]->acceptableRange);
+					break;
+				case Hand:
+					factor = !inRange(getMotorEncoder(hand), tasks[i]->setpoint, tasks[i]->acceptableRange);
+					break;
+				}
+				break;
 
-						case Gyro:
-							factor = !inRange(getGyroDegrees(gyro), tasks[i]->setpoint, tasks[i]->acceptableRange);
 
-						case Gyro_OneSided:
-							factor = !inRange(getGyroDegrees(gyro), tasks[i]->setpoint, tasks[i]->acceptableRange);
+			case forTime:
+				factor = (bool)(timer_count(startTime, time1(T1)) < task_usage[i].time);
+				break;
 
-						case Hand:
-							factor = !inRange(getMotorEncoder(hand), tasks[i]->setpoint, tasks[i]->acceptableRange);
-					}
+			case untilReflected_high:
+				factor = (bool)(getColorReflected(color1) < task_usage[i].reflection);
+				break;
 
-				case forTime:
-					factor = (bool)(timer_count(startTime, time1(T1)) < task_usage[0].time);
+			case untilReflected_low:
+				factor = (bool)(getColorReflected(color1) > task_usage[i].reflection);
+				break;
 
-				case untilReflected_high:
-					factor = (bool)(getColorReflected(color1) < task_usage[i].reflection);
+			case untilEncoder_high:
+				if(task_usage[i].motorN == 1)
+					factor = (bool)(getMotorEncoder(motorA) < task_usage[i].encoder);
+				else if(task_usage[i].motorN == 2)
+					factor = (bool)(getMotorEncoder(motorB) < task_usage[i].encoder);
+				else if(task_usage[i].motorN == 3)
+					factor = (bool)(getMotorEncoder(motorC) < task_usage[i].encoder);
+				else if(task_usage[i].motorN == 4)
+					factor = (bool)(getMotorEncoder(motorD) < task_usage[i].encoder);
+				break;
 
-				case untilReflected_low:
-					factor = (bool)(getColorReflected(color1) > task_usage[i].reflection);
+			case untilEncoder_low:
+				if(task_usage[i].motorN == 1)
+					factor = (bool)(getMotorEncoder(motorA) > task_usage[i].encoder);
+				else if(task_usage[i].motorN == 2)
+					factor = (bool)(getMotorEncoder(motorB) > task_usage[i].encoder);
+				else if(task_usage[i].motorN == 3)
+					factor = (bool)(getMotorEncoder(motorC) > task_usage[i].encoder);
+				else if(task_usage[i].motorN == 4)
+					factor = (bool)(getMotorEncoder(motorD) > task_usage[i].encoder);
+				break;
 
-				case untilEncoder_high:
-					if(task_usage.motorN == 1)
-						factor = (bool)(getMotorEncoder(motorA) < task_usage[i].encoder);
-					if(task_usage.motorN == 2)
-						factor = (bool)(getMotorEncoder(motorB) < task_usage[i].encoder);
-					if(task_usage.motorN == 3)
-						factor = (bool)(getMotorEncoder(motorC) < task_usage[i].encoder);
-					if(task_usage.motorN == 4)
-						factor = (bool)(getMotorEncoder(motorD) < task_usage[i].encoder);
+			case untilDegree_high:
+				factor = (bool)(getGyroDegrees(gyro) < task_usage[i].degree);
+				break;
 
-				case untilEncoder_low:
-					if(task_usage.motorN == 1)
-						factor = (bool)(getMotorEncoder(motorA) > task_usage[i].encoder);
-					if(task_usage.motorN == 2)
-						factor = (bool)(getMotorEncoder(motorB) > task_usage[i].encoder);
-					if(task_usage.motorN == 3)
-						factor = (bool)(getMotorEncoder(motorC) > task_usage[i].encoder);
-					if(task_usage.motorN == 4)
-						factor = (bool)(getMotorEncoder(motorD) > task_usage[i].encoder);
-
-				case untilDegree_high:
-					factor = (bool)(getGyroDegrees(gyro) < task_usage[i].degree);
-
-				case untilDegree_low:
-					factor = (bool)(getGyroDegrees(gyro) > task_usage[i].degree);
+			case untilDegree_low:
+				factor = (bool)(getGyroDegrees(gyro) > task_usage[i].degree);
+				break;
 
 				// ultra sonic win uyenia robots
-				case untilDistance_far:
-					factor = (bool)(getUSDistance(usonic) > task_usage[i].distance);
+			case untilDistance_far:
+				factor = (bool)(getUSDistance(usonic) > task_usage[i].distance);
+				break;
 
-				case untilDistance_close:
-					factor = (bool)(getUSDistance(usonic) < task_usage[i].distance);
+			case untilDistance_close:
+				factor = (bool)(getUSDistance(usonic) < task_usage[i].distance);
+				break;
 			}
 		}
 }
 
-void setUsage(int i, useType use, int coefficient, pidType pid_type)
+void setUsage(int i, useType use, int _setpoint, pidType pid_type)
 {
 	switch (use)
 	{
 		case forTime:
-			task_usage[i].time = coefficient;
+			task_usage[i].time = _setpoint;
+			break;
 
 		case untilReflected_high:
-			task_usage[i].reflection = coefficient;
+			task_usage[i].reflection = _setpoint;
+			break;
 
 		case untilReflected_low:
-			task_usage[i].reflection = coefficient;
+			task_usage[i].reflection = _setpoint;
+			break;
+
+		case untilDegree_high:
+			task_usage[i].degree = _setpoint;
+			break;
+
+		case untilDegree_low:
+			task_usage[i].degree = _setpoint;
+			break;
 
 		case untilEncoder_high:
-			task_usage[i].encoder = coefficient;
+			task_usage[i].encoder = _setpoint;
+			break;
 
 		case untilEncoder_low:
-			task_usage[i].encoder = coefficient;
+			task_usage[i].encoder = _setpoint;
+			break;
 	}
 
 	task_usage[i].pid_type = pid_type;

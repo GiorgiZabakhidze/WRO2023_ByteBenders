@@ -9,7 +9,7 @@ int Color_GetColorAmbient()
 {
 	wait(200); // Vicdit 50 Miliwami Rom Roboti Uewvelad Gacherebuli Iyos
 
-	getColorReflected(color2); // Gadavrtavt Reflected Mode-ze
+	getColorAmbient(color2); // Gadavrtavt Ambient Mode-ze
 
 	getColorName(color2); // Davabrunebt Ukan Color Mode-ze
 

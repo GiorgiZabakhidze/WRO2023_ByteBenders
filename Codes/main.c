@@ -12,7 +12,8 @@
 // color2 - ColorCheck-is Sensor-i
 
 //float lineCorrectionTime = 1000;
-
+int AAA;
+int AcolorW = -1;
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
 
@@ -55,8 +56,9 @@ task main()
 {
 	Initializate();
 
-	PID_init(&LineFollower_normal_r, 0.27, 0.0005, 0.0009, 0.000666666, 80, -80, 35, 30);
-	PID_init(&LineFollower_normal_l, 0.3, 0.00005, 0.0003, 0.000666666, 80, -80, 62, 30);
+	//PID_init(&LineFollower_normal_r, 0.27, 0.0005, 0.0009, 0.000666666, 80, -80, 35, 30);
+	PID_init(&LineFollower_normal_r, 0.41, 0.0005, 0.0013, 0.000666666, 80, -80, 26, 30);
+	PID_init(&LineFollower_normal_l, 0.39, 0.00005, 0.0003, 0.000666666, 80, -80, 65, 30);
 	PID_init(&Gyro_rotate, 1.5, 0.001, 0.1, 0.000666666, 80, -80, 0, 0);
 	PID_init(&Gyro_mover, 2, 0.0, 0.001, 0.000666666, 80, -80, 0, 20);
 	PID_init(&Claw_normal, 3, 0.0, 0.0, 0.00043, 80, -80, 0, 0);
@@ -69,23 +71,19 @@ task main()
 
 	//PID_FollowLine_AndTurn(LineFollower_normal_l, Gyro_rotate, Gyro_mover, 10, -90, 0, 2);
 
-	//moveClaw(true);
+	PID_LineFollower_On_ForTime(LineFollower_normal_r, 99999);
 
-	//Block_Grab();
+	//Gyro_mover.setpoint = getGyroDegrees(gyro);
 
-	//Block_PickUp();
+	//PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(260));
 
-	//simpleMoveMm(167);
+	//while(task_usage[1].use != none){}
 
-	//Block_MoveDown();
+	//wait(1000);
 
-	PID_Encoder_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(250));
+	//Gyro_mover.setpoint = getGyroDegrees(gyro);
 
-	while(task_usage[1].use != none){}
-	wait(5000);
-
-	PID_Encoder_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(50));
-		while(task_usage[1].use != none){}
+	//PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(45));
 
 	while(1)
 	{

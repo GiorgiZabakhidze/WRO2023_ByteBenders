@@ -74,7 +74,10 @@ void PID_Gyro_OneSided_Start(PID* pid, useType use, float coefficient)
 	// Vaniwebt Globalur Cvladebs Shesabamis Mnishvnelobebs
 	tasks[2] = pid;
 
-	task_usage[2].motorN = 2;
+	if(pid->side)
+		task_usage[2].motorN = 2;
+	else
+		task_usage[2].motorN = 3;
 
 	setUsage(2, use, coefficient, Gyro_OneSided);
 }

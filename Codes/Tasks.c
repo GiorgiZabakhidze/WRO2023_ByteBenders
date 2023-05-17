@@ -2,7 +2,16 @@ task Cimcimi()
 {
 	while(1)
 	{
-		color2Color = Color_GetColorAmbient();
-		displayBigTextLine(1, "%d", color2Color);
+		getColorAmbient(color2); // Gadavrtavt Ambient Mode-ze
+
+		wait(50);
+
+		getColorName(color2);
+
+		wait(50);
+
+	 	AcolorW = getColorName(color2);
+
+	 	wait(50);
 	}
 }

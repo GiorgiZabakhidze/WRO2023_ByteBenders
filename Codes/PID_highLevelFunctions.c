@@ -15,7 +15,9 @@ void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_m
 
 	playSound(soundBlip);
 
-	//wait(500);
+	gyro_move->setpoint = getGyroDegrees(gyro);
+
+	wait(2000);
 
 	if(mode == 1)
 	{
@@ -29,9 +31,11 @@ void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_m
 
 	playSound(soundBlip);
 
-	PID_Gyro_Rotate(gyro_rotate, 90);
+	wait(2000);
 
-	while(task_usage[2].use != none){}
+	PID_Gyro_Rotate(gyro_rotate, turn_angle);
+
+	while(task_usage[1].use != none){}
 }
 
 void Block_Grab()

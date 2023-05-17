@@ -25,35 +25,85 @@
 #include "PID_highLevelFunctions.c"
 #include "Initialization.c"
 
-
 PID LineFollower_normal_r;
 PID LineFollower_normal_l;
 PID Gyro_rotate;
 PID Hand_normal;
 PID Claw_normal;
 PID Gyro_mover;
+
+int color2Color = 0;
+
+#include "Tasks.c"
+
+void moveBy(int by)
+{
+	int target = getMotorEncoder(wheelR) + MmToEncoder(by);
+
+	while(getMotorEncoder(wheelR) < target)
+	{
+		setMotorSpeed(wheelR, 30);
+		setMotorSpeed(wheelL, 30);
+	}
+	setMotorSpeed(wheelR, 0);
+	setMotorSpeed(wheelL, 0);
+}
+
 task main()
 {
 	Initializate();
 
-	PID_init(&LineFollower_normal_r, 0.5, 0.02, 0.0009, 0.000666666, 80, -80, 37, 30);
+	PID_init(&LineFollower_normal_r, 0.31, 0.0005, 0.0009, 0.000666666, 80, -80, 45, 20);
 	PID_init(&LineFollower_normal_l, 0.5, 0.02, 0.0009, 0.000666666, 80, -80, 52, 30);
-	PID_init(&Gyro_rotate, 1.5, 0.001, 0, 0.000666666, 80, -80, 45, 15);
-	PID_init(&Gyro_mover, 0.1, 0.02, 0.0009, 0.000666666, 80, -80, 52, 5);
+	PID_init(&Gyro_rotate, 1.5, 0.001, 0, 0.000666666, 80, -80, 0, 0);
+	PID_init(&Gyro_mover, 2, 0.0, 0.000, 0.000666666, 80, -80, 0, 20);
 	PID_init(&Hand_normal, 1, 0.09, 0.023, 0.00043, 80, -80, 0, 0);
 	PID_init(&Claw_normal, 3, 0.0, 0.0, 0.00043, 80, -80, 0, 0);
 
-	PID_Hand_Start(Hand_normal, on_always, 0);
-	LineFollower_normal_r.lineCorrectionTime = 1500;
+	LineFollower_normal_r.lineCorrectionTime = 500;
 	LineFollower_normal_l.lineCorrectionTime = 1500;
+
+	Gyro_rotate.acceptableRange = 0;
+
+	Gyro_rotate.oneSided = true;
+	Gyro_rotate.side = true;
+
+	PID_Gyro_Rotate(Gyro_rotate, -90);
+
+	while(task_usage[2].use != none){}
+
+	Gyro_rotate.oneSided = true;
+	Gyro_rotate.side = false;
+
+	PID_Gyro_Rotate(Gyro_rotate, -35);
+
+	while(task_usage[2].use != none){}
+
+	Gyro_rotate.oneSided = true;
+	Gyro_rotate.side = true;
+
+	PID_Gyro_Rotate(Gyro_rotate, -55);
+
+	while(task_usage[2].use != none){}
 
 	Gyro_rotate.oneSided = false;
 	Gyro_rotate.side = true;
-	Gyro_mover.oneSided = false;
 
-	PID_FollowLine_AndTurn(LineFollower_normal_r, Gyro_rotate, 15, -90, 1, 2);
-	while(1)
-	{
-	}
+	Gyro_rotate.acceptableRange = 2;
 
+	PID_Gyro_Rotate(Gyro_rotate, 30);
+
+	while(task_usage[1].use != none){}
+
+	moveBy(30);
+
+	Gyro_rotate.oneSided = true;
+	Gyro_rotate.side = true;
+
+	PID_Gyro_Rotate(Gyro_rotate, -32);
+
+	while(task_usage[2].use != none){}
+
+	moveBy(400);
+	while(1){}
 }

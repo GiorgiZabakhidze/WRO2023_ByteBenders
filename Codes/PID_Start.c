@@ -9,7 +9,9 @@ void PID_LineFollower_Start(PID* pid, useType use, float coefficient, bool rev)
 {
 	// Vanulebt PID-s Cvladebs Tu Aqamde Sxva PID-s Viyenebdit An Ar Viyenebdit Arapers
 	if(previouslyUsedPID == NULL || previouslyUsedPID != pid)
+	{
 		PID_resetVariables(pid);
+	}
 
 	previouslyUsedPID = pid;
 
@@ -35,13 +37,18 @@ void PID_LineFollower_Start(PID* pid, useType use, float coefficient, bool rev)
 void PID_Gyro_Start(PID* pid, useType use, float coefficient)
 {
 	// Vanulebt PID-s Cvladebs Tu Aqamde Sxva PID-s Viyenebdit An Ar Viyenebdit Arapers
-	if(previouslyUsedPID == NULL || previouslyUsedPID != pid)
+	if(previouslyUsedPID != pid)
+	{
 		PID_resetVariables(pid);
+		//playSound(soundBlip);
+	}
 
 	previouslyUsedPID = pid;
 
 	// Vaniwebt Globalur Cvladebs Shesabamis Mnishvnelobebs
 	tasks[1] = pid;
+
+	task_usage[1].motorN = 2;
 
 	setUsage(1, use, coefficient, Gyro);
 }
@@ -63,6 +70,8 @@ void PID_Gyro_OneSided_Start(PID* pid, useType use, float coefficient)
 
 	// Vaniwebt Globalur Cvladebs Shesabamis Mnishvnelobebs
 	tasks[2] = pid;
+
+	task_usage[2].motorN = 2;
 
 	setUsage(2, use, coefficient, Gyro_OneSided);
 }
@@ -87,5 +96,5 @@ void PID_Hand_Start(PID* pid, useType use, float coefficient)
 
 	task_usage[3].motorN = 4;
 
-	setUsage(2, use, coefficient, Hand);
+	setUsage(3, use, coefficient, Hand);
 }

@@ -1,6 +1,6 @@
 task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color Sensor-is Mixedvit
 {
-	bool odd = true;
+	bool odd = false;
 	int startTime = 0;
 	bool factor = false;
 	int successStart = 0;
@@ -40,7 +40,7 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 				stopWheels();
 			}
 		}
-		else
+		else if(task_prevUsage[0] != none)
 		{
 			task_usage[0].use = none;
 			stopWheels();
@@ -51,13 +51,13 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 
 task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 {
-	bool odd = true;
+	bool odd = false;
 	int startTime = 0;
 	bool factor = false;
 	int successStart = 0;
 	repeat(forever) // Task-ebi Arian Mudmivar Chaciklulebi.
 	{
-		calculateFactor(0, startTime, factor);
+		calculateFactor(1, startTime, factor);
 
 		if(factor)
 		{
@@ -67,19 +67,18 @@ task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 		int doneFor = timer_count(successStart, time1(T1));
 
 
-		if(factor && !(task_usage[0].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
+		if(factor && !(task_usage[1].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
 		{
 			PID_Update(tasks[1], tasks[1]->setpoint, getGyroDegrees(gyro));
-
 			if(odd)
 			{
-				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out);
+				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out+2);
 				setMotorSpeed(wheelL, tasks[1]->moveSpeed + tasks[1]->out);
 			}
 			else
 			{
 				setMotorSpeed(wheelL, tasks[1]->moveSpeed + tasks[1]->out);
-				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out);
+				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out+2);
 			}
 			odd = !odd;
 
@@ -88,9 +87,9 @@ task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 				stopWheels();
 			}
 		}
-		else
+		else if(task_prevUsage[1] != none)
 		{
-			task_usage[0].use = none;
+			task_usage[1].use = none;
 			stopWheels();
 		}
 	}
@@ -103,7 +102,7 @@ task PID_gyro_oneSided()
 	int successStart = 0;
 	repeat(forever) // Task-ebi Arian Mudmivar Chaciklulebi.
 	{
-		calculateFactor(0, startTime, factor);
+		calculateFactor(2, startTime, factor);
 
 		if(factor)
 		{
@@ -113,7 +112,7 @@ task PID_gyro_oneSided()
 		int doneFor = timer_count(successStart, time1(T1));
 
 
-		if(factor && !(task_usage[0].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
+		if(factor && !(task_usage[2].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
 		{
 			PID_Update(tasks[2], tasks[2]->setpoint, getGyroDegrees(gyro));
 
@@ -144,7 +143,7 @@ task PID_gyro_oneSided()
 				stopWheels();
 			}
 		}
-		else
+		else if(task_prevUsage[2] != none)
 		{
 			task_usage[2] = none;
 			stopWheels();

@@ -147,19 +147,19 @@ void stopWheels()
 	setMotorSpeed(wheelR, 0);
 }
 
-bool inRange(int a, int b, int r)
+bool inRange(float a, float b, float r)
 {
-	// Tu B Aris (a; a + r) Range-shi
-	if((b < a + r) && (b > a))
-	{
-		return true;
-	}
-
-	// Tu B Aris (a - r; a) Range-shi
-	if((b > a - r) && (b < a))
+	// Tu B Aris [a - r; a + r] Range-shi
+	if((b >= a - r) && (b <= a + r))
 	{
 		return true;
 	}
 	// Sxva Shemtxvevashi
 	return false;
+}
+
+float MmToEncoder(float Mm)
+{
+	float MMforEncoder = 0.48869219055;
+	return Mm / MMforEncoder;
 }

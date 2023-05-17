@@ -1,6 +1,6 @@
 task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color Sensor-is Mixedvit
 {
-	bool odd = false;
+	bool odd = true;
 	int startTime = 0;
 	bool factor = false;
 	int successStart = 0;
@@ -15,24 +15,23 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 
 		int doneFor = timer_count(successStart, time1(T1));
 
-
 		if(factor && !(task_usage[0].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
 		{
 			// Vanaxlebt PID-s Output-s
 			PID_Update(tasks[0], tasks[0]->setpoint, getColorReflected(color1));
 
-			if(odd)
-			{
+			//if(odd)
+			//{
 				// Vurtavt Shesabamis Motorebze
 				setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * task_rev);
 				setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * task_rev);
-			}
-			else
-			{
-				// Vurtavt Shesabamis Motorebze
-				setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * task_rev);
-				setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * task_rev);
-			}
+			//}
+			//else
+			//{
+			//	// Vurtavt Shesabamis Motorebze
+			//	setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * task_rev);
+			//	setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * task_rev);
+			//}
 			odd = !odd;
 
 			if(task_usage[0] == none)
@@ -44,6 +43,7 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 		{
 			task_usage[0].use = none;
 			stopWheels();
+			odd = true;
 		}
 	}
 }
@@ -51,7 +51,7 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 
 task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 {
-	bool odd = false;
+	bool odd = true;
 	int startTime = 0;
 	bool factor = false;
 	int successStart = 0;
@@ -70,16 +70,16 @@ task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 		if(factor && !(task_usage[1].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
 		{
 			PID_Update(tasks[1], tasks[1]->setpoint, getGyroDegrees(gyro));
-			if(odd)
-			{
-				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out+2);
+			//if(odd)
+			//{
+				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out);
 				setMotorSpeed(wheelL, tasks[1]->moveSpeed + tasks[1]->out);
-			}
-			else
-			{
-				setMotorSpeed(wheelL, tasks[1]->moveSpeed + tasks[1]->out);
-				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out+2);
-			}
+			//}
+			//else
+			//{
+			//	setMotorSpeed(wheelL, tasks[1]->moveSpeed + tasks[1]->out);
+			//	setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out);
+			//}
 			odd = !odd;
 
 			if(task_usage[1] == none)
@@ -91,6 +91,7 @@ task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 		{
 			task_usage[1].use = none;
 			stopWheels();
+			odd = true;
 		}
 	}
 }
@@ -153,18 +154,60 @@ task PID_gyro_oneSided()
 
 task PID_Hand()
 {
-	int startTime = 0;
-	bool factor = false;
-
 	repeat(forever) // Task-ebi Arian Mudmivar Chaciklulebi.
 	{
-		calculateFactor(3, startTime, factor);
+		displayBigTextLine(1, "%d", getMotorEncoder(hand));
+		PID_Update(Hand_normal, Hand_normal.setpoint, getMotorEncoder(hand));
 
-		if(factor) // Mushaobs Tu Factor Aris Chartuli
+		setMotorSpeed(hand, Hand_normal.out);
+	}
+}
+task PID_Encoder()
+{
+	bool odd = true;
+	int startTime = 0;
+	bool factor = false;
+	int successStart = 0;
+	repeat(forever) // Task-ebi Arian Mudmivar Chaciklulebi.
+	{
+		calculateFactor(4, startTime, factor);
+
+		if(factor)
 		{
-			PID_Update(tasks[3], tasks[3]->setpoint, getMotorEncoder(hand));
+			successStart = time1(T1);
+		}
 
-			setMotorSpeed(hand, tasks[3]->out);
+		int doneFor = timer_count(successStart, time1(T1));
+
+		if(factor && !(task_usage[4].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
+		{
+			// Vanaxlebt PID-s Output-s
+			PID_Update(tasks[4], tasks[4]->setpoint, getMotorEncoder(wheelR) - getMotorEncoder(wheelL));
+
+			//if(odd)
+			//{
+				// Vurtavt Shesabamis Motorebze
+				setMotorSpeed(wheelR, tasks[4]->moveSpeed - tasks[4]->out);
+				setMotorSpeed(wheelL, tasks[4]->moveSpeed + tasks[4]->out);
+			//}
+			//else
+			//{
+			//	// Vurtavt Shesabamis Motorebze
+			//	setMotorSpeed(wheelL, tasks[4]->moveSpeed + tasks[4]->out);
+			//	setMotorSpeed(wheelR, tasks[4]->moveSpeed - tasks[4]->out);
+			//}
+			odd = !odd;
+
+			if(task_usage[4] == none)
+			{
+				stopWheels();
+			}
+		}
+		else if(task_prevUsage[4] != none)
+		{
+			task_usage[4].use = none;
+			stopWheels();
+			odd = true;
 		}
 	}
 }

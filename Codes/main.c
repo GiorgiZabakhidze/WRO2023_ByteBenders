@@ -15,26 +15,28 @@
 
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
+
+PID Hand_normal;
+
 #include "PID_Usage.c"
 #include "PID_tasks.c"
 #include "PID_Start.c"
 #include "PID_LineFollower.c"
 #include "PID_Gyro.c"
 #include "PID_Hand&Claw.c"
+#include "PID_Encoder.c"
 #include "Functions.c"
+int color2Color = 0;
+#include "Tasks.c"
 #include "PID_highLevelFunctions.c"
 #include "Initialization.c"
 
 PID LineFollower_normal_r;
 PID LineFollower_normal_l;
 PID Gyro_rotate;
-PID Hand_normal;
 PID Claw_normal;
 PID Gyro_mover;
-
-int color2Color = 0;
-
-#include "Tasks.c"
+PID Encoder_normal;
 
 void moveBy(int by)
 {
@@ -53,57 +55,39 @@ task main()
 {
 	Initializate();
 
-	PID_init(&LineFollower_normal_r, 0.31, 0.0005, 0.0009, 0.000666666, 80, -80, 45, 20);
-	PID_init(&LineFollower_normal_l, 0.5, 0.02, 0.0009, 0.000666666, 80, -80, 52, 30);
-	PID_init(&Gyro_rotate, 1.5, 0.001, 0, 0.000666666, 80, -80, 0, 0);
-	PID_init(&Gyro_mover, 2, 0.0, 0.000, 0.000666666, 80, -80, 0, 20);
-	PID_init(&Hand_normal, 1, 0.09, 0.023, 0.00043, 80, -80, 0, 0);
+	PID_init(&LineFollower_normal_r, 0.27, 0.0005, 0.0009, 0.000666666, 80, -80, 35, 30);
+	PID_init(&LineFollower_normal_l, 0.3, 0.00005, 0.0003, 0.000666666, 80, -80, 62, 30);
+	PID_init(&Gyro_rotate, 1.5, 0.001, 0.1, 0.000666666, 80, -80, 0, 0);
+	PID_init(&Gyro_mover, 2, 0.0, 0.001, 0.000666666, 80, -80, 0, 20);
 	PID_init(&Claw_normal, 3, 0.0, 0.0, 0.00043, 80, -80, 0, 0);
+	PID_init(&Encoder_normal, 5, 0.2, 2, 0.000666666, 80, -80, 0, 20);
 
-	LineFollower_normal_r.lineCorrectionTime = 500;
+	LineFollower_normal_r.lineCorrectionTime = 1500;
 	LineFollower_normal_l.lineCorrectionTime = 1500;
 
-	Gyro_rotate.acceptableRange = 0;
+	//PID_LineFollower_On_ForTime(LineFollower_normal_l, 99999, 0);
 
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = true;
+	//PID_FollowLine_AndTurn(LineFollower_normal_l, Gyro_rotate, Gyro_mover, 10, -90, 0, 2);
 
-	PID_Gyro_Rotate(Gyro_rotate, -90);
+	//moveClaw(true);
 
-	while(task_usage[2].use != none){}
+	//Block_Grab();
 
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = false;
+	//Block_PickUp();
 
-	PID_Gyro_Rotate(Gyro_rotate, -35);
+	//simpleMoveMm(167);
 
-	while(task_usage[2].use != none){}
+	//Block_MoveDown();
 
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = true;
-
-	PID_Gyro_Rotate(Gyro_rotate, -55);
-
-	while(task_usage[2].use != none){}
-
-	Gyro_rotate.oneSided = false;
-	Gyro_rotate.side = true;
-
-	Gyro_rotate.acceptableRange = 2;
-
-	PID_Gyro_Rotate(Gyro_rotate, 30);
+	PID_Encoder_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(250));
 
 	while(task_usage[1].use != none){}
+	wait(5000);
 
-	moveBy(30);
+	PID_Encoder_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(50));
+		while(task_usage[1].use != none){}
 
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = true;
-
-	PID_Gyro_Rotate(Gyro_rotate, -32);
-
-	while(task_usage[2].use != none){}
-
-	moveBy(400);
-	while(1){}
+	while(1)
+	{
+	}
 }

@@ -24,6 +24,8 @@ void PID_LineFollower_Start(PID* pid, useType use, float coefficient, bool rev)
 	else
 		task_rev = -1;
 
+	task_usage[1].motorN = 2;
+
 	setUsage(0, use, coefficient, LineFollower);
 }
 
@@ -40,7 +42,6 @@ void PID_Gyro_Start(PID* pid, useType use, float coefficient)
 	if(previouslyUsedPID != pid)
 	{
 		PID_resetVariables(pid);
-		//playSound(soundBlip);
 	}
 
 	previouslyUsedPID = pid;
@@ -64,7 +65,9 @@ void PID_Gyro_OneSided_Start(PID* pid, useType use, float coefficient)
 {
 	// Vanulebt PID-s Cvladebs Tu Aqamde Sxva PID-s Viyenebdit An Ar Viyenebdit Arapers
 	if(previouslyUsedPID == NULL || previouslyUsedPID != pid)
+	{
 		PID_resetVariables(pid);
+	}
 
 	previouslyUsedPID = pid;
 
@@ -83,18 +86,41 @@ void PID_Gyro_OneSided_Start(PID* pid, useType use, float coefficient)
 	@param [PID*] pid  					PID-s Pointer-i Romelis Gamoyenebac Gvinda
 	@param [float] setpoint 		Encoder-is Sasurveli Mnishvneloba
 */
-void PID_Hand_Start(PID* pid, useType use, float coefficient)
+void PID_Hand_Start(useType use, float _setpoint)
+{
+	// Vanulebt PID-s Cvladebs Tu Aqamde Sxva PID-s Viyenebdit An Ar Viyenebdit Arapers
+	if(previouslyUsedPID == NULL || previouslyUsedPID != &Hand_normal)
+	{
+		PID_resetVariables(Hand_normal);
+	}
+
+	previouslyUsedPID = &Hand_normal;
+
+	// Vaniwebt Globalur Cvladebs Shesabamis Mnishvnelobebs
+	tasks[3] = &Hand_normal;
+
+	task_usage[3].motorN = 4;
+
+	setUsage(3, use, _setpoint, Hand);
+}
+
+
+void PID_Encoder_Start(PID* pid, useType use, float _setpoint)
 {
 	// Vanulebt PID-s Cvladebs Tu Aqamde Sxva PID-s Viyenebdit An Ar Viyenebdit Arapers
 	if(previouslyUsedPID == NULL || previouslyUsedPID != pid)
+	{
 		PID_resetVariables(pid);
+	}
 
 	previouslyUsedPID = pid;
 
 	// Vaniwebt Globalur Cvladebs Shesabamis Mnishvnelobebs
-	tasks[3] = pid;
+	tasks[4] = pid;
 
-	task_usage[3].motorN = 4;
+	task_usage[4].motorN = 2;
 
-	setUsage(3, use, coefficient, Hand);
+	pid->setpoint = getMotorEncoder(wheelR) - getMotorEncoder(wheelL);
+
+	setUsage(4, use, _setpoint, Encoder);
 }

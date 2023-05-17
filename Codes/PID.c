@@ -72,6 +72,11 @@ void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, 
 
 		pid->T = 0.02;
 
+		pid->lineCorrectionTime = 0;
+		pid->oneSided = false;
+		pid->side = false;
+		pid->acceptableRange = 0;
+
 		PID_resetVariables(pid);
 }
 

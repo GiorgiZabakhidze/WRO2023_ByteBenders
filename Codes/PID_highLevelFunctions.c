@@ -40,12 +40,9 @@ void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_m
 
 void Block_Grab()
 {
-	int init = getMotorEncoder(hand);
-	moveHand(-50);
+	setHandUp(-50);
 
-	while(!inRange(getMotorEncoder(hand), init + 50, 2)){}
-
-	moveClaw(false);
+	clawOpened(false);
 
 	playSound(soundBlip);
 }
@@ -54,23 +51,52 @@ void Block_PickUp()
 {
 	Block_Grab();
 
-	moveHand(50);
-
-	int init = getMotorEncoder(hand);
-
-	while(!inRange(getMotorEncoder(hand), init - 50, 2)){}
-
+	setHandUp(50);
 }
 
-void Block_MoveDown()
+void Block_PlaceDown()
 {
-	int init = getMotorEncoder(hand);
+	setHandUp(-50);
 
-	moveHand(-30);
+	clawOpened(true);
 
-	while(!inRange(getMotorEncoder(hand), init + 30, 2)){}
+	handUp(50);
+}
 
-	moveClaw(true);
+void Block_PlaceOnTheShip()
+{
+	setHandUp(-30);
 
-	moveHand(30);
+	clawOpened(true);
+
+	handUp(30);
+}
+
+void takeFirstBlockInCage(PID* gyro_mover)
+{
+	float MmAfterFirstBlock;
+
+	float MmBetweenBlocks;
+
+	int firstBlock = -1;
+
+	for(int i = 0; i < 4; i++)
+	{
+		if(robotBlocks[0] != 0)
+		{
+			firstBlock = i;
+
+			robotBlocks[0] = 0;
+		}
+	}
+
+	gyro_mover->setpoint = getGyroDegrees(gyro);
+
+	float curr = getMotorEncoder(wheelR);
+
+	float target = curr + MmAfterFirstBlock + (firstBlock - 1) * MmBetweenBlocks;
+
+	PID_Gyro_On_Until_Encoder(Gyro_mover, target);
+
+	while(task_usage[1].use != none){}
 }

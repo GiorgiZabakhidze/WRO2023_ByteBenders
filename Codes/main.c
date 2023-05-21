@@ -12,12 +12,24 @@
 // color2 - ColorCheck-is Sensor-i
 
 //float lineCorrectionTime = 1000;
-int AAA;
-int AcolorW = -1;
+
+int checkedColor = -1;
+bool checkStatus = false;
+
+int colorsAsked[2]; 	// 3=Mwvane, 2=Blue, 0=Empty.
+int blockColors[4]; 	// 3=Mwvane, 2=Blue, 0=Empty.
+int robotBlocks[4]; 	// 3=Mwvane, 2=Blue, 0=Empty.
+
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
 
 PID Hand_normal;
+PID LineFollower_normal_r;
+PID LineFollower_normal_l;
+PID Gyro_rotate;
+PID Claw_normal;
+PID Gyro_mover;
+PID Encoder_normal;
 
 #include "PID_Usage.c"
 #include "PID_tasks.c"
@@ -27,63 +39,18 @@ PID Hand_normal;
 #include "PID_Hand&Claw.c"
 #include "PID_Encoder.c"
 #include "Functions.c"
-int color2Color = 0;
 #include "Tasks.c"
 #include "PID_highLevelFunctions.c"
 #include "Initialization.c"
+#include "DoTheJob_1.c"
 
-PID LineFollower_normal_r;
-PID LineFollower_normal_l;
-PID Gyro_rotate;
-PID Claw_normal;
-PID Gyro_mover;
-PID Encoder_normal;
 
-void moveBy(int by)
-{
-	int target = getMotorEncoder(wheelR) + MmToEncoder(by);
-
-	while(getMotorEncoder(wheelR) < target)
-	{
-		setMotorSpeed(wheelR, 30);
-		setMotorSpeed(wheelL, 30);
-	}
-	setMotorSpeed(wheelR, 0);
-	setMotorSpeed(wheelL, 0);
-}
 
 task main()
 {
 	Initializate();
 
-	//PID_init(&LineFollower_normal_r, 0.27, 0.0005, 0.0009, 0.000666666, 80, -80, 35, 30);
-	PID_init(&LineFollower_normal_r, 0.41, 0.0005, 0.0013, 0.000666666, 80, -80, 26, 30);
-	PID_init(&LineFollower_normal_l, 0.39, 0.00005, 0.0003, 0.000666666, 80, -80, 65, 30);
-	PID_init(&Gyro_rotate, 1.5, 0.001, 0.1, 0.000666666, 80, -80, 0, 0);
-	PID_init(&Gyro_mover, 2, 0.0, 0.001, 0.000666666, 80, -80, 0, 20);
-	PID_init(&Claw_normal, 3, 0.0, 0.0, 0.00043, 80, -80, 0, 0);
-	PID_init(&Encoder_normal, 5, 0.2, 2, 0.000666666, 80, -80, 0, 20);
-
-	LineFollower_normal_r.lineCorrectionTime = 1500;
-	LineFollower_normal_l.lineCorrectionTime = 1500;
-
-	//PID_LineFollower_On_ForTime(LineFollower_normal_l, 99999, 0);
-
-	//PID_FollowLine_AndTurn(LineFollower_normal_l, Gyro_rotate, Gyro_mover, 10, -90, 0, 2);
-
-	PID_LineFollower_On_ForTime(LineFollower_normal_r, 99999);
-
-	//Gyro_mover.setpoint = getGyroDegrees(gyro);
-
-	//PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(260));
-
-	//while(task_usage[1].use != none){}
-
-	//wait(1000);
-
-	//Gyro_mover.setpoint = getGyroDegrees(gyro);
-
-	//PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(45));
+	DoTheJob_1();
 
 	while(1)
 	{

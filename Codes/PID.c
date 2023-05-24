@@ -24,6 +24,9 @@ struct PID // PID-s Struqtura. Sheinaxavs PID-s Mnishvnelobebs.
 	bool side; // Tu Cal Borbals Vatrialebt, Gansazgvravs Romeli Borbals Vatrialebt (True=Marjvena, False=Marcxena)
 	float acceptableRange; // Misagebi Gansxvaveba Sasurveli Shedegidan Sadac Programas Aqvs Upleba Shewyvitos Robotis Gasworeba
 
+	float additionTime;
+	float additionMultiplier;
+
 	float out; // Correction
 }
 

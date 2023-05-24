@@ -36,7 +36,10 @@ void calculateFactor(int i, int &startTime, bool &factor)
 			factor = true;
 
 			if(task_prevUsage[i].use == none)
+			{
 				startTime = time1(T1);
+				//playSound(soundBlip);
+			}
 		}
 
 		task_prevUsage[i] = task_usage[i];

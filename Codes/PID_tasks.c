@@ -72,7 +72,12 @@ task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 			PID_Update(tasks[1], tasks[1]->setpoint, getGyroDegrees(gyro));
 			//if(odd)
 			//{
-				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out);
+			float addition = 0;
+
+			if(timer_count(startTime, time1(T1)) < tasks[1]->additionTime)
+				addition = tasks[1]->moveSpeed * tasks[1]->additionMultiplier;
+
+				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out + addition);
 				setMotorSpeed(wheelL, tasks[1]->moveSpeed + tasks[1]->out);
 			//}
 			//else
@@ -156,7 +161,6 @@ task PID_Hand()
 {
 	repeat(forever) // Task-ebi Arian Mudmivar Chaciklulebi.
 	{
-		displayBigTextLine(1, "%d", getMotorEncoder(hand));
 		PID_Update(Hand_normal, Hand_normal.setpoint, getMotorEncoder(hand));
 
 		setMotorSpeed(hand, Hand_normal.out);

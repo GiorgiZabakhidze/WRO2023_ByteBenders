@@ -39,7 +39,7 @@ int ColorCheck()
 	return 2;
 }
 
-void simpleMoveMm(float Mm)
+void simpleMoveMm(float Mm, int speed = 20)
 {
 	float encoderVal = MmToEncoder(Mm);
 
@@ -54,10 +54,10 @@ void simpleMoveMm(float Mm)
 	while(!doneR || !doneL)
 	{
 		if(!doneL)
-			doneL = inRange(getMotorEncoder(wheelL), targetL, 20);
+			doneL = inRange(getMotorEncoder(wheelL), targetL, speed);
 
 		if(!doneR)
-			doneR = inRange(getMotorEncoder(wheelR), targetR, 20);
+			doneR = inRange(getMotorEncoder(wheelR), targetR, speed);
 
 		if(doneL)
 		{
@@ -68,10 +68,6 @@ void simpleMoveMm(float Mm)
 			setMotorSpeed(wheelR, 0);
 		}
 
-		displayBigTextLine(1, "%d", targetL);
-		displayBigTextLine(3, "%d", getMotorEncoder(wheelL));
-		displayBigTextLine(5, "%d", targetR);
-		displayBigTextLine(7, "%d", getMotorEncoder(wheelR));
 	}
 	playSound(soundBlip);
 }
@@ -80,7 +76,7 @@ void setHandUp(int encoderVal)
 {
 	int init = getMotorEncoder(hand);
 
-	handUp(50);
+	handUp(encoderVal);
 
-	while(!inRange(getMotorEncoder(hand), init - 50, 2)){}
+	while(!inRange(getMotorEncoder(hand), init - encoderVal, 2)){}
 }

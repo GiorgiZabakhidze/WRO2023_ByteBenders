@@ -20,11 +20,11 @@ void clawOpened(bool setPoint)
 {
 	if(setPoint) // Tu Setpoint Aris True, ClawTarget-s Vaniwebt Aweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		setMotorSpeed(claw, 20);
+		setMotorSpeed(claw, 50);
 	}
 	else // Tu Setpoint Aris false, ClawTarget-s Vaniwebt Chamoweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		setMotorSpeed(claw, -20);
+		setMotorSpeed(claw, -50);
 	}
 
 	wait(1000);

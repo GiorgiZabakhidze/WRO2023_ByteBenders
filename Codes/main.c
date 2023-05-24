@@ -29,6 +29,7 @@ PID LineFollower_normal_l;
 PID Gyro_rotate;
 PID Claw_normal;
 PID Gyro_mover;
+PID Gyro_mover_fast;
 PID Encoder_normal;
 
 #include "PID_Usage.c"
@@ -51,6 +52,23 @@ task main()
 	Initializate();
 
 	DoTheJob_1();
+
+	//Gyro_rotate.oneSided = false;
+	//Gyro_rotate.side = true;
+
+	//PID_Gyro_Rotate(Gyro_rotate, -90);
+
+	//while(task_usage[1].use != none){}
+
+	//PID_Gyro_On_ForTime(Gyro_mover, 9999);
+
+	//Gyro_mover_fast.setpoint = getGyroDegrees(gyro);
+
+	//wait(100);
+
+	//playSound(soundBlip);
+
+	//PID_LineFollower_On_ForTime(LineFollower_normal_r, 99999);
 
 	while(1)
 	{

@@ -1,23 +1,27 @@
 void getAskedColors()
 {
-	Gyro_mover.setpoint = getGyroDegrees(gyro);
+	//Gyro_mover.setpoint = getGyroDegrees(gyro);
 
-	wait(10);
+	//wait(10);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(260));
+	//PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(260));
 
-	while(task_usage[1].use != none){}
+	//while(task_usage[1].use != none){}
+
+	Gyro_moveMm(Gyro_mover, 260);
 
 	colorsAsked[0] = ColorCheck();
 
 
-	Gyro_mover.setpoint = getGyroDegrees(gyro);
+	//Gyro_mover.setpoint = getGyroDegrees(gyro);
 
-	wait(10);
+	//wait(10);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(45));
+	//PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(45));
 
-	while(task_usage[1].use != none){}
+	//while(task_usage[1].use != none){}
+
+	Gyro_moveMm(Gyro_mover, 45);
 
 	colorsAsked[1] = ColorCheck();
 }
@@ -41,29 +45,37 @@ void parallelCorrection()
 
 	wait(10);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) - MmToEncoder(130));
+	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) - MmToEncoder(150));
 
 	while(task_usage[1].use != none){}
 
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, -47);
+	PID_Gyro_Rotate(Gyro_rotate, -55);
 
 	while(task_usage[2].use != none){}
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 40);
-
-	setHandUp(10);
+	PID_Gyro_Rotate(Gyro_rotate, 55);
 
 	while(task_usage[2].use != none){}
+
+	Gyro_mover.setpoint = getGyroDegrees(gyro);
+
+	Gyro_mover.moveSpeed = 20;
+
+	wait(10);
+
+	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(20));
 }
 
 void getOnTheLine()
 {
-	setHandUp(-50);
+	playSound(soundBlip);
+
+	setHandUp(-65);
 
 	clawOpened(false);
 
@@ -81,9 +93,11 @@ void getOnTheLine()
 
 	Gyro_rotate.side = true;
 
-	setHandUp(10);
+	setHandUp(-60);
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
+
+	while(task_usage[2].use != none){}
 }
 
 void getBlockColors()
@@ -115,8 +129,6 @@ void DoTheJob_1()
 {
 	getAskedColors();
 
-	displayBigTextLine(1, "%d", colorsAsked[0]);
-	displayBigTextLine(3, "%d", colorsAsked[1]);
 	pushTheShip();
 
 	parallelCorrection();

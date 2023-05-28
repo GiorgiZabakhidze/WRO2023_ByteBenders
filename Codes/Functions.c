@@ -13,7 +13,7 @@ int ColorCheck()
 
 	float cntGreen = 0;
 	float checkAmount = 10;
-	float requiredPercentage = 0.3;
+	float requiredPercentage = 0.2;
 
 	for(int i = 0; i < checkAmount; i++)
 	{
@@ -72,11 +72,35 @@ void simpleMoveMm(float Mm, int speed = 20)
 	playSound(soundBlip);
 }
 
+void Gyro_moveMm(PID* pid, float Mm)
+{
+	Gyro_mover.setpoint = getGyroDegrees(gyro);
+
+	int sign;
+
+	if(Mm > 0)
+	{
+		sign = 1;
+
+		Gyro_mover.moveSpeed = abs(Gyro_mover.moveSpeed);
+	}
+	else
+	{
+		sign = -1;
+
+		Gyro_mover.moveSpeed = -abs(Gyro_mover.moveSpeed);
+	}
+
+	wait(10);
+
+	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + sign * MmToEncoder(Mm));
+
+	while(task_usage[1].use != none){}
+}
+
 void setHandUp(int encoderVal)
 {
-	int init = getMotorEncoder(hand);
-
 	handUp(encoderVal);
 
-	while(!inRange(getMotorEncoder(hand), init - encoderVal, 2)){}
+	while(!inRange(getMotorEncoder(hand), -encoderVal, 2)){}
 }

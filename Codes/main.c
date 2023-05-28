@@ -38,12 +38,14 @@ PID Encoder_normal;
 #include "PID_LineFollower.c"
 #include "PID_Gyro.c"
 #include "PID_Hand&Claw.c"
+#include "Hand&Claw.c"
 #include "PID_Encoder.c"
 #include "Functions.c"
 #include "Tasks.c"
 #include "PID_highLevelFunctions.c"
 #include "Initialization.c"
 #include "DoTheJob_1.c"
+#include "DoTheJob_2.c"
 
 
 
@@ -51,7 +53,7 @@ task main()
 {
 	Initializate();
 
-	DoTheJob_1();
+	DoTheJob_2();
 
 	//Gyro_rotate.oneSided = false;
 	//Gyro_rotate.side = true;

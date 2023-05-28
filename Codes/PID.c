@@ -150,7 +150,7 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 			{
 				Correction = pid->outLimMax - pid->moveSpeed;
 
-				if(sign(error) == sign(Correction)) // Tu Nishnebi Emtxveva, Vclampavt Integratorsac.
+				if(sgn(error) == sgn(Correction)) // Tu Nishnebi Emtxveva, Vclampavt Integratorsac.
 					clamp_integrator = true;
 			}
 
@@ -158,7 +158,7 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 			{
 				Correction = pid->outLimMin + pid->moveSpeed;
 
-				if(sign(error) == sign(Correction)) // Tu Nishnebi Emtxveva, Vclampavt Integratorsac.
+				if(sgn(error) == sgn(Correction)) // Tu Nishnebi Emtxveva, Vclampavt Integratorsac.
 					clamp_integrator = true;
 			}
 
@@ -178,5 +178,5 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 			pid->integrator = integrator;
 
 	// Vinaxavt Correction-s Struqturashi
-	pid->out = Correction;
+		pid->out = Correction;
 }

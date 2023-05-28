@@ -6,7 +6,9 @@
 */
 void handUp(int setPoint)
 {
-		Hand_normal.setpoint = getMotorEncoder(hand) - setpoint;
+		PID_resetVariables(Hand_normal);
+
+		Hand_normal.setpoint = -setpoint;
 }
 
 
@@ -20,11 +22,11 @@ void clawOpened(bool setPoint)
 {
 	if(setPoint) // Tu Setpoint Aris True, ClawTarget-s Vaniwebt Aweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		setMotorSpeed(claw, 50);
+		setMotorSpeed(claw, 40);
 	}
 	else // Tu Setpoint Aris false, ClawTarget-s Vaniwebt Chamoweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		setMotorSpeed(claw, -50);
+		setMotorSpeed(claw, -40);
 	}
 
 	wait(1000);

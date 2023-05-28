@@ -1,34 +1,4 @@
 /*
-	Igebs Integeris Nishans.
-
-	@param [int] a     Ricxvi Romlis Nishanic Gvainteresebs.
-	@return [int] 0, -1 an 1. Integeris Nishani.
-*/
-int sign(int a)
-{
-	if(a == 0) // Tu Ricxvi Nulia, Vabrunebt 0-s.
-		return 0;
-
-	return (a / abs(a)); // Vabrunebt Nishans.
-}
-
-
-/*
-	Igebs Floatis Nishans.
-
-	@param [float] a     Ricxvi Romlis Nishanic Gvainteresebs.
-	@return [float] 0, -1 an 1. Floatis Nishani.
-*/
-float sign(float a)
-{
-	if(a == 0) // Tu Ricxvi Nulia, Vabrunebt 0-s.
-		return 0;
-
-	return (a / abs(a)); // Vabrunebt Nishans.
-}
-
-
-/*
 	Igebs Or Integers Shoris Maqsimums.
 
 	@param [int] a		Pirveli Ricxvi.

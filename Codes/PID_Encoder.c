@@ -5,9 +5,14 @@
 	@param [float] time						Dro Ramden Xnit Chavrtavt
 	@param [bool] rev 						Marjvena Mxridan Mivyvebit Xazs Tu Marcxena(Marjvena=true, Marcxena=false)
 */
-void PID_Encoder_On_ForTime(PID* pid, float time)
+void PID_Encoder_On_ForTime(PID* pid, float time, bool parallel = false)
 {
 	PID_Encoder_Start(pid, forTime, (int)time); // Chavrtavt PID-s
+
+	if(!parallel)
+	{
+		while(task_usage[3].use != none){}
+	}
 }
 
 
@@ -17,7 +22,7 @@ void PID_Encoder_On_ForTime(PID* pid, float time)
 	@param [PID*] pid 						PID-is Pointer-i Romelsac Chavrtavt Sanam Sasurvel Mandzilze Ar Mivalt
 	@param [float] _setpoint 			Sasurveli LineFollower-is Color Sensor-is Mnishvneloba
 */
-void PID_Encoder_On_Until_Reflected(PID* pid, float _setpoint)
+void PID_Encoder_On_Until_Reflected(PID* pid, float _setpoint, bool parallel = false)
 {
 	if(_setpoint >= getColorReflected(color1))
 	{
@@ -27,9 +32,14 @@ void PID_Encoder_On_Until_Reflected(PID* pid, float _setpoint)
 	{
 		PID_Encoder_Start(pid, untilReflected_low, _setpoint);
 	}
+
+	if(!parallel)
+	{
+		while(task_usage[3].use != none){}
+	}
 }
 
-void PID_Encoder_On_Until_Encoder(PID* pid, float _setpoint)
+void PID_Encoder_On_Until_Encoder(PID* pid, float _setpoint, bool parallel = false)
 {
 	if(_setpoint >= getMotorEncoder(wheelR))
 	{
@@ -38,5 +48,10 @@ void PID_Encoder_On_Until_Encoder(PID* pid, float _setpoint)
 	else
 	{
 		PID_Gyro_Start(pid, untilEncoder_low, _setpoint);
+	}
+
+	if(!parallel)
+	{
+		while(task_usage[3].use != none){}
 	}
 }

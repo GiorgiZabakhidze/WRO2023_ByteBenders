@@ -74,26 +74,20 @@ void simpleMoveMm(float Mm, int speed = 20)
 
 void Gyro_moveMm(PID* pid, float Mm)
 {
-	Gyro_mover.setpoint = getGyroDegrees(gyro);
-
-	int sign;
+	pid->setpoint = getGyroDegrees(gyro);
 
 	if(Mm > 0)
 	{
-		sign = 1;
-
-		Gyro_mover.moveSpeed = abs(Gyro_mover.moveSpeed);
+		pid->moveSpeed = abs(pid->moveSpeed);
 	}
 	else
 	{
-		sign = -1;
-
-		Gyro_mover.moveSpeed = -abs(Gyro_mover.moveSpeed);
+		pid->moveSpeed = -abs(pid->moveSpeed);
 	}
 
 	wait(10);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + sign * MmToEncoder(Mm));
+	PID_Gyro_On_Until_Encoder(pid, getMotorEncoder(wheelL) + MmToEncoder(Mm));
 
 	while(task_usage[1].use != none){}
 }

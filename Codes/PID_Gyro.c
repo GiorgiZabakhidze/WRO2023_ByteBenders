@@ -151,7 +151,7 @@ void PID_Gyro_On_Until_Encoder(PID* pid, float _setpoint, bool parallel = false)
 {
 	if(pid->oneSided)
 	{
-		if(_setpoint >= getMotorEncoder(wheelR))
+		if(_setpoint >= getMotorEncoder(wheelL))
 		{
 			PID_Gyro_OneSided_Start(pid, untilEncoder_high, _setpoint);
 		}
@@ -167,7 +167,7 @@ void PID_Gyro_On_Until_Encoder(PID* pid, float _setpoint, bool parallel = false)
 	}
 	else
 	{
-		if(_setpoint >= getMotorEncoder(wheelR))
+		if(_setpoint >= getMotorEncoder(wheelL))
 		{
 			PID_Gyro_Start(pid, untilEncoder_high, _setpoint);
 		}

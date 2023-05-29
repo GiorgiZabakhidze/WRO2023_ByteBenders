@@ -5,7 +5,7 @@
 	@param [bool] rev   				Marjvnidan Udgeba Gzas Tu Marcxnidan
 	@param [float] setpoint 		Color Senosor-is Sasurveli Mnishvneloba
 */
-void PID_LineFollower_Start(PID* pid, useType use, float coefficient, bool rev)
+void PID_LineFollower_Start(PID* pid, useType use, float coefficient)
 {
 	// Vanulebt PID-s Cvladebs Tu Aqamde Sxva PID-s Viyenebdit An Ar Viyenebdit Arapers
 	if(previouslyUsedPID == NULL || previouslyUsedPID != pid)
@@ -18,13 +18,7 @@ void PID_LineFollower_Start(PID* pid, useType use, float coefficient, bool rev)
 	// Vaniwebt Globalur Cvladebs Shesabamis Mnishvnelobebs
 	tasks[0] = pid;
 
-	// Rev Gadmogvaqvs Bool-idan Int-shi
-	if(rev)
-		task_rev = 1;
-	else
-		task_rev = -1;
-
-	task_usage[1].motorN = 2;
+	task_usage[1].motorN = 3;
 
 	setUsage(0, use, coefficient, LineFollower);
 }
@@ -49,7 +43,7 @@ void PID_Gyro_Start(PID* pid, useType use, float coefficient)
 	// Vaniwebt Globalur Cvladebs Shesabamis Mnishvnelobebs
 	tasks[1] = pid;
 
-	task_usage[1].motorN = 2;
+	task_usage[1].motorN = 3;
 
 	setUsage(1, use, coefficient, Gyro);
 }

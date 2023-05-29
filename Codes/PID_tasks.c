@@ -23,8 +23,8 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 			//if(odd)
 			//{
 				// Vurtavt Shesabamis Motorebze
-				setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * task_rev);
-				setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * task_rev);
+				setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * tasks[0]->rev);
+				setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * tasks[0]->rev);
 			//}
 			//else
 			//{

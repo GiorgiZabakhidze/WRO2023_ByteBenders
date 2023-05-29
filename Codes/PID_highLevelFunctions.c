@@ -2,16 +2,12 @@ void PID_FollowLine_Until_Reflected(PID* pid, float reflection, bool rev = true)
 {
 	PID_LineFollower_On_ForTime(pid, pid->lineCorrectionTime, rev);
 
-	while(task_usage[0].use != none){}
-
 	PID_LineFollower_On_Until_Reflected(pid, reflection, rev);
 }
 
 void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_move, float reflection, float turn_angle, bool rev, int mode)
 {
 	PID_FollowLine_Until_Reflected(pid_lineFollower, reflection, rev);
-
-	while(task_usage[0].use != none){}
 
 	playSound(soundBlip);
 
@@ -21,11 +17,11 @@ void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_m
 
 	if(mode == 1)
 	{
-		PID_Gyro_On_Until_Encoder(gyro_move, getMotorEncoder(wheelR) + MmToEncoder(22.5));
+		PID_Gyro_On_Until_Encoder(gyro_move, getMotorEncoder(wheelL) + MmToEncoder(22.5));
 	}
 	else
 	{
-		PID_Gyro_On_Until_Encoder(gyro_move, getMotorEncoder(wheelR) + MmToEncoder(26.5));
+		PID_Gyro_On_Until_Encoder(gyro_move, getMotorEncoder(wheelL) + MmToEncoder(26.5));
 	}
 	while(task_usage[1].use != none){}
 
@@ -92,7 +88,7 @@ void takeFirstBlockInCage(PID* gyro_mover)
 
 	gyro_mover->setpoint = getGyroDegrees(gyro);
 
-	float curr = getMotorEncoder(wheelR);
+	float curr = getMotorEncoder(wheelL);
 
 	float target = curr + MmAfterFirstBlock + (firstBlock - 1) * MmBetweenBlocks;
 
@@ -113,7 +109,7 @@ void parallelMovement(float d)
 
 	wait(10);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) - MmToEncoder(deltaForward));
+	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelL) - MmToEncoder(deltaForward));
 
 	while(task_usage[1].use != none){}
 

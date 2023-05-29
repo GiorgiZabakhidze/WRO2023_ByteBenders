@@ -13,6 +13,11 @@
 
 //float lineCorrectionTime = 1000;
 
+int cBlack = 10;
+int cDarkBlue = 11;
+int cBlue = 15;
+int cWhite = 75;
+
 int checkedColor = -1;
 bool checkStatus = false;
 
@@ -51,9 +56,23 @@ PID Encoder_normal;
 
 task main()
 {
-	Initializate();
 
-	DoTheJob_2();
+	Initializate();
+	//setHandUp(-50);
+
+	//wait(1000);
+
+	//setHandUp(-10);
+
+	//wait(1000);
+
+	//setHandUp(-50);
+
+
+
+	//parallelMovement(100);
+
+	DoTheJob_1();
 
 	//Gyro_rotate.oneSided = false;
 	//Gyro_rotate.side = true;
@@ -70,7 +89,7 @@ task main()
 
 	//playSound(soundBlip);
 
-	//PID_LineFollower_On_ForTime(LineFollower_normal_r, 99999);
+	//PID_LineFollower_On_ForTime(LineFollower_normal_r, 99999, true);
 
 	while(1)
 	{

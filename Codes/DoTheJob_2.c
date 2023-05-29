@@ -21,7 +21,7 @@ void goToBoxes()
 
 	while(task_usage[0].use != none){}
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, 150);
+	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelL) + 150);
 }
 
 void DoTheJob_2()

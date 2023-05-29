@@ -18,7 +18,7 @@ task handControl() // Taski Romelic Mudmivad Chaciklulia Da Aniwebs Motors Targe
 				setMotorTarget(hand, handTarget, handSpeed);
 		}
 
-		wait(50); // Vicdit 10 Miliwami Radgan Tyuilad Ar Imushaos Punqciam Mudmivad
+		wait(50); // Vicdit 50 Miliwami Radgan Tyuilad Ar Imushaos Punqciam Mudmivad
 
 	}
 
@@ -31,7 +31,7 @@ task handControl() // Taski Romelic Mudmivad Chaciklulia Da Aniwebs Motors Targe
 */
 void setHand(int setPoint)
 {
-	handTarget = setpoint;
+	handTarget = -setpoint;
 
 	// Varesetebt Task-s
 		stopTask(handControl);
@@ -51,7 +51,7 @@ task clawControl() // Taski Romelic Mudmivad Chaciklulia Da Aniwebs Motors Targe
 				setMotorTarget(claw, clawTarget, clawSpeed);
 		}
 
-		wait(50); // Vicdit 10 Miliwami Radgan Tyuilad Ar Imushaos Punqciam Mudmivad
+		wait(50); // Vicdit 50 Miliwami Radgan Tyuilad Ar Imushaos Punqciam Mudmivad
 
 	}
 

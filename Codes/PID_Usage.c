@@ -10,7 +10,7 @@ struct usage
 	pidType pid_type;
 	int _setpoint;
 	int motorN;
-}
+}usage;
 /* Indeqsebis Shesabamisi PID:
 
 	 0 - LineFollower
@@ -18,9 +18,7 @@ struct usage
 
 */
 
-float task_rev = 1; // Xazis Marjvnivaa Tu Marcxniv Shesabamis Indeqsze Myopi PID(Mxolod Line Follower Iyenebs)
-
-PID *tasks[5]; // Shesabamis Indeqsze Myopi PID-s pointer-i
+PID* tasks[5]; // Shesabamis Indeqsze Myopi PID-s pointer-i
 
 usage task_usage[5]; // Ra Tipis Gamoyeneba Aqvt PID-s
 

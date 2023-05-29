@@ -8,7 +8,7 @@ void getAskedColors()
 
 	//while(task_usage[1].use != none){}
 
-	Gyro_moveMm(Gyro_mover, 260);
+	Gyro_moveMm(Gyro_mover, 285);
 
 	colorsAsked[0] = ColorCheck();
 
@@ -32,7 +32,7 @@ void pushTheShip()
 
 	wait(100);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover_fast, getMotorEncoder(wheelR) + MmToEncoder(105));
+	PID_Gyro_On_Until_Encoder(Gyro_mover_fast, getMotorEncoder(wheelL) + MmToEncoder(105));
 
 	while(task_usage[1].use != none){}
 }
@@ -45,7 +45,7 @@ void parallelCorrection()
 
 	wait(10);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) - MmToEncoder(150));
+	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelL) - MmToEncoder(150));
 
 	while(task_usage[1].use != none){}
 
@@ -68,18 +68,16 @@ void parallelCorrection()
 
 	wait(10);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(20));
+	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelL) + MmToEncoder(20));
 }
 
 void getOnTheLine()
 {
 	playSound(soundBlip);
 
-	setHandUp(-65);
+	setHandUp(-47);
 
-	clawOpened(false);
-
-	wait(30);
+	clawOpened(true);
 
 	Gyro_mover.setpoint = getGyroDegrees(gyro);
 
@@ -87,17 +85,40 @@ void getOnTheLine()
 
 	wait(10);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) - MmToEncoder(50));
+	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelL) - MmToEncoder(50));
 
-	while(task_usage[1].use != none){}
+	Gyro_rotate.side = false;
 
-	Gyro_rotate.side = true;
+	clawOpened(false);
 
-	setHandUp(-60);
+	setHandUp(-10);
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
+}
 
-	while(task_usage[2].use != none){}
+void putTheShip()
+{
+	PID_LineFollower_On_ForTime(LineFollower_normal_l, 1000, false);
+
+	PID_FollowLine_Until_Reflected(LineFollower_normal_l, 10, false);
+
+	playSound(soundBlip);
+
+	PID_LineFollower_On_ForTime(LineFollower_normal_l, 4000, false);
+
+	setHandUp(-47);
+
+	clawOpened(true);
+
+	Gyro_rotate.side = false;
+
+	PID_Gyro_Rotate(Gyro_rotate, -90);
+
+	clawOpened(false);
+
+	setHandUp(-10);
+
+	Gyro_moveMm(Gyro_mover, -2000);
 }
 
 void getBlockColors()
@@ -131,7 +152,7 @@ void DoTheJob_1()
 
 	pushTheShip();
 
-	parallelCorrection();
-
 	getOnTheLine();
+
+
 }

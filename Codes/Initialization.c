@@ -5,12 +5,15 @@ void Initializate()
 	PID_init(&LineFollower_normal_l, 0.39, 0.00005, 0.0003, 0.000666666, 80, -80, 65, 30);
 	PID_init(&Gyro_rotate, 1.5, 0.001, 0., 0.000666666, 80, -80, 0, 0);
 	PID_init(&Gyro_mover, 2, 0.3, 0.001, 0.000666666, 80, -80, 0, 20);
-	PID_init(&Gyro_mover_fast, 10, 0.2, 0.005, 0.000666666, 80, -80, 0, 55);
+	PID_init(&Gyro_mover_fast, 10, 0.2, 0.005, 0.000666666, 80, -80, 0, 60);
 	PID_init(&Claw_normal, 3, 0.0, 0.0, 0.00043, 80, -80, 0, 0);
 	PID_init(&Encoder_normal, 5, 0.2, 2, 0.000666666, 80, -80, 0, 20);
 
 	LineFollower_normal_r.lineCorrectionTime = 1500;
+	LineFollower_normal_r.rev = 1;
+
 	LineFollower_normal_l.lineCorrectionTime = 1500;
+	LineFollower_normal_l.rev = -1;
 
 	Gyro_rotate.acceptableRange = 1;
 
@@ -21,7 +24,7 @@ void Initializate()
 	Gyro_mover.additionMultiplier = 0.3;
 
 	Gyro_mover_fast.additionTime = 700;
-	Gyro_mover_fast.additionMultiplier = 0.5;
+	Gyro_mover_fast.additionMultiplier = 0.9;
 
 	setMotorSpeed(hand, -30);
 
@@ -55,5 +58,5 @@ void Initializate()
 	startTask(PID_Hand);
 
 	Hand_normal.setpoint = 0;
-	//PID_Hand_Start(on_always, -10);
+	PID_Hand_Start(on_always, -10);
 }

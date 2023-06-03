@@ -18,6 +18,8 @@ int cDarkBlue = 11;
 int cBlue = 15;
 int cWhite = 50;
 
+int badCol[2];
+
 int checkedColor = -1;
 bool checkStatus = false;
 

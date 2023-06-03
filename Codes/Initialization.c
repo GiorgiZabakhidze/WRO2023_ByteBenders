@@ -27,6 +27,9 @@ void Initializate()
 	Gyro_move_fast.additionTime = 700;
 	Gyro_move_fast.additionMultiplier = 0;
 
+	Hand_normal.setpoint = 0;
+	Hand_normal.acceptableRange = 2;
+
 	setMotorSpeed(hand, -30);
 
 	sleep(300);
@@ -51,8 +54,6 @@ void Initializate()
 		task_usage[i].use = none;
 		task_prevUsage[i].use = none;
 	}
-
-	Hand_normal.setpoint = 0;
 
 	startTask(Cimcimi);
 	startTask(PID_LineFollower);

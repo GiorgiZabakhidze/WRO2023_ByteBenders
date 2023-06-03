@@ -33,7 +33,7 @@ void PID_LineFollower_Start(PID* pid, useType use, float coefficient)
 void PID_Gyro_Start(PID* pid, useType use, float coefficient)
 {
 	// Vanulebt PID-s Cvladebs Tu Aqamde Sxva PID-s Viyenebdit An Ar Viyenebdit Arapers
-	if(previouslyUsedPID != pid)
+	if(previouslyUsedPID == NULL || previouslyUsedPID != pid)
 	{
 		PID_resetVariables(pid);
 	}

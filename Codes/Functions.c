@@ -39,6 +39,13 @@ int ColorCheck()
 	return 2;
 }
 
+void setHandUp(int encoderVal)
+{
+	handUp(encoderVal);
+
+	while(!inRange(getMotorEncoder(hand), -encoderVal, Hand_normal.acceptableRange)){}
+}
+
 void simpleMoveMm(float Mm, int speed = 20)
 {
 	float encoderVal = MmToEncoder(Mm);
@@ -72,17 +79,31 @@ void simpleMoveMm(float Mm, int speed = 20)
 	playSound(soundBlip);
 }
 
-void Gyro_moveMm(PID* pid, float Mm)
+void Gyro_moveMm(PID* pid, float Mm, float speed = 0)
 {
 	pid->setpoint = getGyroDegrees(gyro);
 
-	if(Mm > 0)
+	if(speed == 0)
 	{
-		pid->moveSpeed = abs(pid->moveSpeed);
+		if(Mm > 0)
+		{
+			pid->moveSpeed = abs(pid->moveSpeed);
+		}
+		else
+		{
+			pid->moveSpeed = -abs(pid->moveSpeed);
+		}
 	}
 	else
 	{
-		pid->moveSpeed = -abs(pid->moveSpeed);
+		if(Mm > 0)
+		{
+			pid->moveSpeed = abs(speed);
+		}
+		else
+		{
+			pid->moveSpeed = -abs(speed);
+		}
 	}
 
 	wait(10);
@@ -92,17 +113,55 @@ void Gyro_moveMm(PID* pid, float Mm)
 	while(task_usage[1].use != none){}
 }
 
-void Encoder_moveMm(PID* pid, float Mm)
+void Gyro_moveForTime(PID* pid, float time, float speed = 0)
 {
-	pid->setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
+	pid->setpoint = getGyroDegrees(gyro);
 
-	if(Mm > 0)
+	if(speed != 0)
+		pid->moveSpeed = speed;
+
+	wait(10);
+
+	PID_Gyro_On_ForTime(pid, time);
+}
+
+void Gyro_moveUntilReflected(PID* pid, float reflection, float speed = 0)
+{
+	pid->setpoint = getGyroDegrees(gyro);
+
+	if(speed != 0)
+		pid->moveSpeed = speed;
+
+	wait(10);
+
+	PID_Gyro_On_Until_Reflected(pid, reflection);
+}
+
+void Encoder_moveMm(PID* pid, float Mm, float speed = 0)
+{
+	pid->setpoint = getGyroDegrees(gyro);
+
+	if(speed == 0)
 	{
-		pid->moveSpeed = abs(pid->moveSpeed);
+		if(Mm > 0)
+		{
+			pid->moveSpeed = abs(pid->moveSpeed);
+		}
+		else
+		{
+			pid->moveSpeed = -abs(pid->moveSpeed);
+		}
 	}
 	else
 	{
-		pid->moveSpeed = -abs(pid->moveSpeed);
+		if(Mm > 0)
+		{
+			pid->moveSpeed = abs(speed);
+		}
+		else
+		{
+			pid->moveSpeed = -abs(speed);
+		}
 	}
 
 	wait(10);
@@ -112,9 +171,26 @@ void Encoder_moveMm(PID* pid, float Mm)
 	while(task_usage[2].use != none){}
 }
 
-void setHandUp(int encoderVal)
+void Encoder_moveForTime(PID* pid, float time, float speed = 0)
 {
-	handUp(encoderVal);
+	pid->setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
 
-	while(!inRange(getMotorEncoder(hand), -encoderVal, 2)){}
+	if(speed != 0)
+		pid->moveSpeed = speed;
+
+	wait(10);
+
+	PID_Encoder_On_ForTime(pid, time);
+}
+
+void Encoder_moveUntilReflected(PID* pid, float reflection, float speed = 0)
+{
+	pid->setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
+
+	if(speed != 0)
+		pid->moveSpeed = speed;
+
+	wait(10);
+
+	PID_Encoder_On_Until_Reflected(pid, reflection);
 }

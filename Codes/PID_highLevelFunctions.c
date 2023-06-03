@@ -1,35 +1,31 @@
-void PID_FollowLine_Until_Reflected(PID* pid, float reflection, bool rev = true)
+void PID_FollowLine_Until_Reflected(PID* pid, float reflection)
 {
-	PID_LineFollower_On_ForTime(pid, pid->lineCorrectionTime, rev);
+	PID_LineFollower_On_ForTime(pid, pid->lineCorrectionTime);
 
 	playSound(soundLowBuzz);
 
-	PID_LineFollower_On_Until_Reflected(pid, reflection, rev);
+	PID_LineFollower_On_Until_Reflected(pid, reflection);
 }
 
-void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_move, float reflection, float turn_angle, bool rev, int mode)
+void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_move, float reflection, float turn_angle, int mode)
 {
-	PID_FollowLine_Until_Reflected(pid_lineFollower, reflection, rev);
+	PID_FollowLine_Until_Reflected(pid_lineFollower, reflection);
 
 	playSound(soundBlip);
 
 	gyro_move->setpoint = getGyroDegrees(gyro);
 
-	wait(2000);
-
 	if(mode == 1)
 	{
-		PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) + MmToEncoder(22.5));
+		PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) - MmToEncoder(22.5));
 	}
 	else
 	{
-		PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) + MmToEncoder(26.5));
+		PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) - MmToEncoder(26.5));
 	}
 	while(task_usage[1].use != none){}
 
 	playSound(soundBlip);
-
-	wait(2000);
 
 	PID_Gyro_Rotate(gyro_rotate, turn_angle);
 
@@ -49,7 +45,7 @@ void Block_PickUp()
 {
 	Block_Grab();
 
-	setHandUp(5);
+	setHandUp(-5);
 }
 
 void Block_PlaceDown()
@@ -58,7 +54,7 @@ void Block_PlaceDown()
 
 	clawOpened(true);
 
-	handUp(5);
+	handUp(-5);
 }
 
 void Block_PlaceOnTheShip()
@@ -67,7 +63,7 @@ void Block_PlaceOnTheShip()
 
 	clawOpened(true);
 
-	handUp(5);
+	handUp(-5);
 }
 
 void takeFirstBlockInCage(PID* pid_mover)
@@ -76,15 +72,17 @@ void takeFirstBlockInCage(PID* pid_mover)
 
 	float MmBetweenBlocks = 75;
 
-	int firstBlock = -1;
+	int firstBlock;
 
-	for(int i = 0; i < 4; i++)
+	for(int i = 1; i < 4; i++)
 	{
-		if(robotBlocks[0] != 0)
+		if(robotBlocks[i] != 0)
 		{
 			firstBlock = i;
 
-			robotBlocks[0] = 0;
+			robotBlocks[i] = 0;
+
+			break;
 		}
 	}
 
@@ -92,11 +90,15 @@ void takeFirstBlockInCage(PID* pid_mover)
 
 	float curr = getMotorEncoder(wheelL);
 
-	float target = curr + MmAfterFirstBlock + (firstBlock - 1) * MmBetweenBlocks;
+	wait(10);
+
+	float target = curr + MmToEncoder(MmAfterFirstBlock) + MmToEncoder((firstBlock - 1) * MmBetweenBlocks);
 
 	PID_Gyro_On_Until_Encoder(pid_mover, target);
 
 	while(task_usage[1].use != none){}
+
+	Block_PickUp();
 }
 
 void parallelMovement(float dis)
@@ -111,7 +113,7 @@ void parallelMovement(float dis)
 
 	wait(10);
 
-	PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) - MmToEncoder(deltaForward));
+	PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) + MmToEncoder(deltaForward));
 
 	while(task_usage[1].use != none){}
 

@@ -67,7 +67,7 @@ void putTheShip()
 
 	wait(5);
 
-	PID_FollowLine_Until_Reflected(LineFollower_normal_l, cBlack + 1, false);
+	PID_FollowLine_Until_Reflected(LineFollower_normal_l, cBlack + 1);
 
 	playSound(soundBlip);
 

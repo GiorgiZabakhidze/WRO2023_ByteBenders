@@ -41,7 +41,7 @@ void PID_Encoder_On_Until_Reflected(PID* pid, float _setpoint, bool parallel = f
 
 void PID_Encoder_On_Until_Encoder(PID* pid, float _setpoint, bool parallel = false)
 {
-	if(_setpoint >= -getMotorEncoder(wheelL))
+	if(_setpoint >= getMotorEncoder(wheelL))
 	{
 		PID_Gyro_Start(pid, untilEncoder_high, _setpoint);
 	}
@@ -60,7 +60,7 @@ void PID_Encoder_Rotate(PID* pid, float deg, bool parallel = false)
 {
 	float initDelta = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
 
-	float target = initDelta + DegToDeltaEncoder(deg);
+	float target = initDelta - DegToDeltaEncoder(deg);
 
 	pid->setpoint = target;
 

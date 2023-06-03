@@ -36,33 +36,6 @@ void PID_Gyro_Rotate(PID* pid, float angle, bool parallel = false)
 
 
 /*
-	Gyro-s PID-s Chartva Sanam Ultra Sonic-it Konkretul Distanciamde Ar Mivalt
-
-	[
-		Ultra Sonic-i Robotis Win Aris Dayenebuli
-	]
-
-	@param [PID*] pid 						PID-is Pointer-i Romelsac Chavrtavt Sanam Sasurvel Mandzilze Ar Mivalt
-	@param [float] distance 			Mandzili Romelic Unda Achvenos Ultra Sonic-ma
-*/
-void PID_Gyro_On_Until_Distance(PID* pid, float distance, bool parallel = false)
-{
-	if(distance < getUSDistance(usonic))
-	{
-		PID_Gyro_Start(pid, untilDistance_far, distance); // Chavrtavt PID-s
-	}
-	else
-	{
-		PID_Gyro_Start(pid, untilDistance_close, distance); // Chavrtavt PID-s
-	}
-
-	if(!parallel)
-	{
-		while(task_usage[1].use != none){}
-	}
-}
-
-/*
 	Gyro-s PID-s Chartva Sanam Color Sensor-it Sasurvel Reflected-s Ar Mivigebt
 
 	@param [PID*] pid 						PID-is Pointer-i Romelsac Chavrtavt Sanam Sasurvel Mandzilze Ar Mivalt

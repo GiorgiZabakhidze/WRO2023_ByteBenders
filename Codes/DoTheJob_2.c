@@ -5,23 +5,11 @@ void getOnTheBlue()
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
 
-	Gyro_move.moveSpeed = 30;
-
-	Gyro_move.setpoint = getGyroDegrees(gyro);
-
-	wait(10);
-
 	Gyro_moveMm(Gyro_move, 80);
 
 	PID_Gyro_Rotate(Gyro_rotate, 91);
 
-	Gyro_move.setpoint = getGyroDegrees(gyro);
-
-	Gyro_move.moveSpeed = -40;
-
-	wait(10);
-
-	PID_Gyro_On_ForTime(Gyro_move, 2500);
+	Gyro_moveForTime(Gyro_move, 2500, -40);
 
 }
 
@@ -45,8 +33,11 @@ void getTheBox()
 
 	wait(1000);
 
-	setHandUp(-10);
+	setHandUp(-5);
+}
 
+void hangTheBox()
+{
 	Gyro_moveMm(Gyro_move, -50);
 
 	PID_Gyro_Rotate(Gyro_rotate, -86);
@@ -55,25 +46,13 @@ void getTheBox()
 
 	Gyro_rotate.side = true;
 
-	wait(1000);
-
 	PID_Gyro_Rotate(Gyro_rotate, -35);
-
-	wait(1000);
 
 	Gyro_rotate.side = false;
 
 	PID_Gyro_Rotate(Gyro_rotate, 35);
 
-	setHandUp(-30);
-
-	Gyro_move.setpoint = getGyroDegrees(gyro);
-
-	Gyro_move.moveSpeed = 30;
-
-	wait(10);
-
-	PID_Gyro_On_ForTime(Gyro_move, 500);
+	Gyro_moveForTime(Gyro_move, 500, 30);
 
 	clawOpened(true);
 }
@@ -84,4 +63,6 @@ void DoTheJob_2()
 	getOnTheBlue();
 
 	getTheBox();
+
+	hangTheBox();
 }

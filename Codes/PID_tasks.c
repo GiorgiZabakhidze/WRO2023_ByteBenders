@@ -1,6 +1,5 @@
 task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color Sensor-is Mixedvit
 {
-	bool odd = true;
 	int startTime = 0;
 	bool factor = false;
 	int successStart = 0;
@@ -20,19 +19,8 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 			// Vanaxlebt PID-s Output-s
 			PID_Update(tasks[0], tasks[0]->setpoint, getColorReflected(color1));
 
-			//if(odd)
-			//{
-				// Vurtavt Shesabamis Motorebze
-				setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * tasks[0]->rev);
-				setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * tasks[0]->rev);
-			//}
-			//else
-			//{
-			//	// Vurtavt Shesabamis Motorebze
-			//	setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * task_rev);
-			//	setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * task_rev);
-			//}
-			odd = !odd;
+			setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * tasks[0]->rev);
+			setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * tasks[0]->rev);
 
 			if(task_usage[0] == none)
 			{
@@ -43,7 +31,6 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 		{
 			task_usage[0].use = none;
 			stopWheels();
-			odd = true;
 		}
 	}
 }
@@ -124,7 +111,7 @@ task PID_Encoder()
 
 		if(factor && !(task_usage[2].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
 		{
-			PID_Update(tasks[2], tasks[2]->setpoint, getMotorEncoder(wheelR) - getMotorEncoder(wheelL));
+			PID_Update(tasks[2], tasks[2]->setpoint, getMotorEncoder(wheelR) + getMotorEncoder(wheelL));
 
 			if(tasks[2]->oneSided)
 			{

@@ -70,7 +70,7 @@ void PID_LineFollower_On_Until_Reflected(PID* pid, float _setpoint, bool paralle
 
 void PID_LineFollower_On_Until_Encoder(PID* pid, float _setpoint, bool parallel = false)
 {
-	if(_setpoint >= -getMotorEncoder(wheelL))
+	if(_setpoint >= getMotorEncoder(wheelL))
 	{
 		PID_LineFollower_Start(pid, untilEncoder_high, _setpoint);
 	}

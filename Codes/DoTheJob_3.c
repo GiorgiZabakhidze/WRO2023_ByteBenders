@@ -1,55 +1,101 @@
 void goToBoxes()
 {
-	//Gyro_mover.moveSpeed = -20;
+	Gyro_moveMm(Gyro_move, -150, 30);
 
-	//PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) - MmToEncoder(400));
+	Gyro_rotate.side = false;
 
-	//while(task_usage[1].use != none){}
+	PID_Gyro_Rotate(Gyro_rotate, 180);
 
-	//Gyro_mover.oneSided = true;
-	//Gyro_mover.side = false;
+	Gyro_moveUntilReflected(Gyro_move, cWhite);
 
-	//PID_Gyro_Rotate(Gyro_mover, 90);
+	Gyro_moveUntilReflected(Gyro_move, cBlack);
 
-	//while(task_usage[2].use != none){}
+	Gyro_rotate.side = true;
 
-	//PID_LineFollower_On_ForTime(LineFollower_normal_r, 3000);
+	PID_Gyro_Rotate(Gyro_rotate, -90);
 
-	//while(task_usage[0].use != none){}
+	PID_LineFollower_On_ForTime(LineFollower_normal_r, 3000);
 
-	//PID_Encoder_On_Until_Reflected(LineFollower_normal_r, 10);
+	PID_FollowLine_Until_Reflected(LineFollower_normal_r, cBlack);
 
-	while(task_usage[0].use != none){}
+	PID_LineFollower_On_ForTime(LineFollower_normal_r, 700);
 
-	PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) + 150);
+	Gyro_rotate.oneSided = false;
+
+	PID_Gyro_Rotate(Gyro_rotate, 90);
+
+	Gyro_moveUntilReflected(Gyro_move, cBlack);
+
+	Gyro_rotate.oneSided = true;
+	Gyro_rotate.side = false;
+
+	PID_Gyro_Rotate(Gyro_rotate, 90);
 }
 
 void getBlockColors()
 {
+	int blue = 2;
+	int green = 2;
+
+	int badColor = 1;
+
+	int col1 = colorsAsked[0], col2 = colorsAsked[1];
+
 	for(int i = 3; i >= 0; i--)
 	{
-		int color = ColorCheck();
-
-		if(color == colorsAsked[0])
+		if(i > 0)
 		{
-			robotBlocks[i] = colorsAsked[0];
-
-			colorsAsked[0] = 0;
-		}
-		else if(color == colorsAsked[1])
-		{
-			robotBlocks[i] = colorsAsked[1];
-
-			colorsAsked[1] = 0;
+			blockColors[i] = ColorCheck();
 		}
 		else
 		{
-			return;
+			if(blue == 1)
+				blockColors[0] = 2;
+			else
+				blockColors[0] = 3;
 		}
+
+		if(blockColors[i] == 2)
+			blue--;
+		else
+			green--;
+
+		if(blockColors[i] == col1)
+		{
+			col1 = 0;
+		}
+		else if(blockColors[i] == col2)
+		{
+			col2 = 0;
+		}
+		else
+		{
+			badCol[badColor] = i;
+			badColor--;
+
+			playSound(soundLowBuzz);
+
+			wait(500);
+		}
+
+		if(i > 0)
+			Gyro_moveMm(Gyro_move, 75);
 	}
+
+}
+
+void getTheBadBlock()
+{
+	Gyro_moveMm(Gyro_move, badCol[0] * 75);
+
+	Block_PickUp();
+
+	Gyro_moveMm(Gyro_move, -badCol[0] * 75);
 }
 
 void DoTheJob_3()
 {
 	goToBoxes();
+
+	getBlockColors();
 }

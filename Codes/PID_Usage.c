@@ -36,7 +36,6 @@ void calculateFactor(int i, int &startTime, bool &factor)
 			if(task_prevUsage[i].use == none)
 			{
 				startTime = time1(T1);
-				//playSound(soundBlip);
 			}
 		}
 
@@ -66,7 +65,7 @@ void calculateFactor(int i, int &startTime, bool &factor)
 					factor = !inRange(getMotorEncoder(hand), tasks[i]->setpoint, tasks[i]->acceptableRange);
 					break;
 				case Encoder:
-					factor = !inRange(getMotorEncoder(wheelR) - getMotorEncoder(wheelL), tasks[i]->setpoint, tasks[i]->acceptableRange);
+					factor = !inRange(getMotorEncoder(wheelR) + getMotorEncoder(wheelL), tasks[i]->setpoint, tasks[i]->acceptableRange);
 					break;
 				}
 				break;

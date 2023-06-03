@@ -133,3 +133,19 @@ float MmToEncoder(float Mm)
 	float MMforEncoder = 0.48869219055;
 	return Mm / MMforEncoder;
 }
+
+float DegToDeltaEncoder(float deg)
+{
+	float dis = 195; // Borblebs Shoris Mandzili Milimetrebshi
+	float r = 28;  // Borblis Radiusi Milimetrebshi
+
+	float L_Rkali = 2 * Pi * dis * deg / 360;
+
+	float L_Borbali = 2 * Pi * r;
+
+	float Enc = 360 * (L_Rkali / L_Borbali);
+
+	displayBigTextLine(1, "%d", Enc/10);
+
+	return Enc/10;
+}

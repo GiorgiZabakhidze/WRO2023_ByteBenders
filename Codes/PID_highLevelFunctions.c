@@ -2,6 +2,8 @@ void PID_FollowLine_Until_Reflected(PID* pid, float reflection, bool rev = true)
 {
 	PID_LineFollower_On_ForTime(pid, pid->lineCorrectionTime, rev);
 
+	playSound(soundLowBuzz);
+
 	PID_LineFollower_On_Until_Reflected(pid, reflection, rev);
 }
 
@@ -17,11 +19,11 @@ void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_m
 
 	if(mode == 1)
 	{
-		PID_Gyro_On_Until_Encoder(gyro_move, getMotorEncoder(wheelL) + MmToEncoder(22.5));
+		PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) + MmToEncoder(22.5));
 	}
 	else
 	{
-		PID_Gyro_On_Until_Encoder(gyro_move, getMotorEncoder(wheelL) + MmToEncoder(26.5));
+		PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) + MmToEncoder(26.5));
 	}
 	while(task_usage[1].use != none){}
 
@@ -68,7 +70,7 @@ void Block_PlaceOnTheShip()
 	handUp(5);
 }
 
-void takeFirstBlockInCage(PID* gyro_mover)
+void takeFirstBlockInCage(PID* pid_mover)
 {
 	float MmAfterFirstBlock;
 
@@ -86,41 +88,41 @@ void takeFirstBlockInCage(PID* gyro_mover)
 		}
 	}
 
-	gyro_mover->setpoint = getGyroDegrees(gyro);
+	pid_mover->setpoint = getGyroDegrees(gyro);
 
 	float curr = getMotorEncoder(wheelL);
 
 	float target = curr + MmAfterFirstBlock + (firstBlock - 1) * MmBetweenBlocks;
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, target);
+	PID_Gyro_On_Until_Encoder(pid_mover, target);
 
 	while(task_usage[1].use != none){}
 }
 
-void parallelMovement(float d)
+void parallelMovement(float dis)
 {
 	float r = 16;
-	float angle = acos( 1 - abs(d) / r );
+	float angle = acos( 1 - abs(dis) / r );
 	float deltaForward = r * sin(angle);
 
-	Gyro_mover.setpoint = getGyroDegrees(gyro);
+	Gyro_move.setpoint = getGyroDegrees(gyro);
 
-	Gyro_mover.moveSpeed = -20;
+	Gyro_move.moveSpeed = -20;
 
 	wait(10);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelL) - MmToEncoder(deltaForward));
+	PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) - MmToEncoder(deltaForward));
 
 	while(task_usage[1].use != none){}
 
 	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = (bool)(d < 0);
+	Gyro_rotate.side = (bool)(dis < 0);
 
 	PID_Gyro_Rotate(Gyro_rotate, angle);
 
 	while(task_usage[2].use != none){}
 
-	Gyro_rotate.side = (bool)(d > 0);
+	Gyro_rotate.side = (bool)(dis > 0);
 
 	PID_Gyro_Rotate(Gyro_rotate, -angle);
 

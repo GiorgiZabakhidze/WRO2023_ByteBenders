@@ -13,10 +13,10 @@
 
 //float lineCorrectionTime = 1000;
 
-int cBlack = 10;
+int cBlack = 8;
 int cDarkBlue = 11;
 int cBlue = 15;
-int cWhite = 75;
+int cWhite = 50;
 
 int checkedColor = -1;
 bool checkStatus = false;
@@ -32,10 +32,11 @@ PID Hand_normal;
 PID LineFollower_normal_r;
 PID LineFollower_normal_l;
 PID Gyro_rotate;
-PID Claw_normal;
-PID Gyro_mover;
-PID Gyro_mover_fast;
-PID Encoder_normal;
+PID Gyro_move;
+PID Gyro_move_fast;
+PID Encoder_move;
+PID Encoder_move_fast;
+PID Encoder_rotate;
 
 #include "PID_Usage.c"
 #include "PID_tasks.c"
@@ -51,6 +52,7 @@ PID Encoder_normal;
 #include "Initialization.c"
 #include "DoTheJob_1.c"
 #include "DoTheJob_2.c"
+#include "DoTheJob_3.c"
 
 
 
@@ -58,21 +60,29 @@ task main()
 {
 
 	Initializate();
-	//setHandUp(-50);
 
-	//wait(1000);
+	//Encoder_rotate.oneSided = true;
+	//Encoder_rotate.side = true;
 
-	//setHandUp(-10);
-
-	//wait(1000);
-
-	//setHandUp(-50);
-
-
-
-	//parallelMovement(100);
+	//PID_Encoder_Rotate(Encoder_rotate, DegToDeltaEncoder(90));
 
 	DoTheJob_1();
+
+	DoTheJob_2();
+
+	//PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(350));
+
+	//Encoder_move.setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
+
+	//wait(100);
+
+	//PID_Encoder_On_Until_Reflected(Encoder_move, cBlack + 1);
+
+	//Gyro_moveMm(Gyro_move, 999999);
+
+	//Gyro_rotate.oneSided = false;
+
+	//PID_Gyro_Rotate(Gyro_rotate, -90);
 
 	//Gyro_rotate.oneSided = false;
 	//Gyro_rotate.side = true;
@@ -81,17 +91,13 @@ task main()
 
 	//while(task_usage[1].use != none){}
 
-	//PID_Gyro_On_ForTime(Gyro_mover, 9999);
+	//PID_Gyro_On_ForTime(Gyro_move, 9999);
 
-	//Gyro_mover_fast.setpoint = getGyroDegrees(gyro);
+	//Gyro_move_fast.setpoint = getGyroDegrees(gyro);
 
 	//wait(100);
 
 	//playSound(soundBlip);
 
-	//PID_LineFollower_On_ForTime(LineFollower_normal_r, 99999, true);
-
-	while(1)
-	{
-	}
+	//PID_LineFollower_On_ForTime(LineFollower_normal_l, 99999);
 }

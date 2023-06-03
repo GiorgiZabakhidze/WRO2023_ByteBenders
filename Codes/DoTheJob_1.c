@@ -1,149 +1,111 @@
 void getAskedColors()
 {
-	//Gyro_mover.setpoint = getGyroDegrees(gyro);
-
-	//wait(10);
-
-	//PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(260));
-
-	//while(task_usage[1].use != none){}
-
-	Gyro_moveMm(Gyro_mover, 285);
+	Gyro_moveMm(Gyro_move, 290);
 
 	colorsAsked[0] = ColorCheck();
 
-
-	//Gyro_mover.setpoint = getGyroDegrees(gyro);
-
-	//wait(10);
-
-	//PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelR) + MmToEncoder(45));
-
-	//while(task_usage[1].use != none){}
-
-	Gyro_moveMm(Gyro_mover, 45);
+	Gyro_moveMm(Gyro_move, 40);
 
 	colorsAsked[1] = ColorCheck();
+
+	stopTask(Cimcimi);
 }
 
 void pushTheShip()
 {
-	Gyro_mover.setpoint = getGyroDegrees(gyro);
+	Gyro_moveMm(Gyro_move_fast, 150);
 
-	wait(100);
+	setHandUp(-50);
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover_fast, getMotorEncoder(wheelL) + MmToEncoder(105));
+	clawOpened(true);
 
-	while(task_usage[1].use != none){}
-}
+	//Gyro_moveMm(Gyro_move_fast, -30);
 
-void parallelCorrection()
-{
-	Gyro_mover.setpoint = getGyroDegrees(gyro);
+	//Gyro_rotate.oneSided = true;
+	//Gyro_rotate.side = true;
 
-	Gyro_mover.moveSpeed = -20;
+	//PID_Gyro_Rotate(Gyro_move_fast, 40);
 
-	wait(10);
+	//Gyro_rotate.side = false;
 
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelL) - MmToEncoder(150));
+	//wait(1000);
 
-	while(task_usage[1].use != none){}
-
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = true;
-
-	PID_Gyro_Rotate(Gyro_rotate, -55);
-
-	while(task_usage[2].use != none){}
-
-	Gyro_rotate.side = false;
-
-	PID_Gyro_Rotate(Gyro_rotate, 55);
-
-	while(task_usage[2].use != none){}
-
-	Gyro_mover.setpoint = getGyroDegrees(gyro);
-
-	Gyro_mover.moveSpeed = 20;
-
-	wait(10);
-
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelL) + MmToEncoder(20));
+	//PID_Gyro_Rotate(Gyro_move_fast, -40);
 }
 
 void getOnTheLine()
 {
-	playSound(soundBlip);
+	Gyro_move.moveSpeed = -30;
 
-	setHandUp(-47);
+	PID_Gyro_On_Until_Reflected(Gyro_move, cBlack);
 
-	clawOpened(true);
+	wait(100);
 
-	Gyro_mover.setpoint = getGyroDegrees(gyro);
+	PID_Gyro_On_Until_Reflected(Gyro_move, (cBlack + cWhite)/2 + 3);
 
-	Gyro_mover.moveSpeed = -20;
-
-	wait(10);
-
-	PID_Gyro_On_Until_Encoder(Gyro_mover, getMotorEncoder(wheelL) - MmToEncoder(50));
-
+	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
-	clawOpened(false);
-
-	setHandUp(-10);
-
 	PID_Gyro_Rotate(Gyro_rotate, 90);
+
+	//Gyro_rotate.oneSided = true;
+
+	//Gyro_rotate.side = true;
+
+	//PID_Gyro_Rotate(Gyro_rotate, -29);
+
+	//Gyro_rotate.side = false;
+
+	//PID_Gyro_Rotate(Gyro_rotate, 28);
 }
 
 void putTheShip()
 {
 	PID_LineFollower_On_ForTime(LineFollower_normal_l, 1000, false);
 
-	PID_FollowLine_Until_Reflected(LineFollower_normal_l, 10, false);
+	playSound(soundLowBuzz);
+
+	wait(5);
+
+	PID_FollowLine_Until_Reflected(LineFollower_normal_l, cBlack + 1, false);
 
 	playSound(soundBlip);
 
-	PID_LineFollower_On_ForTime(LineFollower_normal_l, 4000, false);
+	wait(5);
 
-	setHandUp(-47);
+	PID_LineFollower_On_ForTime(LineFollower_normal_l, 2300, false);
 
-	clawOpened(true);
+	Gyro_rotate.side = true;
 
-	Gyro_rotate.side = false;
+	Gyro_rotate.acceptableRange = 1;
 
-	PID_Gyro_Rotate(Gyro_rotate, -90);
+	PID_Gyro_Rotate(Gyro_rotate, -87);
+
+	Gyro_move.moveSpeed = 30;
+
+	Gyro_move.setpoint = getGyroDegrees(gyro);
+
+	wait(10);
+
+	PID_Gyro_On_ForTime(Gyro_move, 500);
 
 	clawOpened(false);
 
 	setHandUp(-10);
 
-	Gyro_moveMm(Gyro_mover, -2000);
-}
+	Gyro_rotate.side = false;
 
-void getBlockColors()
-{
-	for(int i = 3; i >= 0; i--)
-	{
-		int color = ColorCheck();
+	PID_Gyro_Rotate(Gyro_rotate, -20);
 
-		if(color == colorsAsked[0])
-		{
-			robotBlocks[i] = colorsAsked[0];
+	Gyro_rotate.side = true;
 
-			colorsAsked[0] = 0;
-		}
-		else if(color == colorsAsked[1])
-		{
-			robotBlocks[i] = colorsAsked[1];
+	PID_Gyro_Rotate(Gyro_rotate, 20);
 
-			colorsAsked[1] = 0;
-		}
-		else
-		{
-			return;
-		}
-	}
+	Gyro_move.moveSpeed = -30;
+
+	PID_Gyro_On_Until_Reflected(Gyro_move, cWhite - 10);
+
+	PID_Gyro_On_Until_Reflected(Gyro_move, cBlack + 1);
 }
 
 void DoTheJob_1()
@@ -154,5 +116,5 @@ void DoTheJob_1()
 
 	getOnTheLine();
 
-
+	putTheShip();
 }

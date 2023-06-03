@@ -11,7 +11,7 @@ void PID_Encoder_On_ForTime(PID* pid, float time, bool parallel = false)
 
 	if(!parallel)
 	{
-		while(task_usage[3].use != none){}
+		while(task_usage[2].use != none){}
 	}
 }
 
@@ -35,13 +35,13 @@ void PID_Encoder_On_Until_Reflected(PID* pid, float _setpoint, bool parallel = f
 
 	if(!parallel)
 	{
-		while(task_usage[3].use != none){}
+		while(task_usage[2].use != none){}
 	}
 }
 
 void PID_Encoder_On_Until_Encoder(PID* pid, float _setpoint, bool parallel = false)
 {
-	if(_setpoint >= getMotorEncoder(wheelR))
+	if(_setpoint >= -getMotorEncoder(wheelL))
 	{
 		PID_Gyro_Start(pid, untilEncoder_high, _setpoint);
 	}
@@ -52,6 +52,22 @@ void PID_Encoder_On_Until_Encoder(PID* pid, float _setpoint, bool parallel = fal
 
 	if(!parallel)
 	{
-		while(task_usage[3].use != none){}
+		while(task_usage[2].use != none){}
+	}
+}
+
+void PID_Encoder_Rotate(PID* pid, float deg, bool parallel = false)
+{
+	float initDelta = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
+
+	float target = initDelta + DegToDeltaEncoder(deg);
+
+	pid->setpoint = target;
+
+	PID_Encoder_Start(pid, on_untilDone, target);
+
+	if(!parallel)
+	{
+		while(task_usage[2].use != none){}
 	}
 }

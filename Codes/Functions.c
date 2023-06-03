@@ -9,7 +9,7 @@ int ColorCheck()
 {
 	bool currentStatus = checkStatus;
 
-	wait(200);
+	while(currentStatus == checkStatus){}
 
 	float cntGreen = 0;
 	float checkAmount = 10;
@@ -87,9 +87,29 @@ void Gyro_moveMm(PID* pid, float Mm)
 
 	wait(10);
 
-	PID_Gyro_On_Until_Encoder(pid, getMotorEncoder(wheelL) + MmToEncoder(Mm));
+	PID_Gyro_On_Until_Encoder(pid, getMotorEncoder(wheelL) - MmToEncoder(Mm));
 
 	while(task_usage[1].use != none){}
+}
+
+void Encoder_moveMm(PID* pid, float Mm)
+{
+	pid->setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
+
+	if(Mm > 0)
+	{
+		pid->moveSpeed = abs(pid->moveSpeed);
+	}
+	else
+	{
+		pid->moveSpeed = -abs(pid->moveSpeed);
+	}
+
+	wait(10);
+
+	PID_Gyro_On_Until_Encoder(pid, getMotorEncoder(wheelL) - MmToEncoder(Mm));
+
+	while(task_usage[2].use != none){}
 }
 
 void setHandUp(int encoderVal)

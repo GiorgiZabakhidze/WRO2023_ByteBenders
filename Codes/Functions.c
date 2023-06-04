@@ -9,11 +9,11 @@ int ColorCheck()
 {
 	bool currentStatus = checkStatus;
 
-	while(currentStatus == checkStatus){}
+	wait(500);
 
 	float cntGreen = 0;
 	float checkAmount = 10;
-	float requiredPercentage = 0.2;
+	float requiredPercentage = 0.4;
 
 	for(int i = 0; i < checkAmount; i++)
 	{
@@ -43,15 +43,31 @@ void setHandUp(int encoderVal)
 {
 	handUp(encoderVal);
 
-	while(!inRange(getMotorEncoder(hand), -encoderVal, Hand_normal.acceptableRange)){}
+	bool prev;
+
+	while(1)
+	{
+		prev = false;
+
+		if(inRange(getMotorEncoder(hand), -encoderVal, Hand_normal.acceptableRange))
+		{
+			prev = true;
+		}
+
+		if(prev)
+			wait(20);
+
+		if(inRange(getMotorEncoder(hand), -encoderVal, Hand_normal.acceptableRange && prev)
+			break;
+	}
 }
 
 void simpleMoveMm(float Mm, int speed = 20)
 {
 	float encoderVal = MmToEncoder(Mm);
 
-	float targetR = getMotorTarget(wheelR) + encoderVal;
-	float targetL = getMotorTarget(wheelL) - encoderVal;
+	float targetR = getMotorEncoder(wheelR) + encoderVal;
+	float targetL = getMotorEncoder(wheelL) - encoderVal;
 
 	bool doneR = false, doneL = false;
 

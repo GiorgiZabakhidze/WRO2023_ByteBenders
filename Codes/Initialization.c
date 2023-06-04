@@ -1,13 +1,13 @@
 void Initializate()
 {
-	PID_init(&Hand_normal, 1.3, 0.09, 0.03, 0.000666666, 80, -80, 0, 0);
+	PID_init(&Hand_normal, 2.5, 0.5, 0.1, 0.000666666, 80, -80, 0, 0);
 	PID_init(&LineFollower_normal_r, 0.17, 0.008, 0.004, 0.000666666, 80, -80, 46, 30);
-	PID_init(&LineFollower_normal_l, 0.17, 0.008, 0.004, 0.000666666, 80, -80, 46, 30);
+	PID_init(&LineFollower_normal_l, 0.1, 0.008, 0.004, 0.000666666, 80, -80, 46, 30);
 	PID_init(&Gyro_rotate, 3, 0.002, 0., 0.000666666, 80, -80, 0, 0);
-	PID_init(&Gyro_move_fast, 10, 0.2, 0.005, 0.000666666, 80, -80, 0, 40);
+	PID_init(&Gyro_move_fast, 10, 0.2, 0.005, 0.000666666, 80, -80, 0, 45);
 	PID_init(&Gyro_move, 4, 0.01, 0.00, 0.000666666, 80, -80, 0, 30);
 	PID_init(&Encoder_move, 1, 0, 0, 0.000666666, 80, -80, 0, 30);
-	PID_init(&Encoder_move_fast, 5, 0.2, 2, 0.000666666, 80, -80, 0, -60);
+	PID_init(&Encoder_move_fast, 5, 0.2, 2, 0.000666666, 80, -80, 0, 60);
 	PID_init(&Encoder_rotate, 1, 0, 0, 0.000666666, 80, -80, 0, 20);
 
 	LineFollower_normal_r.lineCorrectionTime = 1500;
@@ -30,22 +30,20 @@ void Initializate()
 	Hand_normal.setpoint = 0;
 	Hand_normal.acceptableRange = 2;
 
+	resetGyro(gyro);
+	setMotorSpeed(claw, 15);
 	setMotorSpeed(hand, -30);
 
-	sleep(300);
+	sleep(2000);
 
 	setMotorSpeed(hand, 0);
-
-	sleep(100);
 
 	resetMotorEncoder(motorA);
 	resetMotorEncoder(motorB);
 	resetMotorEncoder(motorC);
 	resetMotorEncoder(motorD);
 
-	resetGyro(gyro);
-
-	sleep(1000);
+	setMotorSpeed(claw, -15);
 
 	clearTimer(T1);
 

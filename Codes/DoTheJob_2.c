@@ -5,11 +5,11 @@ void getOnTheBlue()
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
 
-	Gyro_moveMm(Gyro_move, 80);
+	Gyro_moveMm(Gyro_move, 75);
 
-	PID_Gyro_Rotate(Gyro_rotate, 91);
+	PID_Gyro_Rotate(Gyro_rotate, 89);
 
-	Gyro_moveForTime(Gyro_move, 2500, -40);
+	Encoder_moveForTime(Encoder_move, 2500, -40);
 
 }
 
@@ -25,24 +25,24 @@ void getTheBox()
 
 	Gyro_move.moveSpeed = 10;
 
-	Gyro_moveMm(Gyro_move, 50);
+	Encoder_moveMm(Encoder_move, 15);
 
-	setHandUp(-42);
+	setHandUp(-40);
 
-	clawOpened(false);
+	//clawOpened(false);
+
+	setMotorSpeed(claw, -15);
 
 	wait(1000);
 
-	setHandUp(-5);
+	setHandUp(-25);
 }
 
 void hangTheBox()
 {
-	Gyro_moveMm(Gyro_move, -50);
-
 	PID_Gyro_Rotate(Gyro_rotate, -86);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(450));
+	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(455));
 
 	Gyro_rotate.side = true;
 

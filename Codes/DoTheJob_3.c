@@ -1,39 +1,42 @@
 void goToBoxes()
 {
-	Gyro_moveMm(Gyro_move, -150, 30);
-
-	Gyro_rotate.side = false;
-
-	PID_Gyro_Rotate(Gyro_rotate, 180);
-
-	Gyro_moveUntilReflected(Gyro_move, cWhite);
-
-	Gyro_moveUntilReflected(Gyro_move, cBlack);
-
-	Gyro_rotate.side = true;
-
-	PID_Gyro_Rotate(Gyro_rotate, -90);
-
-	PID_LineFollower_On_ForTime(LineFollower_normal_r, 3000);
-
-	PID_FollowLine_Until_Reflected(LineFollower_normal_r, cBlack);
-
-	PID_LineFollower_On_ForTime(LineFollower_normal_r, 700);
-
-	Gyro_rotate.oneSided = false;
-
-	PID_Gyro_Rotate(Gyro_rotate, 90);
-
-	Gyro_moveUntilReflected(Gyro_move, cBlack);
+	Gyro_moveMm(Gyro_move, -220, 30);
 
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
+	PID_Gyro_Rotate(Gyro_rotate, 180);
+
+	Gyro_moveUntilReflected(Gyro_move, cWhite - 40);
+
+	Gyro_rotate.side = true;
+
+	PID_Gyro_Rotate(Gyro_rotate, -85);
+
+	PID_LineFollower_On_ForTime(LineFollower_normal_r, 2000);
+
+	wait(5);
+
+	PID_FollowLine_Until_Reflected(LineFollower_normal_r, cBlack);
+
+	Encoder_moveMm(Encoder_move, 390);
+
+	Gyro_rotate.side = false;
+
 	PID_Gyro_Rotate(Gyro_rotate, 90);
+
+	Encoder_moveMm(Encoder_move, 165);
+
+	PID_Gyro_Rotate(Gyro_rotate, 90);
+
+	Encoder_moveMm(Encoder_move, 76);
+
 }
 
 void getBlockColors()
 {
+	startTask(Cimcimi);
+
 	int blue = 2;
 	int green = 2;
 
@@ -70,32 +73,109 @@ void getBlockColors()
 		}
 		else
 		{
+			if(badColor < 0)
+			{
+				displayBigTextLine(1, "oh noo");
+				while(1)
+				{
+					playSound(soundDownwardTones);
+				}
+			}
 			badCol[badColor] = i;
 			badColor--;
-
-			playSound(soundLowBuzz);
-
-			wait(500);
 		}
 
+		displayBigTextLine(2*i+1, "%d", blockColors[i]);
+
 		if(i > 0)
-			Gyro_moveMm(Gyro_move, 75);
+			Encoder_moveMm(Encoder_move, 69);
 	}
 
 }
 
 void getTheBadBlock()
 {
-	Gyro_moveMm(Gyro_move, badCol[0] * 75);
+	setMotorTarget(claw, -160, 15);
+
+	Encoder_moveMm(Encoder_move, 220);
+
+	PID_Gyro_Rotate(Gyro_rotate, 89);
+
+	Encoder_moveForTime(Encoder_move, 1300, -30);
+
+	Encoder_moveMm(Encoder_move, 223);
+
+	Gyro_rotate.side = true;
+
+	PID_Gyro_Rotate(Gyro_rotate, 90);
+
+	wait(10);
+
+	Encoder_moveMm(Encoder_move, 105);
+
+	//Encoder_moveMm(Encoder_move, badCol[0] * 70);
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(badCol[0] * 70));
+
+	wait(10);
 
 	Block_PickUp();
 
-	Gyro_moveMm(Gyro_move, -badCol[0] * 75);
+	//Encoder_moveMm(Encoder_move, -badCol[0] * 70 - 105);
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-badCol[0] * 70 - 105));
+
+	wait(10);
+
+	setHandUp(-60);
+	setMotorTarget(claw, -160, 15);
+	wait(400);
+	handUp(-10);
+
+	//Encoder_moveMm(Encoder_move, 105);
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(105));
+
+	wait(10);
+
+	//Encoder_moveMm(Encoder_move, badCol[1] * 70);
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(badCol[1] * 70));
+
+	wait(10);
+
+	Block_PickUp();
+
+	//Encoder_moveMm(Encoder_move, (5 - badCol[1]) * 70);
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder((5 - badCol[1]) * 70));
+
+	wait(100);
+
+	//Encoder_moveMm(Encoder_move, -250);
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-250));
+
+	wait(100);
+
+	setHandUp(-60);
+	setMotorTarget(claw, -160, 15);
+	wait(400);
+	handUp(-10);
+
+	//Encoder_moveMm(Encoder_move, 95);
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(95));
+
+	wait(10);
+
+	Block_PickUp();
+
+	//PID_Gyro_Rotate(Gyro_rotate, -90);
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-90));
 }
+
+void
+
 
 void DoTheJob_3()
 {
 	goToBoxes();
 
 	getBlockColors();
+
+	getTheBadBlock();
 }

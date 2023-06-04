@@ -34,7 +34,7 @@ void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_m
 
 void Block_Grab()
 {
-	setHandUp(-55);
+	setHandUp(-65);
 
 	clawOpened(false);
 
@@ -45,32 +45,32 @@ void Block_PickUp()
 {
 	Block_Grab();
 
-	setHandUp(-5);
+	setHandUp(-10);
 }
 
 void Block_PlaceDown()
 {
-	setHandUp(-55);
+	setHandUp(-60);
 
 	clawOpened(true);
 
-	handUp(-5);
+	handUp(-10);
 }
 
 void Block_PlaceOnTheShip()
 {
-	setHandUp(-35);
+	setHandUp(-50);
 
 	clawOpened(true);
 
-	handUp(-5);
+	handUp(-10);
 }
 
-void takeFirstBlockInCage(PID* pid_mover)
+int takeFirstBlockInCage(PID* Encoder_mover)
 {
-	float MmAfterFirstBlock;
+	float MmAfterFirstBlock = 80;
 
-	float MmBetweenBlocks = 75;
+	float MmBetweenBlocks = 32;
 
 	int firstBlock;
 
@@ -86,7 +86,9 @@ void takeFirstBlockInCage(PID* pid_mover)
 		}
 	}
 
-	pid_mover->setpoint = getGyroDegrees(gyro);
+	Encoder_mover->moveSpeed = -abs(Encoder_mover->moveSpeed);
+
+	Encoder_mover->setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
 
 	float curr = getMotorEncoder(wheelL);
 
@@ -94,11 +96,15 @@ void takeFirstBlockInCage(PID* pid_mover)
 
 	float target = curr + MmToEncoder(MmAfterFirstBlock) + MmToEncoder((firstBlock - 1) * MmBetweenBlocks);
 
-	PID_Gyro_On_Until_Encoder(pid_mover, target);
+	displayBigTextLine(1, "%d", target);
 
-	while(task_usage[1].use != none){}
+	displayBigTextLine(3, "%d", curr);
+
+	PID_Encoder_On_Until_Encoder(Encoder_mover, target);
 
 	Block_PickUp();
+
+	return target - curr;
 }
 
 void parallelMovement(float dis)

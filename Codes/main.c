@@ -16,7 +16,7 @@
 int cBlack = 8;
 int cDarkBlue = 11;
 int cBlue = 15;
-int cWhite = 50;
+int cWhite = 76;
 
 int badCol[2];
 
@@ -25,7 +25,7 @@ bool checkStatus = false;
 
 int colorsAsked[2]; 	// 3=Mwvane, 2=Blue, 0=Empty.
 int blockColors[4]; 	// 3=Mwvane, 2=Blue, 0=Empty.
-int robotBlocks[4]; 	// 3=Mwvane, 2=Blue, 0=Empty.
+int robotBlocks[4];	// 3=Mwvane, 2=Blue, 0=Empty.
 
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
@@ -60,7 +60,6 @@ PID Encoder_rotate;
 
 task main()
 {
-
 	Initializate();
 
 	//Encoder_rotate.oneSided = true;
@@ -71,6 +70,16 @@ task main()
 	DoTheJob_1();
 
 	DoTheJob_2();
+
+	DoTheJob_3();
+
+	//Block_PickUp();
+
+	//int delta = takeFirstBlockInCage(Encoder_move);
+
+	//Encoder_moveMm(Encoder_move, 100);
+
+	//Block_PlaceOnTheShip();
 
 	//PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(350));
 
@@ -102,4 +111,8 @@ task main()
 	//playSound(soundBlip);
 
 	//PID_LineFollower_On_ForTime(LineFollower_normal_l, 99999);
+
+	while(1)
+	{
+	}
 }

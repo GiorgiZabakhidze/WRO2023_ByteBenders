@@ -1,36 +1,53 @@
 void getAskedColors()
 {
-	Gyro_moveMm(Gyro_move, 290);
+	//Gyro_moveMm(Gyro_move, 290);
+
+	//Gyro_moveMm(Gyro_move, 40);
+
+	Encoder_moveMm(Encoder_move, 70);
+
+	LineFollower_normal_l.setpoint = 60;
+
+	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(210));
 
 	colorsAsked[0] = ColorCheck();
 
-	Gyro_moveMm(Gyro_move, 40);
+	displayBigTextLine(1, "%d", colorsAsked[0]);
+
+	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(45));
 
 	colorsAsked[1] = ColorCheck();
+
+	displayBigTextLine(3, "%d", colorsAsked[1]);
+
+	PID_LineFollower_On_Until_Reflected(LineFollower_normal_l, cBlack + 1);
 
 	stopTask(Cimcimi);
 }
 
+
 void pushTheShip()
 {
-	Gyro_moveMm(Gyro_move_fast, 150);
+	Gyro_moveMm(Gyro_move, -30);
 
-	setHandUp(-50);
+	Gyro_rotate.Kp = 1.5;
 
+	Gyro_rotate.side = true;
+
+	PID_Gyro_Rotate(Gyro_rotate, -20);
+
+	Gyro_rotate.side = false;
+
+	PID_Gyro_Rotate(Gyro_rotate, 20);
+
+	Gyro_rotate.Kp = 3;
+
+	Encoder_moveMm(Encoder_move_fast, 130);
+
+	setHandUp(-60);
 	clawOpened(true);
 
-	//Gyro_moveMm(Gyro_move_fast, -30);
-
-	//Gyro_rotate.oneSided = true;
-	//Gyro_rotate.side = true;
-
-	//PID_Gyro_Rotate(Gyro_move_fast, 40);
-
-	//Gyro_rotate.side = false;
-
-	//wait(1000);
-
-	//PID_Gyro_Rotate(Gyro_move_fast, -40);
+	wait(500);
 }
 
 void getOnTheLine()
@@ -39,24 +56,12 @@ void getOnTheLine()
 
 	PID_Gyro_On_Until_Reflected(Gyro_move, cBlack);
 
-	wait(100);
-
-	PID_Gyro_On_Until_Reflected(Gyro_move, (cBlack + cWhite)/2 + 3);
+	Encoder_moveMm(Encoder_move, -25);
 
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
-
-	//Gyro_rotate.oneSided = true;
-
-	//Gyro_rotate.side = true;
-
-	//PID_Gyro_Rotate(Gyro_rotate, -29);
-
-	//Gyro_rotate.side = false;
-
-	//PID_Gyro_Rotate(Gyro_rotate, 28);
 }
 
 void putTheShip()
@@ -73,7 +78,7 @@ void putTheShip()
 
 	wait(5);
 
-	PID_LineFollower_On_ForTime(LineFollower_normal_l, 2300, false);
+	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(550));
 
 	Gyro_rotate.side = true;
 

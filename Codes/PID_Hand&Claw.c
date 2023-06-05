@@ -11,6 +11,7 @@ void handUp(int setPoint)
 		Hand_normal.setpoint = -setpoint;
 }
 
+int gripStrength = 15;
 
 /*
 	Xeli-s Gamodzraveba Romlitac Zemot-Qvemot Iweva Claw
@@ -22,12 +23,12 @@ void clawOpened(bool setPoint)
 {
 	if(setPoint) // Tu Setpoint Aris True, ClawTarget-s Vaniwebt Aweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		setMotorSpeed(claw, 50);
+		setMotorSpeed(claw, gripStrength);
 	}
 	else // Tu Setpoint Aris false, ClawTarget-s Vaniwebt Chamoweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		setMotorSpeed(claw, -50);
+		setMotorSpeed(claw, -gripStrength);
 	}
 
-	wait(1000);
+	wait(1300);
 }

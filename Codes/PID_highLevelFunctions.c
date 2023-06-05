@@ -34,7 +34,7 @@ void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_m
 
 void Block_Grab()
 {
-	setHandUp(-65);
+	setHandUp(-80);
 
 	clawOpened(false);
 
@@ -45,16 +45,16 @@ void Block_PickUp()
 {
 	Block_Grab();
 
-	setHandUp(-10);
+	setHandUp(-20);
 }
 
 void Block_PlaceDown()
 {
-	setHandUp(-60);
+	setHandUp(-65);
 
 	clawOpened(true);
 
-	handUp(-10);
+	handUp(-20);
 }
 
 void Block_PlaceOnTheShip()
@@ -102,6 +102,8 @@ int takeFirstBlockInCage(PID* Encoder_mover)
 
 	PID_Encoder_On_Until_Encoder(Encoder_mover, target);
 
+	wait(500);
+
 	Block_PickUp();
 
 	return target - curr;
@@ -109,30 +111,25 @@ int takeFirstBlockInCage(PID* Encoder_mover)
 
 void parallelMovement(float dis)
 {
-	float r = 16;
-	float angle = acos( 1 - abs(dis) / r );
-	float deltaForward = r * sin(angle);
+	float r = 183;
+	float angle = 57.2958 * acos( 1 - abs(dis) / r );
+
+	Gyro_move.oneSided = false;
 
 	Gyro_move.setpoint = getGyroDegrees(gyro);
 
-	Gyro_move.moveSpeed = -20;
+	int k = abs(dis) / dis;
+
+	Gyro_move.moveSpeed = -30 * k;
 
 	wait(10);
-
-	PID_Gyro_On_Until_Encoder(Gyro_move, getMotorEncoder(wheelL) + MmToEncoder(deltaForward));
-
-	while(task_usage[1].use != none){}
 
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = (bool)(dis < 0);
 
 	PID_Gyro_Rotate(Gyro_rotate, angle);
 
-	while(task_usage[2].use != none){}
-
 	Gyro_rotate.side = (bool)(dis > 0);
 
 	PID_Gyro_Rotate(Gyro_rotate, -angle);
-
-	while(task_usage[2].use != none){}
 }

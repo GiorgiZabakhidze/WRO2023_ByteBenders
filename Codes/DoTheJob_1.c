@@ -1,9 +1,5 @@
 void getAskedColors()
 {
-	//Gyro_moveMm(Gyro_move, 290);
-
-	//Gyro_moveMm(Gyro_move, 40);
-
 	Encoder_moveMm(Encoder_move, 70);
 
 	LineFollower_normal_l.setpoint = 60;
@@ -28,26 +24,29 @@ void getAskedColors()
 
 void pushTheShip()
 {
-	Gyro_moveMm(Gyro_move, -30);
+	Encoder_moveMm(Encoder_move, 20);
+
+	Encoder_moveMm(Encoder_move, -40);
 
 	Gyro_rotate.Kp = 1.5;
 
-	Gyro_rotate.side = true;
-
-	PID_Gyro_Rotate(Gyro_rotate, -20);
-
+	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 20);
+	PID_Gyro_Rotate(Gyro_rotate, -15);
+
+	Gyro_rotate.side = true;
+
+	PID_Gyro_Rotate(Gyro_rotate, 16);
 
 	Gyro_rotate.Kp = 3;
 
-	Encoder_moveMm(Encoder_move_fast, 130);
+	Encoder_moveForTime(Encoder_move_fast, 700, 55);
 
 	setHandUp(-60);
-	clawOpened(true);
+	setMotorSpeed(claw, 50);
 
-	wait(500);
+	wait(1250);
 }
 
 void getOnTheLine()
@@ -56,16 +55,27 @@ void getOnTheLine()
 
 	PID_Gyro_On_Until_Reflected(Gyro_move, cBlack);
 
-	Encoder_moveMm(Encoder_move, -25);
+	Encoder_moveMm(Encoder_move, -35);
 
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 90);
+	PID_Gyro_Rotate(Gyro_rotate, 45);
+
+	setMotorSpeed(wheelL, 30);
+
+	while(getColorReflected(color1) < cWhite - 5){}
+
+	while(getColorReflected(color1) > (cWhite + cBlack) / 2 + 10){}
+
+	setMotorSpeed(wheelL, 0);
 }
 
 void putTheShip()
 {
+	clawOpened(false);
+	handUp(-20);
+
 	PID_LineFollower_On_ForTime(LineFollower_normal_l, 1000, false);
 
 	playSound(soundLowBuzz);
@@ -78,7 +88,10 @@ void putTheShip()
 
 	wait(5);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(550));
+	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(520));
+
+	setHandUp(-65);
+	clawOpened(true);
 
 	Gyro_rotate.side = true;
 
@@ -86,31 +99,25 @@ void putTheShip()
 
 	PID_Gyro_Rotate(Gyro_rotate, -87);
 
-	Gyro_move.moveSpeed = 30;
+	Encoder_move.moveSpeed = 30;
 
-	Gyro_move.setpoint = getGyroDegrees(gyro);
+	Encoder_move.setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
 
 	wait(10);
 
-	PID_Gyro_On_ForTime(Gyro_move, 500);
+	PID_Encoder_On_ForTime(Encoder_move, 500);
 
 	clawOpened(false);
 
-	setHandUp(-10);
+	setHandUp(-20);
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, -20);
+	PID_Gyro_Rotate(Gyro_rotate, -15);
 
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, 20);
-
-	Gyro_move.moveSpeed = -30;
-
-	PID_Gyro_On_Until_Reflected(Gyro_move, cWhite - 10);
-
-	PID_Gyro_On_Until_Reflected(Gyro_move, cBlack + 1);
+	PID_Gyro_Rotate(Gyro_rotate, 110);
 }
 
 void DoTheJob_1()

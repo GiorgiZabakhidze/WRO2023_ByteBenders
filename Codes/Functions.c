@@ -43,23 +43,23 @@ void setHandUp(int encoderVal)
 {
 	handUp(encoderVal);
 
-	bool prev;
+	//bool prev;
 
-	while(1)
-	{
-		prev = false;
+	//while(1)
+	//{
+	//	prev = false;
 
-		if(inRange(getMotorEncoder(hand), -encoderVal, Hand_normal.acceptableRange))
-		{
-			prev = true;
-		}
+	//	if(inRange(getMotorEncoder(hand), -encoderVal, Hand_normal.acceptableRange))
+	//	{
+	//		prev = true;
+	//	}
 
-		if(prev)
-			wait(20);
+	//	if(prev)
+	//		wait(20);
 
-		if(inRange(getMotorEncoder(hand), -encoderVal, Hand_normal.acceptableRange && prev)
-			break;
-	}
+		while(!inRange(getMotorEncoder(hand), -encoderVal, Hand_normal.acceptableRange)){}
+	//		break;
+	//}
 }
 
 void simpleMoveMm(float Mm, int speed = 20)
@@ -155,7 +155,7 @@ void Gyro_moveUntilReflected(PID* pid, float reflection, float speed = 0)
 
 void Encoder_moveMm(PID* pid, float Mm, float speed = 0)
 {
-	pid->setpoint = getGyroDegrees(gyro);
+	pid->setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
 
 	if(speed == 0)
 	{
@@ -182,7 +182,7 @@ void Encoder_moveMm(PID* pid, float Mm, float speed = 0)
 
 	wait(10);
 
-	PID_Gyro_On_Until_Encoder(pid, getMotorEncoder(wheelL) - MmToEncoder(Mm));
+	PID_Encoder_On_Until_Encoder(pid, getMotorEncoder(wheelL) - MmToEncoder(Mm));
 
 	while(task_usage[2].use != none){}
 }

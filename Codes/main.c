@@ -13,6 +13,8 @@
 
 //float lineCorrectionTime = 1000;
 
+int AAAA;
+
 int cBlack = 8;
 int cDarkBlue = 11;
 int cBlue = 15;
@@ -23,9 +25,9 @@ int badCol[2];
 int checkedColor = -1;
 bool checkStatus = false;
 
-int colorsAsked[2]; 	// 3=Mwvane, 2=Blue, 0=Empty.
+int colorsAsked[2]  ={2, 3}; 	// 3=Mwvane, 2=Blue, 0=Empty.
 int blockColors[4]; 	// 3=Mwvane, 2=Blue, 0=Empty.
-int robotBlocks[4];	// 3=Mwvane, 2=Blue, 0=Empty.
+int robotBlocks[4] = {0, 2, 3, 3};		// 3=Mwvane, 2=Blue, 0=Empty.
 
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
@@ -56,16 +58,9 @@ PID Encoder_rotate;
 #include "DoTheJob_2.c"
 #include "DoTheJob_3.c"
 
-
-
 task main()
 {
 	Initializate();
-
-	//Encoder_rotate.oneSided = true;
-	//Encoder_rotate.side = true;
-
-	//PID_Encoder_Rotate(Encoder_rotate, DegToDeltaEncoder(90));
 
 	DoTheJob_1();
 
@@ -73,42 +68,18 @@ task main()
 
 	DoTheJob_3();
 
-	//Block_PickUp();
-
-	//int delta = takeFirstBlockInCage(Encoder_move);
-
-	//Encoder_moveMm(Encoder_move, 100);
-
-	//Block_PlaceOnTheShip();
-
-	//PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(350));
-
-	//Encoder_move.setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
-
-	//wait(100);
-
-	//PID_Encoder_On_Until_Reflected(Encoder_move, cBlack + 1);
-
-	//Gyro_moveMm(Gyro_move, 999999);
-
-	//Gyro_rotate.oneSided = false;
-
-	//PID_Gyro_Rotate(Gyro_rotate, -90);
-
-	//Gyro_rotate.oneSided = false;
-	//Gyro_rotate.side = true;
-
-	//PID_Gyro_Rotate(Gyro_rotate, -90);
-
-	//while(task_usage[1].use != none){}
-
-	//PID_Gyro_On_ForTime(Gyro_move, 9999);
-
-	//Gyro_move_fast.setpoint = getGyroDegrees(gyro);
-
-	//wait(100);
-
 	//playSound(soundBlip);
+
+	//wait(2000);
+
+	//PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(500));
+
+	//clawOpened(false);
+
+	//setHandUp(-65);
+	//clawOpened(true);
+
+	//PID_Encoder_On_ForTime(Encoder_move, 9999);
 
 	//PID_LineFollower_On_ForTime(LineFollower_normal_l, 99999);
 

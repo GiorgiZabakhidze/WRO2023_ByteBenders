@@ -111,6 +111,7 @@ task PID_Encoder()
 
 		if(factor && !(task_usage[2].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
 		{
+			AAAA = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
 			PID_Update(tasks[2], tasks[2]->setpoint, getMotorEncoder(wheelR) + getMotorEncoder(wheelL));
 
 			if(tasks[2]->oneSided)

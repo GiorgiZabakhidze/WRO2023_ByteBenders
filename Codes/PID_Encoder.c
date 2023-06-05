@@ -43,11 +43,11 @@ void PID_Encoder_On_Until_Encoder(PID* pid, float _setpoint, bool parallel = fal
 {
 	if(_setpoint >= getMotorEncoder(wheelL))
 	{
-		PID_Gyro_Start(pid, untilEncoder_high, _setpoint);
+		PID_Encoder_Start(pid, untilEncoder_high, _setpoint);
 	}
 	else
 	{
-		PID_Gyro_Start(pid, untilEncoder_low, _setpoint);
+		PID_Encoder_Start(pid, untilEncoder_low, _setpoint);
 	}
 
 	if(!parallel)

@@ -25,9 +25,9 @@ int badCol[2];
 int checkedColor = -1;
 bool checkStatus = false;
 
-int colorsAsked[2]  ={2, 3}; 	// 3=Mwvane, 2=Blue, 0=Empty.
+int colorsAsked[2]  ={3, 3}; 	// 3=Mwvane, 2=Blue, 0=Empty.
 int blockColors[4]; 	// 3=Mwvane, 2=Blue, 0=Empty.
-int robotBlocks[4] = {0, 2, 3, 3};		// 3=Mwvane, 2=Blue, 0=Empty.
+int robotBlocks[4] = {0, 0, 0, 3};		// 3=Mwvane, 2=Blue, 0=Empty.
 
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
@@ -35,6 +35,9 @@ int robotBlocks[4] = {0, 2, 3, 3};		// 3=Mwvane, 2=Blue, 0=Empty.
 PID Hand_normal;
 PID LineFollower_normal_r;
 PID LineFollower_normal_l;
+PID LineFollower_ship_l;
+PID LineFollower_slow_l;
+PID LineFollower_slow_r;
 PID Gyro_rotate;
 PID Gyro_move;
 PID Gyro_move_fast;
@@ -57,6 +60,7 @@ PID Encoder_rotate;
 #include "DoTheJob_1.c"
 #include "DoTheJob_2.c"
 #include "DoTheJob_3.c"
+#include "DoTheJob_4.c"
 
 task main()
 {
@@ -67,6 +71,8 @@ task main()
 	DoTheJob_2();
 
 	DoTheJob_3();
+
+	DoTheJob_4();
 
 	//playSound(soundBlip);
 
@@ -81,7 +87,7 @@ task main()
 
 	//PID_Encoder_On_ForTime(Encoder_move, 9999);
 
-	//PID_LineFollower_On_ForTime(LineFollower_normal_l, 99999);
+	//PID_LineFollower_On_ForTime(LineFollower_slow_r, 99999);
 
 	while(1)
 	{

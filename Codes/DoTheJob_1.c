@@ -10,13 +10,15 @@ void getAskedColors()
 
 	displayBigTextLine(1, "%d", colorsAsked[0]);
 
+	LineFollower_normal_r.moveSpeed = 10;
+
 	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(45));
+
+	LineFollower_normal_r.moveSpeed = 30;
 
 	colorsAsked[1] = ColorCheck();
 
 	displayBigTextLine(3, "%d", colorsAsked[1]);
-
-	PID_LineFollower_On_Until_Reflected(LineFollower_normal_l, cBlack + 1);
 
 	stopTask(Cimcimi);
 }
@@ -24,29 +26,33 @@ void getAskedColors()
 
 void pushTheShip()
 {
-	Encoder_moveMm(Encoder_move, 20);
+	//Encoder_moveMm(Encoder_move, 30);
 
-	Encoder_moveMm(Encoder_move, -40);
+	//Encoder_moveMm(Encoder_move, -50);
 
-	Gyro_rotate.Kp = 1.5;
+	//Gyro_rotate.Kp = 1.5;
 
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = false;
+	//Gyro_rotate.oneSided = true;
+	//Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, -15);
+	//PID_Gyro_Rotate(Gyro_rotate, -15);
 
-	Gyro_rotate.side = true;
+	//Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, 16);
+	//PID_Gyro_Rotate(Gyro_rotate, 16);
 
-	Gyro_rotate.Kp = 3;
+	//Gyro_rotate.Kp = 3;
 
-	Encoder_moveForTime(Encoder_move_fast, 700, 55);
+	Encoder_moveForTime(Encoder_move_fast, 800, 55);
 
 	setHandUp(-60);
 	setMotorSpeed(claw, 50);
 
 	wait(1250);
+
+	Encoder_moveMm(Encoder_move, -10, -30);
+
+	wait(100);
 }
 
 void getOnTheLine()
@@ -66,7 +72,7 @@ void getOnTheLine()
 
 	while(getColorReflected(color1) < cWhite - 5){}
 
-	while(getColorReflected(color1) > (cWhite + cBlack) / 2 + 10){}
+	while(getColorReflected(color1) > cWhite - 10){}
 
 	setMotorSpeed(wheelL, 0);
 }
@@ -76,19 +82,19 @@ void putTheShip()
 	clawOpened(false);
 	handUp(-20);
 
-	PID_LineFollower_On_ForTime(LineFollower_normal_l, 1000, false);
+	PID_LineFollower_On_ForTime(LineFollower_ship_l, 1750, false);
 
 	playSound(soundLowBuzz);
 
 	wait(5);
 
-	PID_FollowLine_Until_Reflected(LineFollower_normal_l, cBlack + 1);
+	PID_FollowLine_Until_Reflected(LineFollower_ship_l, cBlack + 1);
 
 	playSound(soundBlip);
 
 	wait(5);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(520));
+	PID_LineFollower_On_Until_Encoder(LineFollower_ship_l, getMotorEncoder(wheelL) - MmToEncoder(520));
 
 	setHandUp(-65);
 	clawOpened(true);
@@ -117,7 +123,7 @@ void putTheShip()
 
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, 110);
+	PID_Gyro_Rotate(Gyro_rotate, 105);
 }
 
 void DoTheJob_1()

@@ -1,21 +1,21 @@
 void goToBoxes()
 {
-	//Encoder_moveMm(Encoder_move, -220, 30);
+	Encoder_moveMm(Encoder_move, -220, 30);
 
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
-	//PID_Gyro_Rotate(Gyro_rotate, 180);
+	PID_Gyro_Rotate(Gyro_rotate, 180);
 
-	//Encoder_moveUntilReflected(Encoder_move, cWhite - 40, -30);
+	Encoder_moveUntilReflected(Encoder_move, cWhite - 40, -30);
 
-	//Gyro_rotate.side = true;
+	Gyro_rotate.side = true;
 
-	//PID_Gyro_Rotate(Gyro_rotate, -85);
+	PID_Gyro_Rotate(Gyro_rotate, -85);
 
-	//PID_LineFollower_On_ForTime(LineFollower_normal_r, 2000);
+	PID_LineFollower_On_ForTime(LineFollower_normal_r, 2000);
 
-	//wait(5);
+	wait(5);
 
 	PID_FollowLine_Until_Reflected(LineFollower_normal_r, cBlack);
 
@@ -25,9 +25,9 @@ void goToBoxes()
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
 
-	Encoder_moveMm(Encoder_move, 155);
+	Encoder_moveMm(Encoder_move, 160);
 
-	PID_Gyro_Rotate(Gyro_rotate, 89);
+	PID_Gyro_Rotate(Gyro_rotate, 90);
 
 	Encoder_moveMm(Encoder_move, 55);
 
@@ -43,6 +43,8 @@ void getBlockColors()
 	int badColor = 1;
 
 	int col1 = colorsAsked[0], col2 = colorsAsked[1];
+
+	robotBlocks[3] = 3;
 
 	for(int i = 3; i >= 0; i--)
 	{
@@ -95,9 +97,11 @@ void getBlockColors()
 		if(i > 0)
 		{
 			if(i == 3)
-				Encoder_moveMm(Encoder_move, 69);
+				Encoder_moveMm(Encoder_move, 73);
+			else if(i == 2)
+				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(72));
 			else
-				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(69));
+				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(70));
 		}
 	}
 
@@ -105,7 +109,7 @@ void getBlockColors()
 
 void getTheBadBlock()
 {
-	setMotorTarget(claw, -160, 15);
+	setMotorTarget(claw, -170, 15);
 
 	Encoder_moveMm(Encoder_move, 220);
 
@@ -113,13 +117,13 @@ void getTheBadBlock()
 
 	Encoder_moveForTime(Encoder_move, 1300, -30);
 
-	Encoder_moveMm(Encoder_move, 200);
+	Encoder_moveMm(Encoder_move, 215);
 
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, 92);
+	PID_Gyro_Rotate(Gyro_rotate, 90);
 
-	int constant = 80;
+	int constant = 100;
 	int disBetweenBlocks = 65;
 	gripStrength = 50;
 
@@ -127,7 +131,7 @@ void getTheBadBlock()
 
 	Encoder_moveMm(Encoder_move, constant);
 
-	wait(1000);
+	wait(700);
 
 	//Encoder_moveMm(Encoder_move, badCol[0] * 65);
 	Encoder_move.moveSpeed = 30;
@@ -144,7 +148,7 @@ void getTheBadBlock()
 	wait(10);
 
 	setHandUp(-75);
-	setMotorTarget(claw, -160, 15);
+	setMotorTarget(claw, -170, 15);
 	wait(400);
 	setHandUp(-20);
 
@@ -165,7 +169,7 @@ void getTheBadBlock()
 	Encoder_move.moveSpeed = 30;
 
 	//Encoder_moveMm(Encoder_move, (5 - badCol[1]) * 65);
-	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder((5 - badCol[1]) * disBetweenBlocks + 30));
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder((5 - badCol[1]) * disBetweenBlocks + 60));
 
 	wait(100);
 
@@ -176,7 +180,7 @@ void getTheBadBlock()
 	wait(100);
 
 	setHandUp(-75);
-	setMotorTarget(claw, -160, 15);
+	setMotorTarget(claw, -170, 15);
 	wait(400);
 	setHandUp(-20);
 
@@ -187,12 +191,9 @@ void getTheBadBlock()
 	wait(10);
 
 	Block_PickUp();
-	gripStrength = 15;
 
-	PID_Gyro_Rotate(Gyro_rotate, -90);
+	PID_Gyro_Rotate(Gyro_rotate, -87);
 }
-
-void
 
 
 void DoTheJob_3()

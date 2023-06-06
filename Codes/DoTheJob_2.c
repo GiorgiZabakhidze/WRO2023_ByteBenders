@@ -1,15 +1,15 @@
 void getOnTheParking()
 {
-	LineFollower_normal_r.lineCorrectionTime = 300;
+	LineFollower_slow_r.lineCorrectionTime = 750;
 
-	PID_FollowLine_Until_Reflected(LineFollower_normal_r, cBlack + 1);
+	PID_FollowLine_Until_Reflected(LineFollower_slow_r, cBlack + 1);
 
-	Encoder_moveMm(Encoder_move, 80);
+	Encoder_moveUntilReflected(Encoder_move, cWhite, 30);
 
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 90);
+	PID_Gyro_Rotate(Gyro_rotate, 89);
 
 	Encoder_moveForTime(Encoder_move, 2500, -40);
 
@@ -25,7 +25,7 @@ void getTheBox()
 
 	Encoder_move.moveSpeed = 20;
 
-	Encoder_moveMm(Encoder_move, 50);
+	Encoder_moveMm(Encoder_move, 10);
 
 	Encoder_move.moveSpeed = 30;
 

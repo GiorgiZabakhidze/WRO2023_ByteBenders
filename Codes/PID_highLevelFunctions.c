@@ -1,3 +1,4 @@
+int grabHeight = 80;
 void PID_FollowLine_Until_Reflected(PID* pid, float reflection)
 {
 	PID_LineFollower_On_ForTime(pid, pid->lineCorrectionTime);
@@ -34,11 +35,9 @@ void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_m
 
 void Block_Grab()
 {
-	setHandUp(-80);
+	setHandUp(-grabHeight);
 
 	clawOpened(false);
-
-	playSound(soundBlip);
 }
 
 void Block_PickUp()
@@ -59,16 +58,16 @@ void Block_PlaceDown()
 
 void Block_PlaceOnTheShip()
 {
-	setHandUp(-50);
+	setHandUp(-40);
 
 	clawOpened(true);
 
-	handUp(-10);
+	handUp(-20);
 }
 
-int takeFirstBlockInCage(PID* Encoder_mover)
+int Block_takeFirstBlockInCage(PID* Encoder_mover)
 {
-	float MmAfterFirstBlock = 80;
+	float MmAfterFirstBlock = 90;
 
 	float MmBetweenBlocks = 32;
 
@@ -96,13 +95,7 @@ int takeFirstBlockInCage(PID* Encoder_mover)
 
 	float target = curr + MmToEncoder(MmAfterFirstBlock) + MmToEncoder((firstBlock - 1) * MmBetweenBlocks);
 
-	displayBigTextLine(1, "%d", target);
-
-	displayBigTextLine(3, "%d", curr);
-
 	PID_Encoder_On_Until_Encoder(Encoder_mover, target);
-
-	wait(500);
 
 	Block_PickUp();
 

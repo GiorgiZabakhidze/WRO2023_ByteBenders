@@ -143,7 +143,7 @@ float DegToDeltaEncoder(float deg)
 
 	float L_Borbali = 2 * Pi * r;
 
-	float Enc = 360 * (L_Rkali / L_Borbali);
+	float Enc = 360 * (L_Borbali / L_Rkali);
 
 	displayBigTextLine(1, "%d", Enc/10);
 

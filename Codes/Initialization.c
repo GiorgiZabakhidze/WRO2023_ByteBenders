@@ -2,13 +2,25 @@ void Initializate()
 {
 	PID_init(&Encoder_move, 2.5, 0, 0.0, 0.000666666, 80, -80, 0, 30);
 	PID_init(&Hand_normal, 10, 1.5, 0.8, 0.000666666, 80, -80, 0, 0);
-	PID_init(&LineFollower_normal_r, 0.17, 0.008, 0.004, 0.000666666, 80, -80, 46, 30);
-	PID_init(&LineFollower_normal_l, 0.18, 0.008, 0.004, 0.000666666, 80, -80, 46, 30);
+	PID_init(&LineFollower_normal_r, 0.17, 0.008, 0.004, 0.000666666, 80, -80, 40, 30);
+	PID_init(&LineFollower_normal_l, 0.18, 0.008, 0.004, 0.000666666, 80, -80, 40, 30);
+	PID_init(&LineFollower_ship_l, 0.24, 0.012, 0.006, 0.000666666, 80, -80, 40, 30);
+	PID_init(&LineFollower_slow_l, 0.19, 0.008, 0.004, 0.000666666, 80, -80, 40, 15);
+	PID_init(&LineFollower_slow_r, 0.19, 0.008, 0.004, 0.000666666, 80, -80, 40, 15);
 	PID_init(&Gyro_rotate, 3, 0.002, 0., 0.000666666, 80, -80, 0, 0);
 	PID_init(&Gyro_move_fast, 10, 0.2, 0.005, 0.000666666, 80, -80, 0, 45);
 	PID_init(&Gyro_move, 4, 0.01, 0.00, 0.000666666, 80, -80, 0, 30);
 	PID_init(&Encoder_move_fast, 5, 0.2, 2, 0.000666666, 80, -80, 0, 60);
-	PID_init(&Encoder_rotate, 1, 0, 0, 0.000666666, 80, -80, 0, 20);
+	PID_init(&Encoder_rotate, 1, 0, 0, 0.000666666, 80, -80, 0, 0);
+
+	LineFollower_slow_l.lineCorrectionTime = 1500;
+	LineFollower_slow_l.rev = -1;
+
+	LineFollower_ship_l.lineCorrectionTime = 1500;
+	LineFollower_ship_l.rev = -1;
+
+	LineFollower_slow_r.lineCorrectionTime = 1500;
+	LineFollower_slow_r.rev = 1;
 
 	LineFollower_normal_r.lineCorrectionTime = 1500;
 	LineFollower_normal_r.rev = 1;

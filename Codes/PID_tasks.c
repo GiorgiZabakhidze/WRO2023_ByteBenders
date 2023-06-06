@@ -1,6 +1,5 @@
 task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color Sensor-is Mixedvit
 {
-	bool odd = false;
 	int startTime = 0;
 	bool factor = false;
 	int successStart = 0;
@@ -15,25 +14,13 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 
 		int doneFor = timer_count(successStart, time1(T1));
 
-
 		if(factor && !(task_usage[0].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
 		{
 			// Vanaxlebt PID-s Output-s
 			PID_Update(tasks[0], tasks[0]->setpoint, getColorReflected(color1));
 
-			if(odd)
-			{
-				// Vurtavt Shesabamis Motorebze
-				setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * task_rev);
-				setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * task_rev);
-			}
-			else
-			{
-				// Vurtavt Shesabamis Motorebze
-				setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * task_rev);
-				setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * task_rev);
-			}
-			odd = !odd;
+			setMotorSpeed(wheelR, tasks[0]->moveSpeed - tasks[0]->out * tasks[0]->rev);
+			setMotorSpeed(wheelL, tasks[0]->moveSpeed + tasks[0]->out * tasks[0]->rev);
 
 			if(task_usage[0] == none)
 			{
@@ -51,7 +38,6 @@ task PID_LineFollower() // Amushavebs PID-s Romelic Akontrolebs Borblebs Color S
 
 task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 {
-	bool odd = false;
 	int startTime = 0;
 	bool factor = false;
 	int successStart = 0;
@@ -70,17 +56,28 @@ task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 		if(factor && !(task_usage[1].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
 		{
 			PID_Update(tasks[1], tasks[1]->setpoint, getGyroDegrees(gyro));
-			if(odd)
+
+			float addition = 0;
+
+			if(timer_count(startTime, time1(T1)) < tasks[1]->additionTime)
+				addition = tasks[1]->moveSpeed * tasks[1]->additionMultiplier;
+
+			if(tasks[1]->oneSided)
 			{
-				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out+2);
-				setMotorSpeed(wheelL, tasks[1]->moveSpeed + tasks[1]->out);
+				if(tasks[1]->side)
+				{
+					setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out);
+				}
+				else
+				{
+					setMotorSpeed(wheelL, tasks[1]->moveSpeed + tasks[1]->out);
+				}
 			}
 			else
 			{
+				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out);
 				setMotorSpeed(wheelL, tasks[1]->moveSpeed + tasks[1]->out);
-				setMotorSpeed(wheelR, tasks[1]->moveSpeed - tasks[1]->out+2);
 			}
-			odd = !odd;
 
 			if(task_usage[1] == none)
 			{
@@ -95,7 +92,8 @@ task PID_gyro() // Amushavebs PID-s Romelic Akontrolebs Borblebs Gyro-s Mixedvit
 	}
 }
 
-task PID_gyro_oneSided()
+
+task PID_Encoder()
 {
 	int startTime = 0;
 	bool factor = false;
@@ -111,23 +109,12 @@ task PID_gyro_oneSided()
 
 		int doneFor = timer_count(successStart, time1(T1));
 
-
 		if(factor && !(task_usage[2].use == on_untilDone && doneFor >= 20)) // Mushaobs Tu Factor Aris Chartuli
 		{
-			PID_Update(tasks[2], tasks[2]->setpoint, getGyroDegrees(gyro));
+			AAAA = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
+			PID_Update(tasks[2], tasks[2]->setpoint, getMotorEncoder(wheelR) + getMotorEncoder(wheelL));
 
 			if(tasks[2]->oneSided)
-			{
-				if(tasks[2]->side)
-				{
-					setMotorSpeed(wheelR, tasks[2]->moveSpeed - tasks[2]->out);
-				}
-				else
-				{
-					setMotorSpeed(wheelL, tasks[2]->moveSpeed + tasks[2]->out);
-				}
-			}
-			else
 			{
 				if(tasks[2]->side)
 				{
@@ -138,6 +125,12 @@ task PID_gyro_oneSided()
 					setMotorSpeed(wheelL, tasks[2]->moveSpeed - tasks[2]->out);
 				}
 			}
+			else
+			{
+				setMotorSpeed(wheelR, tasks[2]->moveSpeed + tasks[2]->out);
+				setMotorSpeed(wheelL, tasks[2]->moveSpeed - tasks[2]->out);
+			}
+
 			if(task_usage[2] == none)
 			{
 				stopWheels();
@@ -145,7 +138,7 @@ task PID_gyro_oneSided()
 		}
 		else if(task_prevUsage[2] != none)
 		{
-			task_usage[2] = none;
+			task_usage[2].use = none;
 			stopWheels();
 		}
 	}
@@ -153,18 +146,10 @@ task PID_gyro_oneSided()
 
 task PID_Hand()
 {
-	int startTime = 0;
-	bool factor = false;
-
 	repeat(forever) // Task-ebi Arian Mudmivar Chaciklulebi.
 	{
-		calculateFactor(3, startTime, factor);
+		PID_Update(Hand_normal, Hand_normal.setpoint, getMotorEncoder(hand));
 
-		if(factor) // Mushaobs Tu Factor Aris Chartuli
-		{
-			PID_Update(tasks[3], tasks[3]->setpoint, getMotorEncoder(hand));
-
-			setMotorSpeed(hand, tasks[3]->out);
-		}
+		setMotorSpeed(hand, Hand_normal.out);
 	}
 }

@@ -1,34 +1,4 @@
 /*
-	Igebs Integeris Nishans.
-
-	@param [int] a     Ricxvi Romlis Nishanic Gvainteresebs.
-	@return [int] 0, -1 an 1. Integeris Nishani.
-*/
-int sign(int a)
-{
-	if(a == 0) // Tu Ricxvi Nulia, Vabrunebt 0-s.
-		return 0;
-
-	return (a / abs(a)); // Vabrunebt Nishans.
-}
-
-
-/*
-	Igebs Floatis Nishans.
-
-	@param [float] a     Ricxvi Romlis Nishanic Gvainteresebs.
-	@return [float] 0, -1 an 1. Floatis Nishani.
-*/
-float sign(float a)
-{
-	if(a == 0) // Tu Ricxvi Nulia, Vabrunebt 0-s.
-		return 0;
-
-	return (a / abs(a)); // Vabrunebt Nishans.
-}
-
-
-/*
 	Igebs Or Integers Shoris Maqsimums.
 
 	@param [int] a		Pirveli Ricxvi.
@@ -162,4 +132,20 @@ float MmToEncoder(float Mm)
 {
 	float MMforEncoder = 0.48869219055;
 	return Mm / MMforEncoder;
+}
+
+float DegToDeltaEncoder(float deg)
+{
+	float dis = 195; // Borblebs Shoris Mandzili Milimetrebshi
+	float r = 28;  // Borblis Radiusi Milimetrebshi
+
+	float L_Rkali = 2 * Pi * dis * deg / 360;
+
+	float L_Borbali = 2 * Pi * r;
+
+	float Enc = 360 * (L_Rkali / L_Borbali);
+
+	displayBigTextLine(1, "%d", Enc/10);
+
+	return Enc/10;
 }

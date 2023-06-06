@@ -13,97 +13,77 @@
 
 //float lineCorrectionTime = 1000;
 
+int AAAA;
+
+int cBlack = 8;
+int cDarkBlue = 11;
+int cBlue = 15;
+int cWhite = 76;
+
+int badCol[2];
+
+int checkedColor = -1;
+bool checkStatus = false;
+
+int colorsAsked[2]  ={2, 3}; 	// 3=Mwvane, 2=Blue, 0=Empty.
+int blockColors[4]; 	// 3=Mwvane, 2=Blue, 0=Empty.
+int robotBlocks[4] = {0, 2, 3, 3};		// 3=Mwvane, 2=Blue, 0=Empty.
+
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
+
+PID Hand_normal;
+PID LineFollower_normal_r;
+PID LineFollower_normal_l;
+PID Gyro_rotate;
+PID Gyro_move;
+PID Gyro_move_fast;
+PID Encoder_move;
+PID Encoder_move_fast;
+PID Encoder_rotate;
+
 #include "PID_Usage.c"
 #include "PID_tasks.c"
 #include "PID_Start.c"
 #include "PID_LineFollower.c"
 #include "PID_Gyro.c"
 #include "PID_Hand&Claw.c"
+#include "Hand&Claw.c"
+#include "PID_Encoder.c"
 #include "Functions.c"
+#include "Tasks.c"
 #include "PID_highLevelFunctions.c"
 #include "Initialization.c"
-
-PID LineFollower_normal_r;
-PID LineFollower_normal_l;
-PID Gyro_rotate;
-PID Hand_normal;
-PID Claw_normal;
-PID Gyro_mover;
-
-int color2Color = 0;
-
-#include "Tasks.c"
-
-void moveBy(int by)
-{
-	int target = getMotorEncoder(wheelR) + MmToEncoder(by);
-
-	while(getMotorEncoder(wheelR) < target)
-	{
-		setMotorSpeed(wheelR, 30);
-		setMotorSpeed(wheelL, 30);
-	}
-	setMotorSpeed(wheelR, 0);
-	setMotorSpeed(wheelL, 0);
-}
+#include "DoTheJob_1.c"
+#include "DoTheJob_2.c"
+#include "DoTheJob_3.c"
 
 task main()
 {
 	Initializate();
 
-	PID_init(&LineFollower_normal_r, 0.31, 0.0005, 0.0009, 0.000666666, 80, -80, 45, 20);
-	PID_init(&LineFollower_normal_l, 0.5, 0.02, 0.0009, 0.000666666, 80, -80, 52, 30);
-	PID_init(&Gyro_rotate, 1.5, 0.001, 0, 0.000666666, 80, -80, 0, 0);
-	PID_init(&Gyro_mover, 2, 0.0, 0.000, 0.000666666, 80, -80, 0, 20);
-	PID_init(&Hand_normal, 1, 0.09, 0.023, 0.00043, 80, -80, 0, 0);
-	PID_init(&Claw_normal, 3, 0.0, 0.0, 0.00043, 80, -80, 0, 0);
+	DoTheJob_1();
 
-	LineFollower_normal_r.lineCorrectionTime = 500;
-	LineFollower_normal_l.lineCorrectionTime = 1500;
+	DoTheJob_2();
 
-	Gyro_rotate.acceptableRange = 0;
+	DoTheJob_3();
 
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = true;
+	//playSound(soundBlip);
 
-	PID_Gyro_Rotate(Gyro_rotate, -90);
+	//wait(2000);
 
-	while(task_usage[2].use != none){}
+	//PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(500));
 
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = false;
+	//clawOpened(false);
 
-	PID_Gyro_Rotate(Gyro_rotate, -35);
+	//setHandUp(-65);
+	//clawOpened(true);
 
-	while(task_usage[2].use != none){}
+	//PID_Encoder_On_ForTime(Encoder_move, 9999);
 
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = true;
+	//PID_LineFollower_On_ForTime(LineFollower_normal_l, 99999);
 
-	PID_Gyro_Rotate(Gyro_rotate, -55);
-
-	while(task_usage[2].use != none){}
-
-	Gyro_rotate.oneSided = false;
-	Gyro_rotate.side = true;
-
-	Gyro_rotate.acceptableRange = 2;
-
-	PID_Gyro_Rotate(Gyro_rotate, 30);
-
-	while(task_usage[1].use != none){}
-
-	moveBy(30);
-
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = true;
-
-	PID_Gyro_Rotate(Gyro_rotate, -32);
-
-	while(task_usage[2].use != none){}
-
-	moveBy(400);
-	while(1){}
+	while(1)
+	{
+	}
 }

@@ -1,8 +1,19 @@
-
 task Cimcimi()
 {
 	while(1)
 	{
-		color2Color = Color_GetColorAmbient();
+	 	wait(50);
+
+		getColorAmbient(color2); // Gadavrtavt Ambient Mode-ze
+
+		wait(50);
+
+		getColorName(color2);
+
+		wait(50);
+
+	 	checkedColor = getColorName(color2);
+
+	 	checkStatus = !checkStatus;
 	}
 }

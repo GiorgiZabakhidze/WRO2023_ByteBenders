@@ -2,20 +2,16 @@
 	Xeli-s Gamodzraveba Romlitac Zemot-Qvemot Iweva Claw
 
 	@param [PID] pid 								Xeli-s PID Romlitac Vakontrolebt Xeli-s Motors
-	@param [bool] setPoint 					Xeli-s Mamodzravebeli Motor-is Sasurveli Encoder Mnishvneloba (True=Aweva, False=Daweva)
+	@param [int] setPoint 					Xeli-s Mamodzravebeli Motor-is Sasurveli Encoder Mnishvneloba (Dadebiti=Aweva, Uaryopiti=Daweva)
 */
-void moveHand(PID* pid, bool setPoint)
+void handUp(int setPoint)
 {
-	if(setPoint) // Tu Setpoint Aris True, HandTarget-s Vaniwebt Aweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
-	{
-		pid->setpoint = getMotorEncoder(hand) - 35;
-	}
-	else // Tu Setpoint Aris false, HandTarget-s Vaniwebt Chamoweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
-	{
-		pid->setpoint = getMotorEncoder(hand) + 35;
-	}
+		PID_resetVariables(Hand_normal);
+
+		Hand_normal.setpoint = -setpoint;
 }
 
+int gripStrength = 15;
 
 /*
 	Xeli-s Gamodzraveba Romlitac Zemot-Qvemot Iweva Claw
@@ -23,14 +19,16 @@ void moveHand(PID* pid, bool setPoint)
 	@param [PID] pid 								Claw-s PID Romlitac Vakontrolebt Claw-s Motors
 	@param [bool] setPoint 					Xeli-s Mamodzravebeli Motor-is Sasurveli Encoder Mnishvneloba (True=Gaxsnili, False=Daketili)
 */
-void moveClaw(PID* pid, bool setPoint)
+void clawOpened(bool setPoint)
 {
 	if(setPoint) // Tu Setpoint Aris True, ClawTarget-s Vaniwebt Aweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		setMotorTarget(claw, getMotorEncoder(claw) + 1000, 60);
+		setMotorSpeed(claw, gripStrength);
 	}
 	else // Tu Setpoint Aris false, ClawTarget-s Vaniwebt Chamoweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
-		setMotorTarget(claw, getMotorEncoder(claw) - 1000, 60);
+		setMotorSpeed(claw, -gripStrength);
 	}
+
+	wait(1300);
 }

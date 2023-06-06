@@ -22,10 +22,14 @@ struct PID // PID-s Struqtura. Sheinaxavs PID-s Mnishvnelobebs.
 	float lineCorrectionTime; // LineFollower-it Gzaze Gasworebis Dro Roca Gyro-ti Midixar Xazamde
 	bool oneSided; // Tu Cal Borbals Vatrialebt, Gansazgvravs Romeli Borbals Vatrialebt (True=Marjvena, False=Marcxena)
 	bool side; // Tu Cal Borbals Vatrialebt, Gansazgvravs Romeli Borbals Vatrialebt (True=Marjvena, False=Marcxena)
+	int rev; // Tu Marjvena Mxaris Line Follower-ia 1, Tu Marcxena -1
 	float acceptableRange; // Misagebi Gansxvaveba Sasurveli Shedegidan Sadac Programas Aqvs Upleba Shewyvitos Robotis Gasworeba
 
+	float additionTime;
+	float additionMultiplier;
+
 	float out; // Correction
-}
+}PID;
 
 
 /*
@@ -71,6 +75,11 @@ void PID_init(PID* pid, float Kp_val, float Ki_val, float Kd_val, float Kn_val, 
 		pid->setpoint = setpoint_val;
 
 		pid->T = 0.02;
+
+		pid->lineCorrectionTime = 0;
+		pid->oneSided = false;
+		pid->side = false;
+		pid->acceptableRange = 0;
 
 		PID_resetVariables(pid);
 }
@@ -142,7 +151,7 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 			{
 				Correction = pid->outLimMax - pid->moveSpeed;
 
-				if(sign(error) == sign(Correction)) // Tu Nishnebi Emtxveva, Vclampavt Integratorsac.
+				if(sgn(error) == sgn(Correction)) // Tu Nishnebi Emtxveva, Vclampavt Integratorsac.
 					clamp_integrator = true;
 			}
 
@@ -150,7 +159,7 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 			{
 				Correction = pid->outLimMin + pid->moveSpeed;
 
-				if(sign(error) == sign(Correction)) // Tu Nishnebi Emtxveva, Vclampavt Integratorsac.
+				if(sgn(error) == sgn(Correction)) // Tu Nishnebi Emtxveva, Vclampavt Integratorsac.
 					clamp_integrator = true;
 			}
 
@@ -170,5 +179,5 @@ void PID_Update(PID* pid, float setPoint, float measurement)
 			pid->integrator = integrator;
 
 	// Vinaxavt Correction-s Struqturashi
-	pid->out = Correction;
+		pid->out = Correction;
 }

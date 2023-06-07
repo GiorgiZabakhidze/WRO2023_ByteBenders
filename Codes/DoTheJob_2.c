@@ -9,7 +9,7 @@ void getOnTheParking()
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 89);
+	PID_Gyro_Rotate(Gyro_rotate, 90);
 
 	Encoder_moveForTime(Encoder_move, 2500, -40);
 
@@ -18,18 +18,17 @@ void getOnTheParking()
 void getTheBox()
 {
 	handUp(-20);
+	setMotorSpeed(claw, 15);
 
 	Encoder_moveMm(Encoder_move, 115);
 
 	PID_Gyro_Rotate(Gyro_rotate, 87);
 
-	Encoder_move.moveSpeed = 20;
+	Encoder_move.moveSpeed = 10;
 
-	Encoder_moveMm(Encoder_move, 10);
+	Encoder_moveMm(Encoder_move, 20);
 
 	Encoder_move.moveSpeed = 30;
-
-	clawOpened(true);
 
 	Gyro_move.moveSpeed = 10;
 
@@ -54,7 +53,7 @@ void hangTheBox()
 
 	PID_Gyro_Rotate(Gyro_rotate, -86);
 
-	handUp(-31);
+	handUp(-38);
 
 	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(300));
 

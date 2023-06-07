@@ -1,6 +1,6 @@
 void getAskedColors()
 {
-	Encoder_moveMm(Encoder_move, 70);
+	Encoder_moveMm(Encoder_move, 80);
 
 	LineFollower_normal_l.setpoint = 60;
 
@@ -45,14 +45,14 @@ void pushTheShip()
 
 	Encoder_moveForTime(Encoder_move_fast, 800, 55);
 
-	setHandUp(-60);
+	setHandUp(-65);
 	setMotorSpeed(claw, 50);
 
 	wait(1250);
 
 	Encoder_moveMm(Encoder_move, -10, -30);
 
-	wait(100);
+	wait(500);
 }
 
 void getOnTheLine()
@@ -82,28 +82,32 @@ void putTheShip()
 	clawOpened(false);
 	handUp(-20);
 
-	PID_LineFollower_On_ForTime(LineFollower_ship_l, 1750, false);
+	//PID_LineFollower_On_ForTime(LineFollower_fast_l, 1000, false);
 
 	playSound(soundLowBuzz);
 
 	wait(5);
 
-	PID_FollowLine_Until_Reflected(LineFollower_ship_l, cBlack + 1);
+	PID_FollowLine_Until_Reflected(LineFollower_fast_l, cBlack + 1);
 
 	playSound(soundBlip);
 
 	wait(5);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_ship_l, getMotorEncoder(wheelL) - MmToEncoder(520));
+	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(520));
 
 	setHandUp(-65);
 	clawOpened(true);
 
 	Gyro_rotate.side = true;
 
+	Gyro_rotate.Kp = 1.5;
+
 	Gyro_rotate.acceptableRange = 1;
 
 	PID_Gyro_Rotate(Gyro_rotate, -87);
+
+	Gyro_rotate.Kp = 3;
 
 	Encoder_move.moveSpeed = 30;
 

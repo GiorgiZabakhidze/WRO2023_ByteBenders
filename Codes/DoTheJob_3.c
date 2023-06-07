@@ -48,16 +48,19 @@ void getBlockColors()
 
 	for(int i = 3; i >= 0; i--)
 	{
-		if(i > 0)
+		if(blockColors[i] == 0)
 		{
-			blockColors[i] = ColorCheck();
-		}
-		else
-		{
-			if(blue == 1)
-				blockColors[0] = 2;
+			if(i > 0)
+			{
+				blockColors[i] = ColorCheck();
+			}
 			else
-				blockColors[0] = 3;
+			{
+					if(blue == 1)
+						blockColors[0] = 2;
+					else
+						blockColors[0] = 3;
+			}
 		}
 
 		if(blockColors[i] == 2)
@@ -78,19 +81,19 @@ void getBlockColors()
 			if(badColor < 0)
 			{
 				displayBigTextLine(1, "oh noo");
-				while(1)
-				{
-					playSound(soundDownwardTones);
-				}
+				playSound(soundDownwardTones);
+				playSound(soundDownwardTones);
 			}
 			badCol[badColor] = i;
 			badColor--;
 		}
 
-		if(blockColors[i] == 3)
-			playSound(soundUpwardTones);
-		else
-			playSound(soundDownwardTones);
+		//if(blockColors[i] == 3)
+			//playSound(soundUpwardTones);
+		//else
+		//	playSound(soundDownwardTones);
+		displayBigTextLine(11, "%d", blue);
+		displayBigTextLine(13, "%d", green);
 
 		displayBigTextLine(2*i + 1, "%d", blockColors[i]);
 
@@ -99,9 +102,23 @@ void getBlockColors()
 			if(i == 3)
 				Encoder_moveMm(Encoder_move, 73);
 			else if(i == 2)
+			{
+				if(blue == 0)
+				{
+					playSound(soundUpwardTones);
+					blockColors[1] == 3;
+					blockColors[0] == 3;
+				}
+				else if(green == 0)
+				{
+					playSound(soundUpwardTones);
+					blockColors[1] == 2;
+					blockColors[0] == 2;
+				}
 				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(72));
+			}
 			else
-				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(70));
+				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(75));
 		}
 	}
 
@@ -109,6 +126,8 @@ void getBlockColors()
 
 void getTheBadBlock()
 {
+	grabHeight = 77;
+
 	setMotorTarget(claw, -170, 15);
 
 	Encoder_moveMm(Encoder_move, 220);
@@ -121,10 +140,10 @@ void getTheBadBlock()
 
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, 90);
+	PID_Gyro_Rotate(Gyro_rotate, 89);
 
-	int constant = 100;
-	int disBetweenBlocks = 65;
+	int constant = 85;
+	int disBetweenBlocks = 73;
 	gripStrength = 50;
 
 	wait(10);
@@ -192,7 +211,20 @@ void getTheBadBlock()
 
 	Block_PickUp();
 
-	PID_Gyro_Rotate(Gyro_rotate, -87);
+	Gyro_rotate.side = true;
+
+	PID_Gyro_Rotate(Gyro_rotate, -45);
+
+	setMotorSpeed(wheelL, 0);
+	setMotorSpeed(wheelR, 30);
+
+	while(getColorReflected(color1) < cWhite - 5){}
+
+	while(getColorReflected(color1) > cBlack + 2){}
+
+	while(getColorReflected(color1) > cWhite - 10){}
+
+	setMotorSpeed(wheelR, 0);
 }
 
 

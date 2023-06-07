@@ -27,12 +27,14 @@ bool checkStatus = false;
 
 int colorsAsked[2]  ={3, 3}; 	// 3=Mwvane, 2=Blue, 0=Empty.
 int blockColors[4]; 	// 3=Mwvane, 2=Blue, 0=Empty.
-int robotBlocks[4] = {0, 0, 0, 3};		// 3=Mwvane, 2=Blue, 0=Empty.
+int robotBlocks[4] = {0, 0, 0, 0};		// 3=Mwvane, 2=Blue, 0=Empty.
 
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
 
 PID Hand_normal;
+PID LineFollower_fast_r;
+PID LineFollower_fast_l;
 PID LineFollower_normal_r;
 PID LineFollower_normal_l;
 PID LineFollower_ship_l;
@@ -61,6 +63,8 @@ PID Encoder_rotate;
 #include "DoTheJob_2.c"
 #include "DoTheJob_3.c"
 #include "DoTheJob_4.c"
+#include "DoTheJob_5.c"
+#include "DoTheJob_6.c"
 
 task main()
 {
@@ -74,6 +78,10 @@ task main()
 
 	DoTheJob_4();
 
+	DoTheJob_5();
+
+	DoTheJob_6();
+
 	//playSound(soundBlip);
 
 	//wait(2000);
@@ -85,9 +93,9 @@ task main()
 	//setHandUp(-65);
 	//clawOpened(true);
 
-	//PID_Encoder_On_ForTime(Encoder_move, 9999);
+	//PID_Encoder_On_ForTime(Encoder_move_fast, 9999);
 
-	//PID_LineFollower_On_ForTime(LineFollower_slow_r, 99999);
+	//PID_LineFollower_On_ForTime(LineFollower_fast_r, 99999);
 
 	while(1)
 	{

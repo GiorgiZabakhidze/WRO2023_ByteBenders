@@ -1,6 +1,6 @@
 void getGoodBlocks()
 {
-	gripStrength = 50;
+	gripStrength = 40;
 
 	grabHeight = 65;
 
@@ -14,30 +14,34 @@ void getGoodBlocks()
 
 	Encoder_moveMm(Encoder_move, 60);
 
-	PID_Gyro_Rotate(Gyro_rotate, 270);
+	PID_Gyro_Rotate(Gyro_rotate, 268);
 
-	Encoder_moveMm(Encoder_move, 550);
+	Encoder_moveMm(Encoder_move, 600);
 }
 
 void goToTheParking()
 {
-	Gyro_rotate.side = false;
+	Gyro_rotate.side = true;
 
 	PID_Gyro_Rotate(Gyro_rotate, -90);
 
-	PID_FollowLine_Until_Reflected(LineFollower_normal_r, cBlack + 1);
+	Encoder_moveForTime(Encoder_move, 700, -50);
 
-	Encoder_moveMm(Encoder_move, 20);
+	Encoder_moveUntilReflected(Encoder_move, cWhite - 5, 30);
+
+	Encoder_moveUntilReflected(Encoder_move, cBlack + 2);
+
+	Encoder_moveUntilReflected(Encoder_move, cWhite - 5);
 
 	Gyro_rotate.side = true;
 
 	PID_Gyro_Rotate(Gyro_rotate, -89);
 
-	LineFollower_ship_l.lineCorrectionTime = 3000;
+	LineFollower_fast_l.lineCorrectionTime = 3000;
 
-	PID_FollowLine_Until_Reflected(LineFollower_ship_l, cWhite);
+	PID_FollowLine_Until_Reflected(LineFollower_fast_l, cWhite);
 
-	LineFollower_ship_l.lineCorrectionTime = 1500;
+	LineFollower_fast_l.lineCorrectionTime = 1500;
 
 	Encoder_moveMm(Encoder_move, 30);
 

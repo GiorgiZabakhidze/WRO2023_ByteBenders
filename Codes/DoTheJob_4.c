@@ -26,7 +26,7 @@ void goToTheSmallShip()
 void loadTheSmallShip()
 {
 	Encoder_move.moveSpeed = 15;
-	grabHeight = 72;
+	grabHeight = 70;
 
 	int curr = getGyroDegrees(gyro);
 

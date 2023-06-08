@@ -85,6 +85,8 @@ int Block_takeFirstBlockInCage(PID* Encoder_mover)
 		}
 	}
 
+	robotBlocks[firstBlock] = 0;
+
 	Encoder_mover->moveSpeed = -abs(Encoder_mover->moveSpeed);
 
 	Encoder_mover->setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);

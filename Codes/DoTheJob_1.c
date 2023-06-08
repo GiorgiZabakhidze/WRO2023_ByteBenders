@@ -82,17 +82,11 @@ void putTheShip()
 	clawOpened(false);
 	handUp(-20);
 
-	//PID_LineFollower_On_ForTime(LineFollower_fast_l, 1000, false);
-
 	playSound(soundLowBuzz);
-
-	wait(5);
 
 	PID_FollowLine_Until_Reflected(LineFollower_fast_l, cBlack + 1);
 
 	playSound(soundBlip);
-
-	wait(5);
 
 	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(520));
 

@@ -31,4 +31,7 @@ void clawOpened(bool setPoint)
 	}
 
 	wait(1300);
+
+	if(getMotorEncoder(claw) > -20)
+		setMotorSpeed(claw, 0);
 }

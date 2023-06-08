@@ -128,7 +128,7 @@ void getTheBadBlock()
 {
 	grabHeight = 77;
 
-	setMotorTarget(claw, -170, 15);
+	setMotorTarget(claw, -160, 15);
 
 	Encoder_moveMm(Encoder_move, 220);
 
@@ -142,8 +142,8 @@ void getTheBadBlock()
 
 	PID_Gyro_Rotate(Gyro_rotate, 89);
 
-	int constant = 85;
-	int disBetweenBlocks = 73;
+	int constant = 90;
+	int disBetweenBlocks = 72;
 	gripStrength = 50;
 
 	wait(10);
@@ -167,7 +167,7 @@ void getTheBadBlock()
 	wait(10);
 
 	setHandUp(-75);
-	setMotorTarget(claw, -170, 15);
+	setMotorTarget(claw, -160, 15);
 	wait(400);
 	setHandUp(-20);
 
@@ -183,7 +183,7 @@ void getTheBadBlock()
 
 	playSound(soundLowBuzz);
 
-	wait(1000);
+	wait(500);
 
 	Encoder_move.moveSpeed = 30;
 
@@ -199,7 +199,7 @@ void getTheBadBlock()
 	wait(100);
 
 	setHandUp(-75);
-	setMotorTarget(claw, -170, 15);
+	setMotorTarget(claw, -160, 15);
 	wait(400);
 	setHandUp(-20);
 

@@ -59,11 +59,11 @@ void hangTheBox()
 
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, -36);
+	PID_Gyro_Rotate(Gyro_rotate, -37);
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 36);
+	PID_Gyro_Rotate(Gyro_rotate, 37);
 
 	Encoder_moveForTime(Encoder_move, 500, 30);
 

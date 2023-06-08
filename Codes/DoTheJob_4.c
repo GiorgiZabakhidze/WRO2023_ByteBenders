@@ -34,7 +34,7 @@ void loadTheSmallShip()
 
 	setMotorSpeed(wheelL, 0);
 
-	setMotorSpeed(wheelR, 10);
+	setMotorSpeed(wheelR, 15);
 
 	while(getGyroDegrees(gyro) > curr - 11){}
 
@@ -46,7 +46,7 @@ void loadTheSmallShip()
 
 	clawOpened(true);
 
-	Block_takeFirstBlockInCage(Encoder_move);
+	Block_takeFirstBlockInCage(Encoder_move_fast);
 
 	Encoder_moveMm(Encoder_move, 170);
 
@@ -54,7 +54,7 @@ void loadTheSmallShip()
 
 	wait(10);
 
-	setMotorSpeed(wheelL, 10);
+	setMotorSpeed(wheelL, 15);
 
 	setMotorSpeed(wheelR, 0);
 
@@ -65,7 +65,7 @@ void loadTheSmallShip()
 	setHandUp(-36);
 	setMotorTarget(claw, -190, 15);
 
-	wait(1000);
+	wait(500);
 	setHandUp(-15);
 
 	Encoder_move.moveSpeed = 10;
@@ -117,7 +117,7 @@ void placeTheShip()
 
 	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(200));
 
-	Encoder_moveMm(Encoder_move, -10);
+	Encoder_moveMm(Encoder_move_fast, -10);
 
 	Gyro_rotate.side = false;
 

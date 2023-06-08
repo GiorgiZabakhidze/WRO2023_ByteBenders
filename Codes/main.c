@@ -25,8 +25,8 @@ int badCol[2];
 int checkedColor = -1;
 bool checkStatus = false;
 
-int colorsAsked[2]  ={3, 3}; 	// 3=Mwvane, 2=Blue, 0=Empty.
-int blockColors[4]; 	// 3=Mwvane, 2=Blue, 0=Empty.
+int colorsAsked[2]  ={3, 3}; 					// 3=Mwvane, 2=Blue, 0=Empty.
+int blockColors[4] = {0, 0, 0, 0}; 		// 3=Mwvane, 2=Blue, 0=Empty.
 int robotBlocks[4] = {0, 0, 0, 0};		// 3=Mwvane, 2=Blue, 0=Empty.
 
 #include "AlgorithmTypeFunctions.c"

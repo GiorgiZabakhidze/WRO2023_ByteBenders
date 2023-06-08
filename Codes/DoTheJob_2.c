@@ -11,11 +11,10 @@ void getOnTheParking()
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
 
-	Encoder_moveForTime(Encoder_move, 2500, -40);
-
+	Encoder_moveForTime(Encoder_move_fast, 2000);
 }
 
-void getTheBox()
+void getTheRedBox()
 {
 	handUp(-20);
 	setMotorSpeed(claw, 15);
@@ -67,7 +66,7 @@ void hangTheBox()
 
 	Encoder_moveForTime(Encoder_move, 500, 30);
 
-	clawOpened(true);
+	clawOpened(true, 300);
 }
 
 
@@ -75,7 +74,7 @@ void DoTheJob_2()
 {
 	getOnTheParking();
 
-	getTheBox();
+	getTheRedBox();
 
 	hangTheBox();
  }

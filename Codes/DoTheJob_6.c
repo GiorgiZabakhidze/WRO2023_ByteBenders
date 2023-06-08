@@ -7,17 +7,13 @@ void goToTheBigShip()
 
 	Encoder_moveMm(Encoder_move, -10);
 
-	//Gyro_rotate.oneSided = false;
-	//Gyro_rotate.side = false;
-	//Gyro_rotate.Kp = 0.75;
-
-	//PID_Gyro_Rotate(Gyro_rotate, -175);
-
 	int init = getGyroDegrees(gyro);
 
-	setMotorSpeed(wheelL, -15);
+	wait(10);
 
-	setMotorSpeed(wheelR, 15);
+	setMotorSpeed(wheelL, -25);
+
+	setMotorSpeed(wheelR, 25);
 
 	while(getGyroDegrees(gyro) > init - 170){}
 
@@ -51,13 +47,9 @@ void loadTheBigShip()
 
 	wait(400);
 
-	handUp(-45);
-
-	wait(400);
-
 	setHandUp(-30);
 
-	Block_takeFirstBlockInCage(Encoder_move);
+	Block_takeFirstBlockInCage(Encoder_move_fast);
 
 	handUp(-35);
 
@@ -65,7 +57,7 @@ void loadTheBigShip()
 
 	PID_Gyro_Rotate(Gyro_rotate, 5);
 
-	Encoder_move.moveSpeed = 10;
+	Encoder_move.moveSpeed = 15;
 
 	Encoder_moveMm(Encoder_move, 130);
 
@@ -83,7 +75,7 @@ void loadTheBigShip()
 
 	PID_Gyro_Rotate(Gyro_rotate, 10);
 
-	Encoder_move.moveSpeed = 10;
+	Encoder_move.moveSpeed = 15;
 
 	Encoder_moveMm(Encoder_move, 165);
 

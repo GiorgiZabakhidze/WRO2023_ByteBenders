@@ -54,7 +54,7 @@ void Initializate()
 	setMotorSpeed(claw, 15);
 	setMotorSpeed(hand, -30);
 
-	sleep(2000);
+	sleep(1000);
 
 	setMotorSpeed(hand, 0);
 
@@ -64,6 +64,8 @@ void Initializate()
 	resetMotorEncoder(motorD);
 
 	setMotorSpeed(claw, -15);
+
+	sleep(500);
 
 	clearTimer(T1);
 

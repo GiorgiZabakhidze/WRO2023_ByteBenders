@@ -9,11 +9,11 @@ int ColorCheck()
 {
 	bool currentStatus = checkStatus;
 
-	wait(500);
+	wait(50);
 
 	float cntGreen = 0;
-	float checkAmount = 10;
-	float requiredPercentage = 0.4;
+	float checkAmount = 2;
+	float requiredPercentage = 0.5;
 
 	for(int i = 0; i < checkAmount; i++)
 	{

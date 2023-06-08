@@ -33,34 +33,34 @@ void PID_FollowLine_AndTurn(PID* pid_lineFollower, PID* gyro_rotate, PID* gyro_m
 	while(task_usage[1].use != none){}
 }
 
-void Block_Grab()
+void Block_Grab(int time = 1300)
 {
 	setHandUp(-grabHeight);
 
-	clawOpened(false);
+	clawOpened(false, time);
 }
 
-void Block_PickUp()
+void Block_PickUp(int time = 1300)
 {
-	Block_Grab();
+	Block_Grab(time);
 
 	setHandUp(-20);
 }
 
-void Block_PlaceDown()
+void Block_PlaceDown(int time = 1300)
 {
 	setHandUp(-65);
 
-	clawOpened(true);
+	clawOpened(true, time);
 
 	handUp(-20);
 }
 
-void Block_PlaceOnTheShip()
+void Block_PlaceOnTheShip(int time = 1300)
 {
 	setHandUp(-40);
 
-	clawOpened(true);
+	clawOpened(true, time);
 
 	handUp(-20);
 }

@@ -8,7 +8,7 @@ void getGoodBlocks()
 
 	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(370));
 
-	Block_PickUp();
+	Block_PickUp(750);
 
 	Gyro_rotate.side = true
 

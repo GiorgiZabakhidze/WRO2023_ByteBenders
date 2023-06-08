@@ -19,7 +19,7 @@ int gripStrength = 15;
 	@param [PID] pid 								Claw-s PID Romlitac Vakontrolebt Claw-s Motors
 	@param [bool] setPoint 					Xeli-s Mamodzravebeli Motor-is Sasurveli Encoder Mnishvneloba (True=Gaxsnili, False=Daketili)
 */
-void clawOpened(bool setPoint)
+void clawOpened(bool setPoint, int time = 1300)
 {
 	if(setPoint) // Tu Setpoint Aris True, ClawTarget-s Vaniwebt Aweuli Mdgomareobis Shesabamis Encoderis Mnishvnelobas
 	{
@@ -30,7 +30,7 @@ void clawOpened(bool setPoint)
 		setMotorSpeed(claw, -gripStrength);
 	}
 
-	wait(1300);
+	wait(time);
 
 	if(getMotorEncoder(claw) > -20)
 		setMotorSpeed(claw, 0);

@@ -26,33 +26,15 @@ void getAskedColors()
 
 void pushTheShip()
 {
-	//Encoder_moveMm(Encoder_move, 30);
-
-	//Encoder_moveMm(Encoder_move, -50);
-
-	//Gyro_rotate.Kp = 1.5;
-
-	//Gyro_rotate.oneSided = true;
-	//Gyro_rotate.side = false;
-
-	//PID_Gyro_Rotate(Gyro_rotate, -15);
-
-	//Gyro_rotate.side = true;
-
-	//PID_Gyro_Rotate(Gyro_rotate, 16);
-
-	//Gyro_rotate.Kp = 3;
+	handUp(-65);
 
 	Encoder_moveForTime(Encoder_move_fast, 800, 55);
 
-	setHandUp(-65);
+	Encoder_moveMm(Encoder_move, -10, -30);
+
 	setMotorSpeed(claw, 50);
 
 	wait(1250);
-
-	Encoder_moveMm(Encoder_move, -10, -30);
-
-	wait(500);
 }
 
 void getOnTheLine()
@@ -79,7 +61,7 @@ void getOnTheLine()
 
 void putTheShip()
 {
-	clawOpened(false);
+	clawOpened(false, 300);
 	handUp(-20);
 
 	playSound(soundLowBuzz);
@@ -95,7 +77,7 @@ void putTheShip()
 
 	Gyro_rotate.side = true;
 
-	Gyro_rotate.Kp = 1.5;
+	Gyro_rotate.Kp = 2;
 
 	Gyro_rotate.acceptableRange = 1;
 
@@ -111,7 +93,7 @@ void putTheShip()
 
 	PID_Encoder_On_ForTime(Encoder_move, 500);
 
-	clawOpened(false);
+	clawOpened(false, 1000);
 
 	setHandUp(-20);
 

@@ -1,17 +1,17 @@
 void getOnTheParking()
 {
-	LineFollower_slow_r.lineCorrectionTime = 750;
+	//LineFollower_slow_r.lineCorrectionTime = 750;
 
-	PID_FollowLine_Until_Reflected(LineFollower_slow_r, cBlack + 1);
+	//PID_FollowLine_Until_Reflected(LineFollower_slow_r, cBlack + 1);
 
-	Encoder_moveUntilReflected(Encoder_move, cWhite, 30);
+	//Encoder_moveUntilReflected(Encoder_move, cWhite, 30);
 
-	Gyro_rotate.oneSided = true;
-	Gyro_rotate.side = false;
+	//Gyro_rotate.oneSided = true;
+	//Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 90);
+	//PID_Gyro_Rotate(Gyro_rotate, 92);
 
-	Encoder_moveForTime(Encoder_move_fast, 2000);
+	Encoder_moveForTime(Encoder_move, 2000, -40);
 }
 
 void getTheRedBox()

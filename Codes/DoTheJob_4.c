@@ -44,9 +44,13 @@ void loadTheSmallShip()
 
 	Block_PlaceOnTheShip();
 
-	clawOpened(true);
+	clawOpened(true, 300);
 
-	Block_takeFirstBlockInCage(Encoder_move_fast);
+	Encoder_move.moveSpeed = 30;
+
+	Block_takeFirstBlockInCage(Encoder_move);
+
+	Encoder_move.moveSpeed = 15;
 
 	Encoder_moveMm(Encoder_move, 170);
 
@@ -62,13 +66,17 @@ void loadTheSmallShip()
 
 	setMotorSpeed(wheelL, 0);
 
-	setHandUp(-36);
+	//setHandUp(-36);
+	handUp(-36);
+	wait(400);
 	setMotorTarget(claw, -190, 15);
 
-	wait(500);
-	setHandUp(-15);
+	wait(300);
+	//setHandUp(-15);
+	handUp(-15);
+	wait(400);
 
-	Encoder_move.moveSpeed = 10;
+	Encoder_move.moveSpeed = 15;
 
 	Encoder_moveMm(Encoder_move, 30);
 
@@ -87,6 +95,16 @@ void placeTheShip()
 
 	setMotorSpeed(wheelR, 0);
 
+	while(getGyroDegrees(gyro) < curr + 90){}
+
+	setMotorSpeed(wheelL, 0);
+
+	playSound(soundLowBuzz);
+
+	Encoder_moveMm(Encoder_move, 130, 30);
+
+	setMotorSpeed(wheelL, 25);
+
 	while(getGyroDegrees(gyro) < curr + 175){}
 
 	setMotorSpeed(wheelL, 0);
@@ -99,25 +117,23 @@ void placeTheShip()
 
 	Encoder_moveUntilReflected(Encoder_move, cBlue);
 
-	curr = getGyroDegrees(gyro);
-
-	wait(10);
-
 	setMotorSpeed(wheelL, 25);
 
 	setMotorSpeed(wheelR, 0);
 
-	while(getGyroDegrees(gyro) < curr + 90){}
+	while(getColorReflected(color1) < cWhite - 5){}
+
+	while(getColorReflected(color1) < (cBlack + cWhite) / 2 + 20){}
 
 	setMotorSpeed(wheelL, 0);
 
-	LineFollower_normal_l.lineCorrectionTime = 1000;
+	LineFollower_fast_l.lineCorrectionTime = 1000;
 
-	PID_FollowLine_Until_Reflected(LineFollower_normal_l, cBlack + 1);
+	PID_FollowLine_Until_Reflected(LineFollower_fast_l, cBlack + 1);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(200));
+	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(300));
 
-	Encoder_moveMm(Encoder_move_fast, -10);
+	Encoder_moveMm(Encoder_move_fast, -110);
 
 	Gyro_rotate.side = false;
 

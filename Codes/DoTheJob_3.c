@@ -23,7 +23,7 @@ void goToBoxes()
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
 
-	Encoder_moveMm(Encoder_move, 160);
+	Encoder_moveMm(Encoder_move, 170);
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
 
@@ -121,6 +121,8 @@ void getBlockColors()
 		}
 	}
 
+	stopTask(Cimcimi);
+
 }
 
 void getTheBadBlock()
@@ -133,7 +135,7 @@ void getTheBadBlock()
 
 	PID_Gyro_Rotate(Gyro_rotate, 89);
 
-	Encoder_moveForTime(Encoder_move, 1300, -30);
+	Encoder_moveForTime(Encoder_move_fast, 1000, -55);
 
 	Encoder_moveMm(Encoder_move, 215);
 
@@ -178,8 +180,6 @@ void getTheBadBlock()
 
 	playSound(soundLowBuzz);
 
-	//wait(500);
-
 	Encoder_move.moveSpeed = 30;
 
 	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder((5 - badCol[1]) * disBetweenBlocks + 60));
@@ -217,6 +217,18 @@ void getTheBadBlock()
 	while(getColorReflected(color1) > cWhite - 20){}
 
 	setMotorSpeed(wheelR, 0);
+
+	//int checkpoint = getMotorEncoder(wheelL) - MmToEncoder(145);
+
+	//PID_Encoder_On_Until_Encoder(Encoder_move, checkpoint - badCol[1] * 72);
+
+	//handOnChecker();
+
+	//Block_PickUp();
+
+	//checkerOnHand();
+
+	//PID_Encoder_On_Until_Encoder(Encoder_move, checkpoint - badCol[0] * 72);
 }
 
 

@@ -17,3 +17,22 @@ task Cimcimi()
 	 	checkStatus = !checkStatus;
 	}
 }
+
+task resetMotors()
+{
+	setMotorSpeed(claw, 15);
+	setMotorSpeed(hand, -30);
+
+	sleep(1000);
+
+	setMotorSpeed(hand, 0);
+
+	resetMotorEncoder(motorA);
+	resetMotorEncoder(motorB);
+	resetMotorEncoder(motorC);
+	resetMotorEncoder(motorD);
+
+	setMotorSpeed(claw, -15);
+
+	clearTimer(T1);
+}

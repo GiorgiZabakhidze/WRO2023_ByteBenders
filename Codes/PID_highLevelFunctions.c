@@ -69,7 +69,7 @@ int Block_takeFirstBlockInCage(PID* Encoder_mover)
 {
 	float MmAfterFirstBlock = 90;
 
-	float MmBetweenBlocks = 32;
+	float MmBetweenBlocks = 30;
 
 	int firstBlock;
 
@@ -127,4 +127,24 @@ void parallelMovement(float dis)
 	Gyro_rotate.side = (bool)(dis > 0);
 
 	PID_Gyro_Rotate(Gyro_rotate, -angle);
+}
+
+void handOnChecker()
+{
+	Gyro_rotate.oneSided = true;
+	Gyro_rotate.side = false;
+
+	PID_Gyro_Rotate(Gyro_rotate, 270);
+
+	Encoder_moveMm(Encoder_move, 50);
+}
+
+void checkerOnHand()
+{
+	Encoder_moveMm(Encoder_move, -50);
+
+	Gyro_rotate.oneSided = true;
+	Gyro_rotate.side = false;
+
+	PID_Gyro_Rotate(Gyro_rotate, -270);
 }

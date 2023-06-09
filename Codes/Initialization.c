@@ -1,14 +1,15 @@
 void Initializate()
 {
+	float middle = (cBlack + cWhite) / 2;
 	PID_init(&Encoder_move, 2.5, 0, 0.0, 0.000666666, 80, -80, 0, 30);
 	PID_init(&Hand_normal, 10, 1.5, 0.8, 0.000666666, 80, -80, 0, 0);
-	PID_init(&LineFollower_normal_r, 0.19, 0.009, 0.0042, 0.000666666, 80, -80, 40, 30);
-	PID_init(&LineFollower_normal_l, 0.2, 0.009, 0.0042, 0.000666666, 80, -80, 40, 30);
-	PID_init(&LineFollower_fast_r, 0.27, 0.003, 0.006, 0.000666666, 80, -80, 45, 45);
-	PID_init(&LineFollower_fast_l, 0.28, 0.003, 0.01, 0.000666666, 80, -80, 42, 45);
-	PID_init(&LineFollower_ship_l, 0.24, 0.012, 0.006, 0.000666666, 80, -80, 40, 30);
-	PID_init(&LineFollower_slow_l, 0.19, 0.008, 0.004, 0.000666666, 80, -80, 40, 15);
-	PID_init(&LineFollower_slow_r, 0.19, 0.008, 0.004, 0.000666666, 80, -80, 40, 15);
+	PID_init(&LineFollower_normal_r, 0.19, 0.009, 0.0042, 0.000666666, 80, -80, middle - 2, 30);
+	PID_init(&LineFollower_normal_l, 0.2, 0.009, 0.0042, 0.000666666, 80, -80, middle - 2, 30);
+	PID_init(&LineFollower_fast_r, 0.27, 0.003, 0.006, 0.000666666, 80, -80, middle + 3, 45);
+	PID_init(&LineFollower_fast_l, 0.28, 0.003, 0.01, 0.000666666, 80, -80, middle, 45);
+	PID_init(&LineFollower_ship_l, 0.24, 0.012, 0.006, 0.000666666, 80, -80, middle - 2, 30);
+	PID_init(&LineFollower_slow_l, 0.19, 0.008, 0.004, 0.000666666, 80, -80, middle - 2, 15);
+	PID_init(&LineFollower_slow_r, 0.19, 0.008, 0.004, 0.000666666, 80, -80, middle - 2, 15);
 	PID_init(&Gyro_rotate, 3, 0.002, 0., 0.000666666, 80, -80, 0, 0);
 	PID_init(&Gyro_move_fast, 10, 0.2, 0.005, 0.000666666, 80, -80, 0, 45);
 	PID_init(&Gyro_move, 4, 0.01, 0.00, 0.000666666, 80, -80, 0, 30);
@@ -50,24 +51,8 @@ void Initializate()
 	Hand_normal.setpoint = 0;
 	Hand_normal.acceptableRange = 5;
 
-	resetGyro(gyro);
-	setMotorSpeed(claw, 15);
-	setMotorSpeed(hand, -30);
-
-	sleep(1000);
-
-	setMotorSpeed(hand, 0);
-
-	resetMotorEncoder(motorA);
-	resetMotorEncoder(motorB);
-	resetMotorEncoder(motorC);
-	resetMotorEncoder(motorD);
-
-	setMotorSpeed(claw, -15);
-
-	sleep(500);
-
-	clearTimer(T1);
+	//resetGyro(gyro);
+	startTask(resetMotors);
 
 	for(int i = 0; i < 5; i++)
 	{

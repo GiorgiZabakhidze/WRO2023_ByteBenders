@@ -3,7 +3,7 @@ void goToTheBigShip()
 	robotBlocks[3] = 3;
 	robotBlocks[2] = 3;
 
-	grabHeight = 67;
+	grabHeight = 68;
 
 	Encoder_moveMm(Encoder_move, -10);
 
@@ -20,7 +20,7 @@ void goToTheBigShip()
 	setMotorSpeed(wheelL, 0);
 	setMotorSpeed(wheelR, 0);
 
-	LineFollower_slow_l.lineCorrectionTime = 750;
+	LineFollower_slow_l.lineCorrectionTime = 1300;
 
 	LineFollower_slow_l.setpoint = 35;
 
@@ -28,38 +28,46 @@ void goToTheBigShip()
 
 	LineFollower_slow_l.setpoint = 35;
 
-	handUp(-37);
+	handUp(-42);
 
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, -88);
+	PID_Gyro_Rotate(Gyro_rotate, -92);
 
-	Encoder_move.moveSpeed = 10;
+	//wait(500);
 
-	Encoder_moveMm(Encoder_move, 40);
+	Encoder_move.moveSpeed = 20;
 
-	Encoder_move.moveSpeed = 40;
+	Encoder_moveMm(Encoder_move, 10);
+
+	//wait(500);
+
+	Encoder_move.moveSpeed = 30;
 }
 
 void loadTheBigShip()
 {
-	setMotorTarget(claw, -170, 15);
-
-	wait(400);
+	clawOpened(true, 400);
 
 	setHandUp(-30);
 
-	Block_takeFirstBlockInCage(Encoder_move_fast);
+	Block_takeFirstBlockInCage(Encoder_move);
 
-	handUp(-35);
+	//wait(500);
+
+	handUp(-36);
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 5);
+	PID_Gyro_Rotate(Gyro_rotate, 7);
 
-	Encoder_move.moveSpeed = 15;
+	//wait(500);
 
-	Encoder_moveMm(Encoder_move, 130);
+	Encoder_move.moveSpeed = 20;
+
+	Encoder_moveMm(Encoder_move, 140);
+
+	//wait(500);
 
 	Encoder_move.moveSpeed = 30;
 
@@ -69,15 +77,27 @@ void loadTheBigShip()
 
 	Block_takeFirstBlockInCage(Encoder_move);
 
-	handUp(-32);
+	handUp(-35);
+
+	//wait(500);
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 10);
+	PID_Gyro_Rotate(Gyro_rotate, 30);
 
-	Encoder_move.moveSpeed = 15;
+	//wait(500);
 
-	Encoder_moveMm(Encoder_move, 165);
+	Gyro_rotate.side = true;
+
+	PID_Gyro_Rotate(Gyro_rotate, -25);
+
+	//wait(500);
+
+	Encoder_move.moveSpeed = 20;
+
+	Encoder_moveMm(Encoder_move, 140);
+
+	//wait(500);
 
 	Encoder_move.moveSpeed = 30;
 

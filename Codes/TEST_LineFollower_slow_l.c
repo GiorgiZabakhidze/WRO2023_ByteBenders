@@ -46,7 +46,8 @@ PID Gyro_move_fast;
 PID Encoder_move;
 PID Encoder_move_fast;
 PID Encoder_rotate;
-
+#include "AlgorithmTypeFunctions.c"
+#include "PID.c"
 #include "PID_Usage.c"
 #include "PID_tasks.c"
 #include "PID_Start.c"
@@ -68,20 +69,6 @@ PID Encoder_rotate;
 
 task main()
 {
-	Initializate();
-
-	DoTheJob_1();
-
-	DoTheJob_2();
-
-	DoTheJob_3();
-
-	//DoTheJob_4();
-
-	//DoTheJob_5();
-
-	//DoTheJob_6();
-	while(1)
-	{
-	}
+	LineFollower_slow_l.lineCorrectionTime = 10000;
+	PID_FollowLine_Until_Reflected(LineFollower_slow_l, cBlack + 2);
 }

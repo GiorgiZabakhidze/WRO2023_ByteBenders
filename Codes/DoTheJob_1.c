@@ -34,7 +34,7 @@ void pushTheShip()
 
 	setMotorSpeed(claw, 50);
 
-	wait(1250);
+	wait(750);
 }
 
 void getOnTheLine()
@@ -48,9 +48,13 @@ void getOnTheLine()
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 45);
+	int curr = getGyroDegrees(gyro);
 
-	setMotorSpeed(wheelL, 30);
+	wait(10);
+
+	setMotorSpeed(wheelL, 50);
+
+	while(getGyroDegrees(gyro) < curr + 45){}
 
 	while(getColorReflected(color1) < cWhite - 5){}
 
@@ -93,17 +97,29 @@ void putTheShip()
 
 	PID_Encoder_On_ForTime(Encoder_move, 500);
 
-	clawOpened(false, 1000);
+	clawOpened(false, 300);
 
-	setHandUp(-20);
+	handUp(-20);
+
+	wait(300);
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, -15);
+	Gyro_rotate.Kp = 1;
 
-	Gyro_rotate.side = true;
+	PID_Gyro_Rotate(Gyro_rotate, -89);
 
-	PID_Gyro_Rotate(Gyro_rotate, 105);
+	Encoder_moveMm(Encoder_move, -90);
+
+	Gyro_rotate.side = false;
+
+	Gyro_rotate.Kp = 3;
+
+	PID_Gyro_Rotate(Gyro_rotate, -89);
+
+	//Gyro_rotate.side = true;
+
+	//PID_Gyro_Rotate(Gyro_rotate, 105);
 }
 
 void DoTheJob_1()

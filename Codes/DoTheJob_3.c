@@ -13,17 +13,17 @@ void goToBoxes()
 
 	PID_Gyro_Rotate(Gyro_rotate, -85);
 
-	LineFollower_fast_r.lineCorrectionTime = 1500;
+	LineFollower_sonic_r.lineCorrectionTime = 1500;
 
-	PID_FollowLine_Until_Reflected(LineFollower_fast_r, cBlack);
+	PID_FollowLine_Until_Reflected(LineFollower_sonic_r, cBlack);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_fast_r, getMotorEncoder(wheelL) - MmToEncoder(380));
+	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(375));
 
 	Gyro_rotate.side = false;
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
 
-	Encoder_moveMm(Encoder_move, 170);
+	Encoder_moveMm(Encoder_move, 160);
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
 
@@ -117,7 +117,7 @@ void getBlockColors()
 				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(72));
 			}
 			else
-				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(75));
+				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(70));
 		}
 	}
 
@@ -127,7 +127,7 @@ void getBlockColors()
 
 void getTheBadBlock()
 {
-	grabHeight = 75;
+	grabHeight = 65;
 
 	setMotorTarget(claw, -160, 15);
 
@@ -135,7 +135,7 @@ void getTheBadBlock()
 
 	PID_Gyro_Rotate(Gyro_rotate, 89);
 
-	Encoder_moveForTime(Encoder_move_fast, 1000, -55);
+	Encoder_moveForTime(Encoder_move, 1100, -40);
 
 	Encoder_moveMm(Encoder_move, 215);
 
@@ -144,7 +144,7 @@ void getTheBadBlock()
 	PID_Gyro_Rotate(Gyro_rotate, 89);
 
 	int constant = 90;
-	int disBetweenBlocks = 72;
+	int disBetweenBlocks = 71;
 	gripStrength = 50;
 
 	Encoder_move.setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
@@ -157,14 +157,14 @@ void getTheBadBlock()
 
 		wait(10);
 
-		Block_PickUp(1000);
+		Block_PickUp(700);
 
 		Encoder_move.moveSpeed = -30;
 		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-badCol[0] * disBetweenBlocks - constant));
 
 		wait(10);
 
-		setHandUp(-75);
+		setHandUp(-65);
 		setMotorTarget(claw, -160, 15);
 		wait(400);
 		setHandUp(-20);
@@ -176,13 +176,13 @@ void getTheBadBlock()
 
 	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(badCol[1] * disBetweenBlocks + constant));
 
-	Block_PickUp(1000);
+	Block_PickUp(700);
 
 	playSound(soundLowBuzz);
 
 	Encoder_move.moveSpeed = 30;
 
-	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder((5 - badCol[1]) * disBetweenBlocks + 60));
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder((5 - badCol[1]) * disBetweenBlocks + 30));
 
 	wait(10);
 
@@ -191,7 +191,7 @@ void getTheBadBlock()
 
 	wait(10);
 
-	setHandUp(-75);
+	setHandUp(-65);
 	setMotorTarget(claw, -160, 15);
 	wait(400);
 	setHandUp(-20);
@@ -201,7 +201,7 @@ void getTheBadBlock()
 
 	wait(10);
 
-	Block_PickUp(1000);
+	Block_PickUp(700);
 
 	Gyro_rotate.side = true;
 
@@ -217,18 +217,6 @@ void getTheBadBlock()
 	while(getColorReflected(color1) > cWhite - 20){}
 
 	setMotorSpeed(wheelR, 0);
-
-	//int checkpoint = getMotorEncoder(wheelL) - MmToEncoder(145);
-
-	//PID_Encoder_On_Until_Encoder(Encoder_move, checkpoint - badCol[1] * 72);
-
-	//handOnChecker();
-
-	//Block_PickUp();
-
-	//checkerOnHand();
-
-	//PID_Encoder_On_Until_Encoder(Encoder_move, checkpoint - badCol[0] * 72);
 }
 
 

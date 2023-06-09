@@ -3,7 +3,7 @@ void goToTheBigShip()
 	robotBlocks[3] = 3;
 	robotBlocks[2] = 3;
 
-	grabHeight = 68;
+	grabHeight = 65;
 
 	Encoder_moveMm(Encoder_move, -10);
 
@@ -20,27 +20,29 @@ void goToTheBigShip()
 	setMotorSpeed(wheelL, 0);
 	setMotorSpeed(wheelR, 0);
 
-	LineFollower_slow_l.lineCorrectionTime = 1300;
+	LineFollower_normal_l.lineCorrectionTime = 1000;
 
-	LineFollower_slow_l.setpoint = 35;
+	LineFollower_normal_l.setpoint = 35;
 
-	PID_FollowLine_Until_Reflected(LineFollower_slow_l, cWhite - 10);
+	PID_FollowLine_Until_Reflected(LineFollower_normal_l, cWhite - 10);
 
-	LineFollower_slow_l.setpoint = 35;
+	LineFollower_normal_l.setpoint = 35;
 
-	handUp(-42);
+	handUp(-40);
 
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, -92);
+	PID_Gyro_Rotate(Gyro_rotate, -91);
 
-	//wait(500);
+	wait(200);
 
 	Encoder_move.moveSpeed = 20;
 
 	Encoder_moveMm(Encoder_move, 10);
 
-	//wait(500);
+	setHandUp(-43);
+
+	wait(200);
 
 	Encoder_move.moveSpeed = 30;
 }
@@ -49,25 +51,25 @@ void loadTheBigShip()
 {
 	clawOpened(true, 400);
 
-	setHandUp(-30);
+	setHandUp(-25);
 
 	Block_takeFirstBlockInCage(Encoder_move);
 
-	//wait(500);
+	wait(200);
 
-	handUp(-36);
+	handUp(-39);
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 7);
+	PID_Gyro_Rotate(Gyro_rotate, 8);
 
-	//wait(500);
+	wait(200);
 
 	Encoder_move.moveSpeed = 20;
 
 	Encoder_moveMm(Encoder_move, 140);
 
-	//wait(500);
+	wait(200);
 
 	Encoder_move.moveSpeed = 30;
 
@@ -75,31 +77,34 @@ void loadTheBigShip()
 
 	wait(300);
 
-	Block_takeFirstBlockInCage(Encoder_move);
+	int addition = 0;
 
-	handUp(-35);
+	if(colorsAsked[1] == 2 && colorsAsked[0] == 2)
+		addition = 8;
 
-	//wait(500);
+	Block_takeFirstBlockInCage(Encoder_move, 32 + addition);
+
+	clawOpened(false, 400);
+
+	handUp(-41);
+
+	wait(200);
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 30);
+	PID_Gyro_Rotate(Gyro_rotate, 12);
 
-	//wait(500);
-
-	Gyro_rotate.side = true;
-
-	PID_Gyro_Rotate(Gyro_rotate, -25);
-
-	//wait(500);
+	wait(200);
 
 	Encoder_move.moveSpeed = 20;
 
-	Encoder_moveMm(Encoder_move, 140);
+	Encoder_moveMm(Encoder_move, 150 + addition);
 
-	//wait(500);
+	wait(200);
 
 	Encoder_move.moveSpeed = 30;
+
+	setHandUp(-46);
 
 	setMotorTarget(claw, -170, 20);
 

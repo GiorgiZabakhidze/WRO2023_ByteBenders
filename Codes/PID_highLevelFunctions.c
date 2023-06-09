@@ -49,7 +49,7 @@ void Block_PickUp(int time = 1300)
 
 void Block_PlaceDown(int time = 1300)
 {
-	setHandUp(-65);
+	setHandUp(-grabHeight + 3);
 
 	clawOpened(true, time);
 
@@ -65,11 +65,9 @@ void Block_PlaceOnTheShip(int time = 1300)
 	handUp(-20);
 }
 
-int Block_takeFirstBlockInCage(PID* Encoder_mover)
+int Block_takeFirstBlockInCage(PID* Encoder_mover, float MmBetweenBlocks = 32, int clawTime = 1300)
 {
 	float MmAfterFirstBlock = 90;
-
-	float MmBetweenBlocks = 30;
 
 	int firstBlock;
 
@@ -82,6 +80,7 @@ int Block_takeFirstBlockInCage(PID* Encoder_mover)
 			robotBlocks[i] = 0;
 
 			break;
+
 		}
 	}
 
@@ -99,9 +98,9 @@ int Block_takeFirstBlockInCage(PID* Encoder_mover)
 
 	PID_Encoder_On_Until_Encoder(Encoder_mover, target);
 
-	Block_PickUp();
+	Block_PickUp(clawTime);
 
-	return target - curr;
+	return 0;
 }
 
 void parallelMovement(float dis)
@@ -134,17 +133,17 @@ void handOnChecker()
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 270);
+	PID_Gyro_Rotate(Gyro_rotate, 268);
 
-	Encoder_moveMm(Encoder_move, 50);
+	Encoder_moveMm(Encoder_move, 20);
 }
 
 void checkerOnHand()
 {
-	Encoder_moveMm(Encoder_move, -50);
+	Encoder_moveMm(Encoder_move, -20);
 
 	Gyro_rotate.oneSided = true;
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, -270);
+	PID_Gyro_Rotate(Gyro_rotate, -268);
 }

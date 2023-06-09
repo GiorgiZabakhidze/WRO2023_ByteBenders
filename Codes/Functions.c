@@ -9,7 +9,7 @@ int ColorCheck()
 {
 	bool currentStatus = checkStatus;
 
-	wait(300);
+	wait(400);
 
 	float cntGreen = 0;
 	float checkAmount = 1;

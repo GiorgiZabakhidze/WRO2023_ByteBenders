@@ -2,21 +2,29 @@ void getGoodBlocks()
 {
 	gripStrength = 40;
 
-	grabHeight = 69;
+	grabHeight = 65;
 
 	setMotorTarget(claw, -170, 15);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(370));
+	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(360));
 
 	Block_PickUp(500);
 
+	handUp(-15);
+
 	Gyro_rotate.side = true;
 
-	Encoder_moveMm(Encoder_move, 60);
+	Encoder_moveMm(Encoder_move, 70);
+
+	Gyro_rotate.Kp = 3.5;
 
 	PID_Gyro_Rotate(Gyro_rotate, 268);
 
-	Encoder_moveMm(Encoder_move, 600);
+	Gyro_rotate.Kp = 3;
+
+	Encoder_moveMm(Encoder_move, 600, 40);
+
+	Encoder_move.moveSpeed = 30;
 }
 
 void goToTheParking()
@@ -24,8 +32,6 @@ void goToTheParking()
 	Gyro_rotate.side = true;
 
 	PID_Gyro_Rotate(Gyro_rotate, -87);
-
-	//Encoder_moveForTime(Encoder_move, 700, -50);
 
 	Encoder_moveUntilReflected(Encoder_move, cWhite - 5, 40);
 
@@ -37,11 +43,27 @@ void goToTheParking()
 
 	PID_Gyro_Rotate(Gyro_rotate, -89);
 
-	LineFollower_fast_l.lineCorrectionTime = 3000;
+	//
 
-	PID_FollowLine_Until_Reflected(LineFollower_fast_l, cWhite);
+	LineFollower_sonic_l.Kp = 0.85;
 
-	LineFollower_fast_l.lineCorrectionTime = 1500;
+	LineFollower_sonic_l.lineCorrectionTime = 3000;
+
+	PID_FollowLine_Until_Reflected(LineFollower_sonic_l, cWhite);
+
+	LineFollower_sonic_l.Kp = 0.8;
+
+	LineFollower_sonic_l.lineCorrectionTime = 1500;
+
+	//
+
+	//LineFollower_fast_l.lineCorrectionTime = 3000;
+
+	//PID_FollowLine_Until_Reflected(LineFollower_fast_l, cWhite);
+
+	//LineFollower_fast_l.lineCorrectionTime = 1500;
+
+	//
 
 	Encoder_moveMm(Encoder_move, 50);
 

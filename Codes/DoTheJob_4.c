@@ -1,10 +1,10 @@
 void goToTheSmallShip()
 {
-	LineFollower_slow_l.lineCorrectionTime = 500;
+	LineFollower_normal_l.lineCorrectionTime = 500;
 
-	PID_FollowLine_Until_Reflected(LineFollower_slow_l, cBlack + 1);
+	PID_FollowLine_Until_Reflected(LineFollower_normal_l, cBlack + 1);
 
-	LineFollower_slow_l.lineCorrectionTime = 1500;
+	LineFollower_normal_l.lineCorrectionTime = 1500;
 
 	Gyro_rotate.side = true;
 
@@ -16,7 +16,7 @@ void goToTheSmallShip()
 
 	LineFollower_slow_r.setpoint = 35;
 
-	LineFollower_slow_r.lineCorrectionTime = 700;
+	LineFollower_slow_r.lineCorrectionTime = 900;
 
 	PID_FollowLine_Until_Reflected(LineFollower_slow_r, cBlack + 5);
 
@@ -25,8 +25,8 @@ void goToTheSmallShip()
 
 void loadTheSmallShip()
 {
-	Encoder_move.moveSpeed = 15;
-	grabHeight = 70;
+	Encoder_move.moveSpeed = 20;
+	grabHeight = 63;
 
 	int curr = getGyroDegrees(gyro);
 
@@ -36,21 +36,21 @@ void loadTheSmallShip()
 
 	setMotorSpeed(wheelR, 15);
 
-	while(getGyroDegrees(gyro) > curr - 11){}
+	while(getGyroDegrees(gyro) > curr - 13){}
 
 	setMotorSpeed(wheelR, 0);
 
 	Encoder_moveMm(Encoder_move, 20);
 
-	Block_PlaceOnTheShip();
+	Block_PlaceOnTheShip(600);
 
-	clawOpened(true, 300);
+	//clawOpened(true, 200);
 
 	Encoder_move.moveSpeed = 30;
 
-	Block_takeFirstBlockInCage(Encoder_move);
+	Block_takeFirstBlockInCage(Encoder_move, 35, 800);
 
-	Encoder_move.moveSpeed = 15;
+	Encoder_move.moveSpeed = 20;
 
 	Encoder_moveMm(Encoder_move, 170);
 
@@ -62,21 +62,21 @@ void loadTheSmallShip()
 
 	setMotorSpeed(wheelR, 0);
 
-	while(getGyroDegrees(gyro) < curr + 11){}
+	while(getGyroDegrees(gyro) < curr + 14){}
 
 	setMotorSpeed(wheelL, 0);
 
 	//setHandUp(-36);
 	handUp(-36);
-	wait(400);
+	wait(300);
 	setMotorTarget(claw, -190, 15);
 
-	wait(300);
+	wait(200);
 	//setHandUp(-15);
 	handUp(-15);
-	wait(400);
+	wait(200);
 
-	Encoder_move.moveSpeed = 15;
+	Encoder_move.moveSpeed = 20;
 
 	Encoder_moveMm(Encoder_move, 30);
 
@@ -95,7 +95,7 @@ void placeTheShip()
 
 	setMotorSpeed(wheelR, 0);
 
-	while(getGyroDegrees(gyro) < curr + 90){}
+	while(getGyroDegrees(gyro) < curr + 89){}
 
 	setMotorSpeed(wheelL, 0);
 

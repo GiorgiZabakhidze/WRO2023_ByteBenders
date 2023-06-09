@@ -11,7 +11,7 @@ void getOnTheParking()
 
 	//PID_Gyro_Rotate(Gyro_rotate, 92);
 
-	Encoder_moveForTime(Encoder_move, 2000, -40);
+	Encoder_moveForTime(Encoder_move, 1500, -40);
 }
 
 void getTheRedBox()
@@ -54,7 +54,7 @@ void hangTheBox()
 
 	handUp(-38);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(300));
+	PID_LineFollower_On_Until_Encoder(LineFollower_fast_r, getMotorEncoder(wheelL) - MmToEncoder(280));
 
 	Gyro_rotate.side = true;
 
@@ -64,9 +64,9 @@ void hangTheBox()
 
 	PID_Gyro_Rotate(Gyro_rotate, 37);
 
-	Encoder_moveForTime(Encoder_move, 500, 30);
+	Encoder_moveForTime(Encoder_move, 400, 30);
 
-	clawOpened(true, 300);
+	clawOpened(true, 200);
 }
 
 

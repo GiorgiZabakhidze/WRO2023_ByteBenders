@@ -5,6 +5,8 @@ void Initializate()
 	PID_init(&Hand_normal, 10, 1.5, 0.8, 0.000666666, 80, -80, 0, 0);
 	PID_init(&LineFollower_normal_r, 0.19, 0.009, 0.0042, 0.000666666, 80, -80, middle - 2, 30);
 	PID_init(&LineFollower_normal_l, 0.2, 0.009, 0.0042, 0.000666666, 80, -80, middle - 2, 30);
+	PID_init(&LineFollower_sonic_r, 0.87, 0.003, 0.0035, 0.000666666, 100, -100, middle, 70);
+	PID_init(&LineFollower_sonic_l, 0.8, 0.003, 0.0033, 0.000666666, 100, -100, middle - 3, 70);
 	PID_init(&LineFollower_fast_r, 0.27, 0.003, 0.006, 0.000666666, 80, -80, middle + 3, 45);
 	PID_init(&LineFollower_fast_l, 0.28, 0.003, 0.01, 0.000666666, 80, -80, middle, 45);
 	PID_init(&LineFollower_ship_l, 0.24, 0.012, 0.006, 0.000666666, 80, -80, middle - 2, 30);
@@ -37,6 +39,12 @@ void Initializate()
 	LineFollower_fast_l.lineCorrectionTime = 1500;
 	LineFollower_fast_l.rev = -1;
 
+	LineFollower_sonic_r.lineCorrectionTime = 1500;
+	LineFollower_sonic_r.rev = 1;
+
+	LineFollower_sonic_l.lineCorrectionTime = 1500;
+	LineFollower_sonic_l.rev = -1;
+
 	Gyro_rotate.acceptableRange = 1;
 
 	Gyro_rotate.additionTime = 9990;
@@ -51,8 +59,22 @@ void Initializate()
 	Hand_normal.setpoint = 0;
 	Hand_normal.acceptableRange = 5;
 
-	//resetGyro(gyro);
-	startTask(resetMotors);
+	resetGyro(gyro);
+	setMotorSpeed(claw, 15);
+	setMotorSpeed(hand, -30);
+
+	wait(1000);
+
+	setMotorSpeed(hand, 0);
+
+	resetMotorEncoder(motorA);
+	resetMotorEncoder(motorB);
+	resetMotorEncoder(motorC);
+	resetMotorEncoder(motorD);
+
+	setMotorSpeed(claw, -15);
+
+	clearTimer(T1);
 
 	for(int i = 0; i < 5; i++)
 	{

@@ -33,6 +33,8 @@ int robotBlocks[4] = {0, 0, 0, 0};		// 3=Mwvane, 2=Blue, 0=Empty.
 #include "PID.c"
 
 PID Hand_normal;
+PID LineFollower_sonic_r;
+PID LineFollower_sonic_l;
 PID LineFollower_fast_r;
 PID LineFollower_fast_l;
 PID LineFollower_normal_r;
@@ -76,11 +78,13 @@ task main()
 
 	DoTheJob_3();
 
-	//DoTheJob_4();
+	DoTheJob_4();
 
-	//DoTheJob_5();
+	DoTheJob_5();
 
-	//DoTheJob_6();
+	DoTheJob_6();
+
+	//PID_LineFollower_On_ForTime(LineFollower_sonic_r, 9999);
 	while(1)
 	{
 	}

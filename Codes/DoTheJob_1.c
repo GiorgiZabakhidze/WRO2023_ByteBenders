@@ -6,6 +6,8 @@ void getAskedColors()
 
 	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(210));
 
+	playSound(soundBlip);
+
 	colorsAsked[0] = ColorCheck();
 
 	displayBigTextLine(1, "%d", colorsAsked[0]);
@@ -34,7 +36,7 @@ void pushTheShip()
 
 	setMotorSpeed(claw, 50);
 
-	wait(750);
+	wait(500);
 }
 
 void getOnTheLine()
@@ -52,7 +54,7 @@ void getOnTheLine()
 
 	wait(10);
 
-	setMotorSpeed(wheelL, 50);
+	setMotorSpeed(wheelL, 60);
 
 	while(getGyroDegrees(gyro) < curr + 45){}
 
@@ -70,14 +72,14 @@ void putTheShip()
 
 	playSound(soundLowBuzz);
 
-	PID_FollowLine_Until_Reflected(LineFollower_fast_l, cBlack + 1);
+	PID_FollowLine_Until_Reflected(LineFollower_sonic_l, cBlack + 1);
 
 	playSound(soundBlip);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(520));
+	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(530));
 
 	setHandUp(-65);
-	clawOpened(true);
+	clawOpened(true, 500);
 
 	Gyro_rotate.side = true;
 
@@ -97,17 +99,15 @@ void putTheShip()
 
 	PID_Encoder_On_ForTime(Encoder_move, 500);
 
-	clawOpened(false, 300);
+	clawOpened(false, 200);
 
 	handUp(-20);
 
-	wait(300);
+	wait(200);
 
 	Gyro_rotate.side = false;
 
-	Gyro_rotate.Kp = 1;
-
-	PID_Gyro_Rotate(Gyro_rotate, -89);
+	PID_Gyro_Rotate(Gyro_rotate, -90);
 
 	Encoder_moveMm(Encoder_move, -90);
 
@@ -115,7 +115,7 @@ void putTheShip()
 
 	Gyro_rotate.Kp = 3;
 
-	PID_Gyro_Rotate(Gyro_rotate, -89);
+	PID_Gyro_Rotate(Gyro_rotate, -88);
 
 	//Gyro_rotate.side = true;
 

@@ -7,28 +7,46 @@ void goToBoxes()
 
 	PID_Gyro_Rotate(Gyro_rotate, 180);
 
-	Encoder_moveUntilReflected(Encoder_move, cWhite - 40, -30);
+	startResetingHand();
 
-	Gyro_rotate.side = true;
+	Encoder_moveUntilReflected(Encoder_move, cDarkBlue + 10, -30);
 
-	PID_Gyro_Rotate(Gyro_rotate, -85);
+	setMotorSpeed(wheelL, 0);
+	setMotorSpeed(wheelR, 40);
 
-	LineFollower_sonic_r.lineCorrectionTime = 1500;
+	while(getColorReflected(color1) > cDarkBlue + 2){}
 
-	PID_FollowLine_Until_Reflected(LineFollower_sonic_r, cBlack);
+	while(getColorReflected(color1) < cWhite - 5){}
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(375));
+	//while(getColorReflected(color1) > (cBlack + cWhite) / 2 + 25){}
+
+	setMotorSpeed(wheelR, 0);
+
+	LineFollower_fast_r.lineCorrectionTime = 2000;
+
+	PID_FollowLine_Until_Reflected(LineFollower_fast_r, cBlack);
+
+	endResetingHand();
+
+	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(395));
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 90);
+	PID_Gyro_Rotate(Gyro_rotate, 89);
 
 	Encoder_moveMm(Encoder_move, 160);
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
 
-	Encoder_moveMm(Encoder_move, 55);
+	Encoder_moveMm(Encoder_move, 30);
 
+	Encoder_moveUntilReflected(Encoder_move, cWhite - 2);
+
+	Encoder_moveUntilReflected(Encoder_move, cBlack + 1);
+
+	Encoder_moveMm(Encoder_move, -5);
+
+	Encoder_move.moveSpeed = 30;
 }
 
 void getBlockColors()
@@ -42,84 +60,78 @@ void getBlockColors()
 
 	int col1 = colorsAsked[0], col2 = colorsAsked[1];
 
-	robotBlocks[3] = 3;
-
-	for(int i = 3; i >= 0; i--)
+	for(int i = 2; i >= 0; i--)
 	{
-		if(blockColors[i] == 0)
+		if(i == 0 && blue == 0)
 		{
-			if(i > 0)
-			{
-				blockColors[i] = ColorCheck();
-			}
-			else
-			{
-					if(blue == 1)
-						blockColors[0] = 2;
-					else
-						blockColors[0] = 3;
-			}
+			blockColors[3] = 3;
+			blockColors[0] = 3;
+
+			break;
 		}
+		if(i == 0 && green == 0)
+		{
+			blockColors[3] = 2;
+			blockColors[0] = 2;
+
+			break;
+		}
+
+		blockColors[i] = ColorCheck();
 
 		if(blockColors[i] == 2)
 			blue--;
 		else
 			green--;
 
-		if(blockColors[i] == col1)
-		{
-			col1 = 0;
-		}
-		else if(blockColors[i] == col2)
-		{
-			col2 = 0;
-		}
-		else
-		{
-			if(badColor < 0)
-			{
-				displayBigTextLine(1, "oh noo");
-				playSound(soundDownwardTones);
-				playSound(soundDownwardTones);
-			}
-			badCol[badColor] = i;
-			badColor--;
-		}
-
 		if(blockColors[i] == 3)
 			playSound(soundUpwardTones);
 		else
 			playSound(soundDownwardTones);
 
-		displayBigTextLine(11, "%d", blue);
-		displayBigTextLine(13, "%d", green);
+		//displayBigTextLine(11, "%d", blue);
+		//displayBigTextLine(13, "%d", green);
 
 		displayBigTextLine(2*i + 1, "%d", blockColors[i]);
 
-		if(i > 0)
+		if(i == 2)
+			PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(72));
+		else if(i == 1)
+			PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(70));
+	}
+
+	if(blue == 1)
+			blockColors[3] = 2;
+	else if(green == 1)
+			blockColors[3] = 3;
+
+	int goodBlock = 1;
+	for(int i = 3; i >= 0; i--)
+	{
+		if(blockColors[i] == col1)
 		{
-			if(i == 3)
-				Encoder_moveMm(Encoder_move, 73);
-			else if(i == 2)
-			{
-				if(blue == 0)
-				{
-					playSound(soundUpwardTones);
-					blockColors[1] == 3;
-					blockColors[0] == 3;
-				}
-				else if(green == 0)
-				{
-					playSound(soundUpwardTones);
-					blockColors[1] == 2;
-					blockColors[0] == 2;
-				}
-				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(72));
-			}
-			else
-				PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(70));
+			col1 = 0;
+			goodBlocks[goodblock] = blockColors[i];
+			goodblock--;
+		}
+		else if(blockColors[i] == col2)
+		{
+			col2 = 0;
+			goodBlocks[goodblock] = blockColors[i];
+			goodblock--;
+		}
+		else
+		{
+			badCol[badColor] = i;
+
+			badBlocks[0] = blockColors[i];
+			badColor--;
 		}
 	}
+
+	robotBlocks[3] = badBlocks[0];
+
+	displayBigTextLine(13, "%d", badBlocks[0]);
 
 	stopTask(Cimcimi);
 
@@ -129,7 +141,7 @@ void getTheBadBlock()
 {
 	grabHeight = 65;
 
-	setMotorTarget(claw, -160, 15);
+	setMotorTarget(claw, -140, 15);
 
 	Encoder_moveMm(Encoder_move, 220);
 
@@ -137,14 +149,14 @@ void getTheBadBlock()
 
 	Encoder_moveForTime(Encoder_move, 1100, -40);
 
-	Encoder_moveMm(Encoder_move, 215);
+	Encoder_moveMm(Encoder_move, 230);
 
 	Gyro_rotate.side = true;
 
 	PID_Gyro_Rotate(Gyro_rotate, 89);
 
-	int constant = 90;
-	int disBetweenBlocks = 71;
+	int constant = 80;
+	int disBetweenBlocks = 80;
 	gripStrength = 50;
 
 	Encoder_move.setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
@@ -153,19 +165,19 @@ void getTheBadBlock()
 
 	if(badCol[0] != 0)
 	{
-		Encoder_moveMm(Encoder_move, constant + badCol[0] * disBetweenBlocks);
+		Encoder_moveMm(Encoder_move, constant + badCol[0] * disBetweenBlocks + 15);
 
 		wait(10);
 
 		Block_PickUp(700);
 
 		Encoder_move.moveSpeed = -30;
-		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-badCol[0] * disBetweenBlocks - constant));
+		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-badCol[0] * disBetweenBlocks - constant - 5));
 
 		wait(10);
 
 		setHandUp(-65);
-		setMotorTarget(claw, -160, 15);
+		setMotorTarget(claw, -140, 15);
 		wait(400);
 		setHandUp(-20);
 	}
@@ -192,7 +204,7 @@ void getTheBadBlock()
 	wait(10);
 
 	setHandUp(-65);
-	setMotorTarget(claw, -160, 15);
+	setMotorTarget(claw, -140, 15);
 	wait(400);
 	setHandUp(-20);
 

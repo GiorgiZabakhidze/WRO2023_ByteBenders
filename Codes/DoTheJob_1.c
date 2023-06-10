@@ -2,9 +2,11 @@ void getAskedColors()
 {
 	Encoder_moveMm(Encoder_move, 80);
 
-	LineFollower_normal_l.setpoint = 60;
+	LineFollower_fast_l.setpoint = 60;
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(210));
+	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(210));
+
+	wait(100);
 
 	playSound(soundBlip);
 
@@ -12,11 +14,13 @@ void getAskedColors()
 
 	displayBigTextLine(1, "%d", colorsAsked[0]);
 
-	LineFollower_normal_r.moveSpeed = 10;
+	LineFollower_fast_r.moveSpeed = 35;
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_normal_l, getMotorEncoder(wheelL) - MmToEncoder(45));
+	wait(100);
 
-	LineFollower_normal_r.moveSpeed = 30;
+	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(45));
+
+	LineFollower_fast_r.moveSpeed = 45;
 
 	colorsAsked[1] = ColorCheck();
 
@@ -30,7 +34,7 @@ void pushTheShip()
 {
 	handUp(-65);
 
-	Encoder_moveForTime(Encoder_move_fast, 800, 55);
+	Encoder_moveForTime(Encoder_move_fast, 600, 55);
 
 	Encoder_moveMm(Encoder_move, -10, -30);
 
@@ -54,7 +58,7 @@ void getOnTheLine()
 
 	wait(10);
 
-	setMotorSpeed(wheelL, 60);
+	setMotorSpeed(wheelL, 100);
 
 	while(getGyroDegrees(gyro) < curr + 45){}
 
@@ -68,17 +72,22 @@ void getOnTheLine()
 void putTheShip()
 {
 	clawOpened(false, 300);
+
+	//startResetingHand();
+
 	handUp(-20);
 
 	playSound(soundLowBuzz);
 
 	PID_FollowLine_Until_Reflected(LineFollower_sonic_l, cBlack + 1);
 
+	//endResetingHand();
+
 	playSound(soundBlip);
 
 	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(530));
 
-	setHandUp(-65);
+	setHandUp(-70);
 	clawOpened(true, 500);
 
 	Gyro_rotate.side = true;
@@ -115,7 +124,7 @@ void putTheShip()
 
 	Gyro_rotate.Kp = 3;
 
-	PID_Gyro_Rotate(Gyro_rotate, -88);
+	PID_Gyro_Rotate(Gyro_rotate, -87);
 
 	//Gyro_rotate.side = true;
 

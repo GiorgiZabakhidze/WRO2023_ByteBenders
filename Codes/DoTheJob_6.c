@@ -1,9 +1,9 @@
 void goToTheBigShip()
 {
-	robotBlocks[3] = 3;
-	robotBlocks[2] = 3;
+	robotBlocks[3] = goodBlocks[0];
+	robotBlocks[2] = goodBlocks[1];
 
-	grabHeight = 65;
+	grabHeight = 56;
 
 	Encoder_moveMm(Encoder_move, -10);
 
@@ -15,34 +15,36 @@ void goToTheBigShip()
 
 	setMotorSpeed(wheelR, 25);
 
-	while(getGyroDegrees(gyro) > init - 170){}
+	while (getGyroDegrees(gyro) > init - 170) {}
 
 	setMotorSpeed(wheelL, 0);
 	setMotorSpeed(wheelR, 0);
 
-	LineFollower_normal_l.lineCorrectionTime = 1000;
+	LineFollower_slow_l.lineCorrectionTime = 2000;
 
-	LineFollower_normal_l.setpoint = 35;
+	LineFollower_slow_l.setpoint = (cBlack + cWhite) / 2 - 7;
 
-	PID_FollowLine_Until_Reflected(LineFollower_normal_l, cWhite - 10);
+	PID_FollowLine_Until_Reflected(LineFollower_slow_l, cWhite - 10);
 
-	LineFollower_normal_l.setpoint = 35;
+	LineFollower_slow_l.setpoint = (cBlack + cWhite) / 2 - 2;
 
-	handUp(-40);
+	handUp(-30);
 
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, -91);
+	PID_Gyro_Rotate(Gyro_rotate, -89);
 
-	wait(200);
+	wait(100);
 
 	Encoder_move.moveSpeed = 20;
 
-	Encoder_moveMm(Encoder_move, 10);
+	Encoder_moveMm(Encoder_move, 15);
 
-	setHandUp(-43);
+	gripStrength = 15;
 
-	wait(200);
+	handUp(-47);
+
+	wait(700);
 
 	Encoder_move.moveSpeed = 30;
 }
@@ -51,60 +53,68 @@ void loadTheBigShip()
 {
 	clawOpened(true, 400);
 
-	setHandUp(-25);
+	setHandUp(-15);
 
-	Block_takeFirstBlockInCage(Encoder_move);
+	gripStrength = 50;
 
-	wait(200);
+	int dist = Block_betterTakeFirstBlockInCage(Encoder_move);
 
-	handUp(-39);
+	wait(100);
+
+	handUp(-35);
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 8);
+	PID_Gyro_Rotate(Gyro_rotate, 9);
 
-	wait(200);
+	wait(100);
+
+	Encoder_move.moveSpeed = 20;
+
+	Encoder_moveMm(Encoder_move, 120);
+
+	wait(100);
+
+	gripStrength = 15;
+
+	Encoder_move.moveSpeed = 30;
+
+	setMotorTarget(claw, -170, 15);
+
+	wait(700);
+
+	gripStrength = 50;
+
+	MmDepth = 190;
+
+	dist = Block_betterTakeFirstBlockInCage(Encoder_move, 1000);
+
+	MmDepth = 165;
+
+	clawOpened(false, 400);
+
+	handUp(-25);
+
+	wait(400);
+
+	Gyro_rotate.side = false;
+
+		PID_Gyro_Rotate(Gyro_rotate, 11);
+
+	wait(100);
 
 	Encoder_move.moveSpeed = 20;
 
 	Encoder_moveMm(Encoder_move, 140);
 
-	wait(200);
+	wait(100);
 
 	Encoder_move.moveSpeed = 30;
 
-	setMotorTarget(claw, -180, 15);
+	handUp(-51);
+	wait(700);
 
-	wait(300);
-
-	int addition = 0;
-
-	if(colorsAsked[1] == 2 && colorsAsked[0] == 2)
-		addition = 8;
-
-	Block_takeFirstBlockInCage(Encoder_move, 32 + addition);
-
-	clawOpened(false, 400);
-
-	handUp(-41);
-
-	wait(200);
-
-	Gyro_rotate.side = false;
-
-	PID_Gyro_Rotate(Gyro_rotate, 12);
-
-	wait(200);
-
-	Encoder_move.moveSpeed = 20;
-
-	Encoder_moveMm(Encoder_move, 150 + addition);
-
-	wait(200);
-
-	Encoder_move.moveSpeed = 30;
-
-	setHandUp(-46);
+	gripStrength = 15;
 
 	setMotorTarget(claw, -170, 20);
 

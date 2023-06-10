@@ -15,5 +15,8 @@ task Cimcimi()
 	 	checkedColor = getColorName(color2);
 
 	 	checkStatus = !checkStatus;
+
+	 	//displayBigTextLine(1, "%f", getBatteryVoltage());
+   // displayBigTextLine(3, "%f", getBatteryCurrent());
 	}
 }

@@ -210,3 +210,25 @@ void Encoder_moveUntilReflected(PID* pid, float reflection, float speed = 0)
 
 	PID_Encoder_On_Until_Reflected(pid, reflection);
 }
+
+void startResetingHand()
+{
+	stopTask(PID_Hand);
+	wait(5);
+	PID_resetVariables(Hand_normal);
+
+	setMotorSpeed(hand, -30);
+}
+
+void endResetingHand()
+{
+	setMotorSpeed(hand, 0);
+
+	wait(10);
+
+	resetMotorEncoder(hand);
+
+	wait(10);
+
+	startTask(PID_Hand);
+}

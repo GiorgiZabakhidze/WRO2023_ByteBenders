@@ -27,7 +27,9 @@ bool checkStatus = false;
 
 int colorsAsked[2]  ={3, 3}; 					// 3=Mwvane, 2=Blue, 0=Empty.
 int blockColors[4] = {0, 0, 0, 0}; 		// 3=Mwvane, 2=Blue, 0=Empty.
-int robotBlocks[4] = {0, 0, 0, 0};		// 3=Mwvane, 2=Blue, 0=Empty.
+int goodBlocks[2] = {0, 0};
+int badBlocks[1] = {0};
+int robotBlocks[4] = {0, 0, 3, 3};		// 3=Mwvane, 2=Blue, 0=Empty.
 
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
@@ -70,6 +72,8 @@ PID Encoder_rotate;
 
 task main()
 {
+	grabHeight = 70;
+
 	Initializate();
 
 	DoTheJob_1();
@@ -83,6 +87,8 @@ task main()
 	DoTheJob_5();
 
 	DoTheJob_6();
+
+	//Block_betterTakeFirstBlockInCage(Encoder_move);
 
 	//PID_LineFollower_On_ForTime(LineFollower_sonic_r, 9999);
 	while(1)

@@ -1,6 +1,6 @@
 void goToTheSmallShip()
 {
-	LineFollower_normal_l.lineCorrectionTime = 500;
+	LineFollower_normal_l.lineCorrectionTime = 900;
 
 	PID_FollowLine_Until_Reflected(LineFollower_normal_l, cBlack + 1);
 
@@ -16,7 +16,7 @@ void goToTheSmallShip()
 
 	LineFollower_slow_r.setpoint = 35;
 
-	LineFollower_slow_r.lineCorrectionTime = 900;
+	LineFollower_slow_r.lineCorrectionTime = 1000;
 
 	PID_FollowLine_Until_Reflected(LineFollower_slow_r, cBlack + 5);
 
@@ -26,7 +26,8 @@ void goToTheSmallShip()
 void loadTheSmallShip()
 {
 	Encoder_move.moveSpeed = 20;
-	grabHeight = 63;
+	grabHeight = 64;
+	gripStrength = 50;
 
 	int curr = getGyroDegrees(gyro);
 
@@ -48,11 +49,15 @@ void loadTheSmallShip()
 
 	Encoder_move.moveSpeed = 30;
 
-	Block_takeFirstBlockInCage(Encoder_move, 35, 800);
+	MmDepth = 215;
+
+	Block_betterTakeFirstBlockInCage(Encoder_move, 800);
+
+	MmDepth = 160;
 
 	Encoder_move.moveSpeed = 20;
 
-	Encoder_moveMm(Encoder_move, 170);
+	Encoder_moveMm(Encoder_move, 185);
 
 	curr = getGyroDegrees(gyro);
 
@@ -67,14 +72,14 @@ void loadTheSmallShip()
 	setMotorSpeed(wheelL, 0);
 
 	//setHandUp(-36);
-	handUp(-36);
-	wait(300);
+	handUp(-44);
+	wait(400);
 	setMotorTarget(claw, -190, 15);
 
-	wait(200);
+	wait(400);
 	//setHandUp(-15);
 	handUp(-15);
-	wait(200);
+	wait(400);
 
 	Encoder_move.moveSpeed = 20;
 
@@ -129,15 +134,21 @@ void placeTheShip()
 
 	LineFollower_fast_l.lineCorrectionTime = 1000;
 
+	startResetingHand();
+
 	PID_FollowLine_Until_Reflected(LineFollower_fast_l, cBlack + 1);
+
+	endResetingHand();
 
 	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(300));
 
-	Encoder_moveMm(Encoder_move_fast, -110);
+	Encoder_moveMm(Encoder_move_fast, -125);
 
 	Gyro_rotate.side = false;
 
 	PID_Gyro_Rotate(Gyro_rotate, -89);
+
+	gripStrength = 15;
 }
 
 

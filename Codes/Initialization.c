@@ -3,8 +3,8 @@ void Initializate()
 	float middle = (cBlack + cWhite) / 2;
 	PID_init(&Encoder_move, 2.5, 0, 0.0, 0.000666666, 80, -80, 0, 30);
 	PID_init(&Hand_normal, 10, 1.5, 0.8, 0.000666666, 80, -80, 0, 0);
-	PID_init(&LineFollower_normal_r, 0.19, 0.009, 0.0042, 0.000666666, 80, -80, middle - 2, 30);
-	PID_init(&LineFollower_normal_l, 0.2, 0.009, 0.0042, 0.000666666, 80, -80, middle - 2, 30);
+	PID_init(&LineFollower_normal_r, 0.23, 0.009, 0.0053, 0.000666666, 80, -80, middle - 2, 30);
+	PID_init(&LineFollower_normal_l, 0.24, 0.009, 0.0056, 0.000666666, 80, -80, middle - 2, 30);
 	PID_init(&LineFollower_sonic_r, 0.87, 0.003, 0.0035, 0.000666666, 100, -100, middle, 70);
 	PID_init(&LineFollower_sonic_l, 0.8, 0.003, 0.0033, 0.000666666, 100, -100, middle - 3, 70);
 	PID_init(&LineFollower_fast_r, 0.27, 0.003, 0.006, 0.000666666, 80, -80, middle + 3, 45);
@@ -57,7 +57,7 @@ void Initializate()
 	Gyro_move_fast.additionMultiplier = 0;
 
 	Hand_normal.setpoint = 0;
-	Hand_normal.acceptableRange = 5;
+	Hand_normal.acceptableRange = 2;
 
 	resetGyro(gyro);
 	setMotorSpeed(claw, 15);

@@ -103,6 +103,55 @@ int Block_takeFirstBlockInCage(PID* Encoder_mover, float MmBetweenBlocks = 32, i
 	return 0;
 }
 
+float MmDepth = 165;
+
+int Block_betterTakeFirstBlockInCage(PID* pid_mover, int clawTime = 1300)
+{
+	int firstBlock = -1;
+
+	float distanceToMove = 0;
+
+	for(int i = 1; i < 4; i++)
+	{
+		if(robotBlocks[i] != 0)
+		{
+			if(firstBlock == -1)
+			{
+				firstBlock = i;
+
+				if(robotBlocks[i] == 2)
+					distanceToMove += 24;
+				else
+					distanceToMove += 16;
+
+				robotBlocks[i] = 0;
+			}
+			else if(robotBlocks[i] == 2)
+				distanceToMove += 48;
+			else
+				distanceToMove += 32;
+		}
+	}
+
+	displayBigTextLine(1, "%d", distanceToMove);
+
+	pid_mover->moveSpeed = -abs(pid_mover->moveSpeed);
+
+	pid_mover->setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
+
+	float curr = getMotorEncoder(wheelL);
+
+	wait(10);
+
+	float target = curr + MmToEncoder(MmDepth - distanceToMove);
+
+	PID_Encoder_On_Until_Encoder(pid_mover, target);
+
+	Block_PickUp(clawTime);
+
+	return distanceToMove;
+}
+
 void parallelMovement(float dis)
 {
 	float r = 183;

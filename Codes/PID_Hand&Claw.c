@@ -4,7 +4,7 @@
 	@param [PID] pid 								Xeli-s PID Romlitac Vakontrolebt Xeli-s Motors
 	@param [int] setPoint 					Xeli-s Mamodzravebeli Motor-is Sasurveli Encoder Mnishvneloba (Dadebiti=Aweva, Uaryopiti=Daweva)
 */
-void handUp(int setPoint)
+void handUp(int setpoint)
 {
 		PID_resetVariables(Hand_normal);
 

@@ -108,7 +108,7 @@ void getBlockColors()
 	else if(green == 1)
 			blockColors[3] = 3;
 
-	int goodBlock = 1;
+	int goodblock = 1;
 	for(int i = 3; i >= 0; i--)
 	{
 		if(blockColors[i] == col1)
@@ -145,6 +145,7 @@ void getBlockColors()
 void getTheBadBlock()
 {
 	grabHeight = 67;
+	int moveSpeed = 25;
 
 	setMotorTarget(claw, -140, 15);
 
@@ -160,7 +161,7 @@ void getTheBadBlock()
 
 	wait(100);
 
-	Encoder_moveMm(Encoder_move, 232);
+	Encoder_moveMm(Encoder_move, 230, moveSpeed);
 
 	Gyro_rotate.side = true;
 
@@ -181,51 +182,90 @@ void getTheBadBlock()
 
 	wait(10);
 
-	if(badCol[0] != 0)
+	if(colorsAsked[0] == 3 && colorsAsked[1] == 3 &&
+		 blockColors[0] == 2 && blockColors[1] == 2)
 	{
-		Encoder_moveMm(Encoder_move, constant + badCol[0] * disBetweenBlocks + 40);
-
-		wait(10);
-
-		Encoder_move.moveSpeed = -30;
-		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-25));
+		Encoder_moveMm(Encoder_move, constant + 5);
 
 		wait(10);
 
 		Block_PickUp(700);
 
-		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-badCol[0] * disBetweenBlocks - constant - 5));
+		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(5 * disBetweenBlocks + 50));
+
+	}
+	//	wait(10);
+
+	//	Encoder_move.moveSpeed = -moveSpeed;
+	//	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-275 - addition));
+
+	//	wait(10);
+
+	//	setHandUp(-65);
+	//	gripStrength = 10;
+	//	setMotorTarget(claw, -140, 15);
+	//	wait(400);
+	//	gripStrength = 50;
+	//	setHandUp(-20);
+
+	//	Encoder_move.moveSpeed = moveSpeed;
+	//	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(90 + addition));
+
+	//	wait(10);
+
+	//	Block_PickUp(700);
+	//}
+
+	else
+	{
+
+		if(badCol[0] != 0)
+		{
+			Encoder_moveMm(Encoder_move, constant + badCol[0] * disBetweenBlocks + 40);
+
+			wait(10);
+
+			Encoder_move.moveSpeed = -moveSpeed;
+			PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-25));
+
+			wait(10);
+
+			Block_PickUp(700);
+
+			PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-badCol[0] * disBetweenBlocks - constant - 5));
+
+			wait(10);
+
+			setHandUp(-65);
+			gripStrength = 10;
+			setMotorTarget(claw, -140, 15);
+			gripStrength = 50;
+			wait(400);
+			setHandUp(-20);
+		}
+
+		Encoder_move.moveSpeed = moveSpeed;
 
 		wait(10);
 
-		setHandUp(-65);
-		gripStrength = 10;
-		setMotorTarget(claw, -140, 15);
-		gripStrength = 50;
-		wait(400);
-		setHandUp(-20);
+		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(badCol[1] * disBetweenBlocks + constant + 25));
+
+		Encoder_move.moveSpeed = -moveSpeed;
+		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-25));
+
+		Block_PickUp(700);
+
+		playSound(soundLowBuzz);
+
+		Encoder_move.moveSpeed = moveSpeed;
+
+		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder((5 - badCol[1]) * disBetweenBlocks + 50));
+
 	}
 
-	Encoder_move.moveSpeed = 30;
-
 	wait(10);
 
-	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(badCol[1] * disBetweenBlocks + constant + 25));
-
-	Encoder_move.moveSpeed = -30;
-	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-25));
-
-	Block_PickUp(700);
-
-	playSound(soundLowBuzz);
-
-	Encoder_move.moveSpeed = 30;
-
-	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder((5 - badCol[1]) * disBetweenBlocks + 50));
-
-	wait(10);
-
-	Encoder_move.moveSpeed = -30;
+	Encoder_move.moveSpeed = -moveSpeed;
 	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-275 - addition));
 
 	wait(10);
@@ -237,7 +277,7 @@ void getTheBadBlock()
 	gripStrength = 50;
 	setHandUp(-20);
 
-	Encoder_move.moveSpeed = 30;
+	Encoder_move.moveSpeed = moveSpeed;
 	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(90 + addition));
 
 	wait(10);

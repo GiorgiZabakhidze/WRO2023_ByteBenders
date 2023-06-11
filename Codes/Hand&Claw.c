@@ -29,7 +29,7 @@ task handControl() // Taski Romelic Mudmivad Chaciklulia Da Aniwebs Motors Targe
 
 	@param [bool] setPoint 					Xeli-s Mamodzravebeli Motor-is Sasurveli Encoder Mnishvneloba (Dadebiti=Aweuli, Uaryopiti=Chamoweuli)
 */
-void setHand(int setPoint)
+void setHand(int setpoint)
 {
 	handTarget = -setpoint;
 

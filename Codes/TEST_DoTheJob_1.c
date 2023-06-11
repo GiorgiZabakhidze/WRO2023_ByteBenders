@@ -74,6 +74,5 @@ task main()
 {
 	Initializate();
 
-	LineFollower_fast_l.lineCorrectionTime = 3000;
-	PID_FollowLine_Until_Reflected(LineFollower_fast_l, cBlack + 1);
+	DoTheJob_1();
 }

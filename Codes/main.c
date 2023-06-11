@@ -72,8 +72,6 @@ PID Encoder_rotate;
 
 task main()
 {
-	grabHeight = 70;
-
 	Initializate();
 
 	DoTheJob_1();

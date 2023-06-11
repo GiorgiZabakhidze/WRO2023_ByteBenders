@@ -25,14 +25,18 @@ int badCol[2];
 int checkedColor = -1;
 bool checkStatus = false;
 
-int colorsAsked[2]  ={3, 3}; 					// 3=Mwvane, 2=Blue, 0=Empty.
+int colorsAsked[2]  ={2, 2}; 					// 3=Mwvane, 2=Blue, 0=Empty.
 int blockColors[4] = {0, 0, 0, 0}; 		// 3=Mwvane, 2=Blue, 0=Empty.
-int robotBlocks[4] = {0, 0, 0, 0};		// 3=Mwvane, 2=Blue, 0=Empty.
+int goodBlocks[2] = {0, 0};
+int badBlocks[1] = {0};
+int robotBlocks[4] = {0, 0, 3, 3};		// 3=Mwvane, 2=Blue, 0=Empty.
 
 #include "AlgorithmTypeFunctions.c"
 #include "PID.c"
 
 PID Hand_normal;
+PID LineFollower_sonic_r;
+PID LineFollower_sonic_l;
 PID LineFollower_fast_r;
 PID LineFollower_fast_l;
 PID LineFollower_normal_r;
@@ -46,8 +50,7 @@ PID Gyro_move_fast;
 PID Encoder_move;
 PID Encoder_move_fast;
 PID Encoder_rotate;
-#include "AlgorithmTypeFunctions.c"
-#include "PID.c"
+
 #include "PID_Usage.c"
 #include "PID_tasks.c"
 #include "PID_Start.c"
@@ -69,6 +72,8 @@ PID Encoder_rotate;
 
 task main()
 {
+	Initializate();
+
 	LineFollower_fast_r.lineCorrectionTime = 3000;
-	PID_FollowLine_Until_Reflected(LineFollower_fast_r, cBlack + 2);
+	PID_FollowLine_Until_Reflected(LineFollower_fast_r, cBlack + 1);
 }

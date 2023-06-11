@@ -2,11 +2,17 @@ void getGoodBlocks()
 {
 	gripStrength = 50;
 
-	grabHeight = 63;
+	grabHeight = 60;
 
 	setMotorTarget(claw, -170, 15);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(365));
+	wait(100);
+
+	endResetingHand();
+
+	wait(100);
+
+	PID_LineFollower_On_Until_Encoder(LineFollower_normal_r, getMotorEncoder(wheelL) - MmToEncoder(370));
 
 	Block_PickUp(500);
 
@@ -14,7 +20,7 @@ void getGoodBlocks()
 
 	Gyro_rotate.side = true;
 
-	Encoder_moveMm(Encoder_move, 60);
+	Encoder_moveMm(Encoder_move, 55);
 
 	Gyro_rotate.Kp = 3.5;
 
@@ -43,13 +49,15 @@ void goToTheParking()
 
 	PID_Gyro_Rotate(Gyro_rotate, -89);
 
+	startResetingHand();
+
 	//
 
 	//LineFollower_sonic_l.Kp = 0.85;
 
-	LineFollower_sonic_l.lineCorrectionTime = 2500;
+	LineFollower_sonic_l.lineCorrectionTime = 1500;
 
-	PID_FollowLine_Until_Reflected(LineFollower_sonic_l, cWhite);
+	PID_FollowLine_Until_Reflected(LineFollower_sonic_l, cWhite - 5);
 
 	LineFollower_sonic_l.Kp = 0.8;
 

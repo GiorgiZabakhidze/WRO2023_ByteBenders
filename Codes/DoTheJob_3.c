@@ -38,20 +38,24 @@ void goToBoxes()
 
 	PID_Gyro_Rotate(Gyro_rotate, 90);
 
+	startTask(Cimcimi);
+
 	Encoder_moveMm(Encoder_move, 30);
 
 	Encoder_moveUntilReflected(Encoder_move, cWhite - 2);
 
 	Encoder_moveUntilReflected(Encoder_move, cBlack + 1);
 
-	Encoder_moveMm(Encoder_move, -5);
-
 	Encoder_move.moveSpeed = 30;
+
+	resetMotorEncoder(claw);
 }
 
 void getBlockColors()
 {
-	startTask(Cimcimi);
+	startResetingHand();
+
+	Encoder_move.moveSpeed = 25;
 
 	int blue = 2;
 	int green = 2;
@@ -62,6 +66,7 @@ void getBlockColors()
 
 	for(int i = 2; i >= 0; i--)
 	{
+		wait(200);
 		if(i == 0 && blue == 0)
 		{
 			blockColors[3] = 3;
@@ -94,9 +99,7 @@ void getBlockColors()
 
 		displayBigTextLine(2*i + 1, "%d", blockColors[i]);
 
-		if(i == 2)
-			PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(72));
-		else if(i == 1)
+		if(i == 2 || i == 1)
 			PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(70));
 	}
 
@@ -133,13 +136,15 @@ void getBlockColors()
 
 	displayBigTextLine(13, "%d", badBlocks[0]);
 
+	Encoder_move.moveSpeed = 30;
+
 	stopTask(Cimcimi);
 
 }
 
 void getTheBadBlock()
 {
-	grabHeight = 65;
+	grabHeight = 67;
 
 	setMotorTarget(claw, -140, 15);
 
@@ -149,15 +154,28 @@ void getTheBadBlock()
 
 	Encoder_moveForTime(Encoder_move, 1100, -40);
 
-	Encoder_moveMm(Encoder_move, 230);
+	wait(100);
+
+	endResetingHand();
+
+	wait(100);
+
+	Encoder_moveMm(Encoder_move, 232);
 
 	Gyro_rotate.side = true;
 
 	PID_Gyro_Rotate(Gyro_rotate, 89);
 
-	int constant = 80;
+	int constant = 75;
 	int disBetweenBlocks = 80;
 	gripStrength = 50;
+
+	int addition = 0;
+
+	//if(blockColors[0] == 2 || blockColors[1] == 2)
+	//	addition += 6;
+
+	constant += addition;
 
 	Encoder_move.setpoint = getMotorEncoder(wheelR) + getMotorEncoder(wheelL);
 
@@ -165,19 +183,25 @@ void getTheBadBlock()
 
 	if(badCol[0] != 0)
 	{
-		Encoder_moveMm(Encoder_move, constant + badCol[0] * disBetweenBlocks + 15);
+		Encoder_moveMm(Encoder_move, constant + badCol[0] * disBetweenBlocks + 40);
+
+		wait(10);
+
+		Encoder_move.moveSpeed = -30;
+		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-25));
 
 		wait(10);
 
 		Block_PickUp(700);
 
-		Encoder_move.moveSpeed = -30;
 		PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-badCol[0] * disBetweenBlocks - constant - 5));
 
 		wait(10);
 
 		setHandUp(-65);
+		gripStrength = 10;
 		setMotorTarget(claw, -140, 15);
+		gripStrength = 50;
 		wait(400);
 		setHandUp(-20);
 	}
@@ -186,7 +210,10 @@ void getTheBadBlock()
 
 	wait(10);
 
-	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(badCol[1] * disBetweenBlocks + constant));
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(badCol[1] * disBetweenBlocks + constant + 25));
+
+	Encoder_move.moveSpeed = -30;
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-25));
 
 	Block_PickUp(700);
 
@@ -194,22 +221,24 @@ void getTheBadBlock()
 
 	Encoder_move.moveSpeed = 30;
 
-	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder((5 - badCol[1]) * disBetweenBlocks + 30));
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder((5 - badCol[1]) * disBetweenBlocks + 50));
 
 	wait(10);
 
 	Encoder_move.moveSpeed = -30;
-	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-265));
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(-275 - addition));
 
 	wait(10);
 
 	setHandUp(-65);
+	gripStrength = 10;
 	setMotorTarget(claw, -140, 15);
 	wait(400);
+	gripStrength = 50;
 	setHandUp(-20);
 
 	Encoder_move.moveSpeed = 30;
-	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(90));
+	PID_Encoder_On_Until_Encoder(Encoder_move, getMotorEncoder(wheelL) - MmToEncoder(90 + addition));
 
 	wait(10);
 
@@ -217,10 +246,14 @@ void getTheBadBlock()
 
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, -45);
+	int curr = getGyroDegrees(gyro);
+
+	wait(10);
 
 	setMotorSpeed(wheelL, 0);
 	setMotorSpeed(wheelR, 40);
+
+	while(getGyroDegrees(gyro) > curr - 45){}
 
 	while(getColorReflected(color1) < cWhite - 5){}
 

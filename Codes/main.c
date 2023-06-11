@@ -25,7 +25,7 @@ int badCol[2];
 int checkedColor = -1;
 bool checkStatus = false;
 
-int colorsAsked[2]  ={3, 3}; 					// 3=Mwvane, 2=Blue, 0=Empty.
+int colorsAsked[2]  ={2, 2}; 					// 3=Mwvane, 2=Blue, 0=Empty.
 int blockColors[4] = {0, 0, 0, 0}; 		// 3=Mwvane, 2=Blue, 0=Empty.
 int goodBlocks[2] = {0, 0};
 int badBlocks[1] = {0};
@@ -91,7 +91,4 @@ task main()
 	//Block_betterTakeFirstBlockInCage(Encoder_move);
 
 	//PID_LineFollower_On_ForTime(LineFollower_sonic_r, 9999);
-	while(1)
-	{
-	}
 }

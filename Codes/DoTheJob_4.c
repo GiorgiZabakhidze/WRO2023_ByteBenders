@@ -1,6 +1,6 @@
 void goToTheSmallShip()
 {
-	LineFollower_normal_l.lineCorrectionTime = 900;
+	LineFollower_normal_l.lineCorrectionTime = 750;
 
 	PID_FollowLine_Until_Reflected(LineFollower_normal_l, cBlack + 1);
 
@@ -45,8 +45,6 @@ void loadTheSmallShip()
 
 	Block_PlaceOnTheShip(600);
 
-	//clawOpened(true, 200);
-
 	Encoder_move.moveSpeed = 30;
 
 	MmDepth = 215;
@@ -71,13 +69,11 @@ void loadTheSmallShip()
 
 	setMotorSpeed(wheelL, 0);
 
-	//setHandUp(-36);
 	handUp(-44);
 	wait(400);
 	setMotorTarget(claw, -190, 15);
 
 	wait(400);
-	//setHandUp(-15);
 	handUp(-15);
 	wait(400);
 
@@ -140,9 +136,11 @@ void placeTheShip()
 
 	endResetingHand();
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(300));
+	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(200));
 
-	Encoder_moveMm(Encoder_move_fast, -125);
+	Encoder_moveMm(Encoder_move_fast, -20);
+
+	startResetingHand();
 
 	Gyro_rotate.side = false;
 

@@ -6,8 +6,6 @@ void getAskedColors()
 
 	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(210));
 
-	wait(100);
-
 	playSound(soundBlip);
 
 	colorsAsked[0] = ColorCheck();
@@ -15,8 +13,6 @@ void getAskedColors()
 	displayBigTextLine(1, "%d", colorsAsked[0]);
 
 	LineFollower_fast_r.moveSpeed = 35;
-
-	wait(100);
 
 	PID_LineFollower_On_Until_Encoder(LineFollower_fast_l, getMotorEncoder(wheelL) - MmToEncoder(45));
 
@@ -58,13 +54,13 @@ void getOnTheLine()
 
 	wait(10);
 
-	setMotorSpeed(wheelL, 100);
+	setMotorSpeed(wheelL, 80);
 
 	while(getGyroDegrees(gyro) < curr + 45){}
 
-	while(getColorReflected(color1) < cWhite - 5){}
+	while(getColorReflected(color1) < cWhite - 1){}
 
-	while(getColorReflected(color1) > cWhite - 10){}
+	while(getColorReflected(color1) > cWhite - 5){}
 
 	setMotorSpeed(wheelL, 0);
 }
@@ -124,11 +120,7 @@ void putTheShip()
 
 	Gyro_rotate.Kp = 3;
 
-	PID_Gyro_Rotate(Gyro_rotate, -87);
-
-	//Gyro_rotate.side = true;
-
-	//PID_Gyro_Rotate(Gyro_rotate, 105);
+	PID_Gyro_Rotate(Gyro_rotate, -89);
 }
 
 void DoTheJob_1()

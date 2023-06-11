@@ -12,7 +12,7 @@ void Initializate()
 	PID_init(&LineFollower_ship_l, 0.24, 0.012, 0.006, 0.000666666, 80, -80, middle - 2, 30);
 	PID_init(&LineFollower_slow_l, 0.19, 0.008, 0.004, 0.000666666, 80, -80, middle - 2, 15);
 	PID_init(&LineFollower_slow_r, 0.19, 0.008, 0.004, 0.000666666, 80, -80, middle - 2, 15);
-	PID_init(&Gyro_rotate, 3, 0.002, 0., 0.000666666, 80, -80, 0, 0);
+	PID_init(&Gyro_rotate, 3, 0.002, 0.01, 0.000666666, 80, -80, 0, 0);
 	PID_init(&Gyro_move_fast, 10, 0.2, 0.005, 0.000666666, 80, -80, 0, 45);
 	PID_init(&Gyro_move, 4, 0.01, 0.00, 0.000666666, 80, -80, 0, 30);
 	PID_init(&Encoder_move_fast, 3.5, 0.05, 0.025, 0.000666666, 80, -80, 0, 60);

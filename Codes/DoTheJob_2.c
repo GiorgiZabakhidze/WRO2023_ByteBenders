@@ -16,10 +16,10 @@ void getOnTheParking()
 
 void getTheRedBox()
 {
-	handUp(-20);
-	setMotorSpeed(claw, 15);
+	startResetingHand();
+	setMotorTarget(claw, -110, 15);
 
-	Encoder_moveMm(Encoder_move, 115);
+	Encoder_moveMm(Encoder_move, 105);
 
 	PID_Gyro_Rotate(Gyro_rotate, 87);
 
@@ -27,15 +27,21 @@ void getTheRedBox()
 
 	Encoder_moveMm(Encoder_move, 30);
 
+	wait(100);
+
+	endResetingHand();
+
 	Encoder_move.moveSpeed = 30;
 
 	Gyro_move.moveSpeed = 10;
 
-	setHandUp(-49);
+	wait(100);
+
+	setHandUp(-48);
 
 	setMotorSpeed(claw, -40);
 
-	wait(1000);
+	wait(900);
 
 	setHandUp(-20);
 }
@@ -50,25 +56,35 @@ void hangTheBox()
 
 	PID_Gyro_Rotate(Gyro_rotate, -86);
 
-	//gripStrength = 15;
+	gripStrength = 10;
 
-	//handUp(-80);
+	setHandUp(-80);
 
-	PID_LineFollower_On_Until_Encoder(LineFollower_fast_r, getMotorEncoder(wheelL) - MmToEncoder(280));
+	Hand_normal.setpoint = 40;
 
-	setHandUp(-39);
+	startResetingHand();
+
+	PID_LineFollower_On_Until_Encoder(LineFollower_fast_r, getMotorEncoder(wheelL) - MmToEncoder(265));
+
+	wait(300);
+
+	endResetingHand();
+
+	wait(300);
+
+	setHandUp(-50);
 
 	Gyro_rotate.side = true;
 
-	PID_Gyro_Rotate(Gyro_rotate, -37);
+	PID_Gyro_Rotate(Gyro_rotate, -39);
 
 	Gyro_rotate.side = false;
 
-	PID_Gyro_Rotate(Gyro_rotate, 37);
+	PID_Gyro_Rotate(Gyro_rotate, 39);
 
-	Encoder_moveForTime(Encoder_move, 500, 30);
+	Encoder_moveForTime(Encoder_move, 700, 25);
 
-	clawOpened(true, 200);
+	clawOpened(true, 300);
 }
 
 
@@ -79,4 +95,4 @@ void DoTheJob_2()
 	getTheRedBox();
 
 	hangTheBox();
- }
+}
